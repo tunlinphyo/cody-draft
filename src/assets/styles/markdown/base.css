@@ -20,7 +20,7 @@ body {
   margin: 0;
 }
 
-#app {
+main {
   width: min(760px, calc(100% - 32px));
   margin: 0 auto;
   padding: 64px 0 88px;

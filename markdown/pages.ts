@@ -1,5 +1,5 @@
 import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from "node:fs";
-import { basename, dirname, extname, join, relative, resolve, sep } from "node:path";
+import { basename, dirname, extname, join, relative, sep } from "node:path";
 import type { Plugin, UserConfig } from "vite";
 import { parseContainerStart, renderContainer } from "./container.ts";
 import { isCodeFenceStart, renderCodeFence } from "./codeblock.ts";
@@ -103,6 +103,10 @@ function htmlPathForMarkdown(markdownPath: string) {
   const markdownDir = dirname(markdownPath);
   const relativeMarkdownDir = relative(contentDir, markdownDir);
 
+  if (markdownDir === contentDir && slug === "index") {
+    return join(rootDir, "index.html");
+  }
+
   if (!relativeMarkdownDir.startsWith("..") && relativeMarkdownDir !== "") {
     return join(rootDir, relativeMarkdownDir, slug, "index.html");
   }
@@ -151,15 +155,36 @@ async function writeMarkdownPages() {
   return htmlPages.filter((path) => path !== undefined);
 }
 
+function buildInputName(htmlPath: string) {
+  const relativeHtmlDir = relative(rootDir, dirname(htmlPath));
+
+  return relativeHtmlDir ? relativeHtmlDir.replaceAll(sep, "-") : "index";
+}
+
+function removeMarkdownPage(markdownPath: string) {
+  const htmlPath = htmlPathForMarkdown(markdownPath);
+
+  if (htmlPath === join(rootDir, "index.html")) {
+    if (existsSync(htmlPath)) {
+      rmSync(htmlPath, { force: true });
+    }
+
+    return;
+  }
+
+  const htmlDir = dirname(htmlPath);
+
+  if (existsSync(htmlDir)) {
+    rmSync(htmlDir, { recursive: true, force: true });
+  }
+}
+
 export function markdownPagesPlugin(): Plugin {
   return {
     name: "markdown-pages",
     async config() {
       const htmlPages = await writeMarkdownPages();
-      const input = Object.fromEntries([
-        ["app", resolve(rootDir, "index.html")],
-        ...htmlPages.map((path) => [relative(rootDir, dirname(path)).replaceAll(sep, "-"), path]),
-      ]);
+      const input = Object.fromEntries(htmlPages.map((path) => [buildInputName(path), path]));
 
       return {
         build: {
@@ -196,11 +221,7 @@ export function markdownPagesPlugin(): Plugin {
           return;
         }
 
-        const htmlDir = dirname(htmlPathForMarkdown(path));
-
-        if (existsSync(htmlDir)) {
-          rmSync(htmlDir, { recursive: true, force: true });
-        }
+        removeMarkdownPage(path);
       });
     },
   };

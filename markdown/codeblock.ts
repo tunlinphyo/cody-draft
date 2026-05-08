@@ -33,8 +33,8 @@ export async function renderCodeBlock(code: string, info: string) {
       meta: { __raw: meta },
       defaultColor: "light-dark()",
       themes: {
-        dark: "vitesse-dark",
-        light: "vitesse-light",
+        dark: "ayu-dark",
+        light: "ayu-light",
       },
       transformers: [
         transformerMetaHighlight(),

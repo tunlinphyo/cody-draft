@@ -1,14 +1,20 @@
 pre {
   overflow-x: auto;
-  border: 1px solid light-dark(#ded8cc, #3d444d);
-  border-radius: 8px;
-  background: light-dark(#ffffff, #24292e);
+  border: 1px solid oklch(from CanvasText l c h / 0.2);
+  background: Canvas;
   padding: 20px;
+
+  border-radius: 4px;
+
+  @supports(corner-shape: squircle) {
+    border-radius: 40px;
+    corner-shape: squircle;
+  }
 }
 
 pre code {
   background: transparent;
-  color: light-dark(#24292f, #e1e4e8);
+  color: CanvasText;
   padding: 0;
 }
 
@@ -28,7 +34,7 @@ pre.shiki .line {
 }
 
 pre.shiki .line.highlighted {
-  background: light-dark(rgba(9, 105, 218, 0.08), rgba(255, 255, 255, 0.12));
+  background: oklch(from canvasText l c h / 0.05);
 }
 
 pre.shiki.line-numbers code {
