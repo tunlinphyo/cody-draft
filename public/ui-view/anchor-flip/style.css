@@ -1,0 +1,102 @@
+@import url(./anchor-polyfill.css);
+
+:root {
+  color-scheme: light dark;
+
+  font-family: "Google Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 100%;
+
+  --surface: light-dark(
+    color-mix(in oklab, Canvas, CanvasText 10%),
+    color-mix(in oklab, Canvas, CanvasText 25%)
+  );
+}
+
+* {
+  box-sizing: border-box;
+}
+
+:where(h1,h2,h3,h4,h5,button,ul,ol,li,input,p) {
+  all: unset;
+}
+:where(button) {
+  cursor: pointer;
+}
+:where(h1,h2,h3,h4,h5,p) {
+  display: block;
+}
+
+:where(html, body) {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+
+  background-color: light-dark(var(--surface), Canvas);
+}
+
+:where(.spacer) {
+  flex: 1;
+}
+
+:where(main) {
+  max-width: 24rem;
+  margin-inline: auto;
+}
+
+:where(ul) {
+  padding: 1rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+  gap: 1rem;
+}
+
+:where([anchoritem]) {
+  width: 100%;
+  aspect-ratio: 1;
+  background-color: light-dark(Canvas, var(--surface));
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 15px;
+  @supports(corner-shape: squircle) {
+    border-radius: 30px;
+    corner-shape: squircle;
+  }
+}
+
+:where(dialog) {
+  /* width: 100%;
+  height: 100%;
+  max-width: calc(100% - 4rem);
+  max-height: calc(100% - 4rem); */
+
+  border-radius: 20px;
+  @supports(corner-shape: squircle) {
+    border-radius: 40px;
+    corner-shape: squircle;
+  }
+}
+
+:where([data-layer]) {
+  *, *::before, *::after {
+    outline: 1px dotted hotpink;
+  }
+}
+
+/* OPEN PROPS https://open-props.style/#easing */
+:where(html) {
+  --ease-spring-3: linear(
+    0, 0.009, 0.035 2.1%, 0.141 4.4%, 0.723 12.9%, 0.938 16.7%, 1.017, 1.077,
+    1.121, 1.149 24.3%, 1.159, 1.163, 1.161, 1.154 29.9%, 1.129 32.8%,
+    1.051 39.6%, 1.017 43.1%, 0.991, 0.977 51%, 0.974 53.8%, 0.975 57.1%,
+    0.997 69.8%, 1.003 76.9%, 1
+  );
+
+  --ease-sine-out: cubic-bezier(.39, .575, .565, 1);
+}

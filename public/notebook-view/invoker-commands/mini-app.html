@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mini App</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+  href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap"
+  rel="stylesheet"
+  fetchpriority="high">
+
+<script
+  type="module"
+  async
+  src="https://unpkg.com/invokers-polyfill@latest/invoker.min.js"
+></script>
+<style>
+:root {
+  color-scheme: light dark;
+
+  font-family: "Google Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 100%;
+
+  --card-height: 20vh;
+  --padding-x: 0.5rem;
+  --surface: light-dark(
+    color-mix(in oklab, Canvas, CanvasText 10%),
+    color-mix(in oklab, Canvas, CanvasText 25%)
+  );
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+:where(html,body) {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: var(--surface);
+  color: CanvasText;
+}
+
+:where(h1,h2,p,button,ul,li) {
+  all: unset;
+}
+
+:where(header) {
+  width: 100%;
+  container-type: scroll-state;
+
+  position: sticky;
+  top: 0;
+
+  .container {
+    height: 4rem;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 0.5rem;
+    padding-inline: 1rem;
+    background-color: var(--surface);
+    border-bottom: 1px solid transparent;
+
+    & button {
+      width: 2rem;
+      aspect-ratio: 1;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+
+      &::before,&::after {
+        content: '';
+        position: absolute;
+        width: 0.75rem;
+        height: 2px;
+        background-color: ActiveText;
+      }
+
+      &::before {
+        rotate: -45deg;
+        transform-origin: left bottom;
+      }
+      &::after {
+        rotate: 45deg;
+        transform-origin: left top;
+      }
+    }
+  }
+
+  :is(h1,h2) {
+    font-weight: 600;
+  }
+}
+
+:where(ul) {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.5rem;
+  padding: 0.5rem;
+
+  button {
+    width: 100%;
+    aspect-ratio: 4/1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: Canvas;
+
+    border-radius: 15px;
+    @supports(corner-shape: squircle) {
+      border-radius: 30px;
+      corner-shape: squircle;
+    }
+  }
+}
+
+:where(dialog) {
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  max-height: 100%;
+  margin: 0;
+  inset: 0;
+  border: none;
+  padding: 0;
+
+  translate: 100% 0;
+  transition: translate 0.3s var(--ease-sine-out);
+
+  .container {
+    background-color: Canvas;
+  }
+
+  &:open {
+    translate: 0 0;
+
+    @starting-style {
+      translate: 100% 0;
+    }
+  }
+
+  @supports (animation-name: test-starting-style) {
+    transition:
+      translate 0.3s var(--ease-sine-out),
+      display 0.3s allow-discrete,
+      overlay 0.3s allow-discrete;
+  }
+}
+
+:where(article) {
+  padding: 1rem;
+
+  & p {
+    display: block;
+    margin-bottom: 1rem;
+  }
+}
+
+@supports (container-type: scroll-state) {
+  @container scroll-state(stuck: top) {
+    header .container {
+      background-color: Canvas;
+      border-color: GrayText;
+      box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    }
+  }
+}
+
+:where(html:has(dialog[open])) body {
+  overflow: clip;
+}
+
+:where(html) {
+  --ease-1: cubic-bezier(.25, 0, .5, 1);
+  --ease-sine-in: cubic-bezier(.47,0,.745,.715);
+  --ease-sine-in-out: cubic-bezier(.445,.05,.55,.95);
+  --ease-sine-out: cubic-bezier(.39,.575,.565,1);
+
+  --ease-in-3: cubic-bezier(.70, 0, 1, 1);
+  --ease-spring-2: linear(
+    0, 0.007, 0.029 2.2%, 0.118 4.7%, 0.625 14.4%, 0.826 19%, 0.902, 0.962,
+    1.008 26.1%, 1.041 28.7%, 1.064 32.1%, 1.07 36%, 1.061 40.5%, 1.015 53.4%,
+    0.999 61.6%, 0.995 71.2%, 1
+  );
+  --ease-spring-3: linear(
+    0, 0.009, 0.035 2.1%, 0.141 4.4%, 0.723 12.9%, 0.938 16.7%, 1.017, 1.077,
+    1.121, 1.149 24.3%, 1.159, 1.163, 1.161, 1.154 29.9%, 1.129 32.8%,
+    1.051 39.6%, 1.017 43.1%, 0.991, 0.977 51%, 0.974 53.8%, 0.975 57.1%,
+    0.997 69.8%, 1.003 76.9%, 1
+  );
+}
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <div class="container">
+      <h1>Mini App</h1>
+    </div>
+  </header>
+  <ul>
+    <li>
+      <button commandfor="itempage" command="--open-item" data-id="1">Item One</button>
+    </li>
+    <li>
+      <button commandfor="itempage" command="--open-item" data-id="2">Item Two</button>
+    </li>
+    <li>
+      <button commandfor="itempage" command="--open-item" data-id="3">Item Three</button>
+    </li>
+    <li>
+      <button commandfor="itempage" command="--open-item" data-id="4">Item Four</button>
+    </li>
+    <li>
+      <button commandfor="itempage" command="--open-item" data-id="5">Item Five</button>
+    </li>
+    <li>
+      <button commandfor="itempage" command="--open-item" data-id="6">Item Six</button>
+    </li>
+    <li>
+      <button commandfor="itempage" command="--open-item" data-id="7">Item Seven</button>
+    </li>
+    <li>
+      <button commandfor="itempage" command="--open-item" data-id="8">Item Eight</button>
+    </li>
+    <li>
+      <button commandfor="itempage" command="--open-item" data-id="9">Item Nine</button>
+    </li>
+    <li>
+      <button commandfor="itempage" command="--open-item" data-id="10">Item Ten</button>
+    </li>
+  </ul>
+</main>
+
+<dialog id="itempage">
+  <header>
+    <div class="container">
+      <button commandfor="itempage" command="close"></button>
+      <h2 id="title"></h2>
+    </div>
+  </header>
+  <article>
+    <p>
+      This preview opens a focused command view for the selected note, so you can
+      review key details without leaving the notebook grid.
+    </p>
+    <p>
+      Use the available actions to inspect content, trigger notebook commands, and
+      return to browsing as soon as you are done.
+      eos sint distinctio vitae culpa dolor corporis?
+    </p>
+  </article>
+</dialog>
+
+<script>
+const dialog = document.getElementById('itempage')
+const titleEl = document.getElementById('title')
+dialog.addEventListener('command', (e) => {
+  if (e.command === "--open-item") {
+    const message = e.source.innerText
+    if (titleEl && message) titleEl.innerText = message
+    dialog.showModal()
+  }
+});
+</script>
+</body>
+</html>

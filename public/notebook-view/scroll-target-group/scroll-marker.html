@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scroll Marker Group</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+  href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap"
+  rel="stylesheet"
+  fetchpriority="high">
+<style>
+:root {
+  color-scheme: light dark;
+  interpolate-size: allow-keywords;
+
+  font-family: "Google Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 100%;
+
+  --padding-x: 0.5rem;
+  --surface: light-dark(
+    Canvas,
+    color-mix(in oklab, Canvas, CanvasText 30%)
+  );
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+:where(html,body) {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: Canvas;
+  color: CanvasText;
+}
+
+:where(html) {
+  scroll-behavior: smooth;
+  scroll-padding-top: 1.5rem;
+  scroll-marker-group: after;
+
+  &::scroll-marker-group {
+    position: fixed;
+    z-index: 5;
+    top: 2.5rem;
+    left: 1rem;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+}
+
+:where(ul,li) {
+  all: unset;
+}
+
+:where(main) {
+  width: 100%;
+  padding: 1rem;
+  padding-inline-start: 4rem;
+}
+
+:where(section) {
+  width: 100%;
+
+  &::scroll-marker {
+    --bg-color: oklch(from CanvasText l c h / 0.8);
+    content: '';
+    display: block;
+    width: 2rem;
+    height: 1rem;
+    cursor: pointer;
+    scale: 0.3 1;
+    transition: scale 0.3s var(--ease-sine-out);
+    transform-origin: left center;
+    background-color: transparent;
+    background-image: linear-gradient(
+      to bottom,
+      transparent 0 calc(50% - 1px),
+      var(--bg-color) calc(50% - 1px) calc(50% + 1px),
+      transparent calc(50% + 1px) 100%
+    );
+  }
+
+  &::scroll-marker:target-current {
+    --bg-color: ActiveText;
+    scale: 1;
+  }
+}
+
+:where([data-layer]) {
+  *, *::before, *::after {
+    outline: 1px dotted hotpink;
+  }
+}
+
+:where(html) {
+  --ease-sine-in: cubic-bezier(.47,0,.745,.715);
+  --ease-sine-in-out: cubic-bezier(.445,.05,.55,.95);
+  --ease-sine-out: cubic-bezier(.39,.575,.565,1);
+}
+</style>
+</head>
+<body>
+<main>
+  <section id="section-1">
+    <h2>Section 1</h2>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere, turpis nec viverra luctus, neque sem fermentum tellus, sed pretium sapien velit sed lorem.</p>
+    <p>Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Sed et metus eget neque convallis ultrices quis sit amet velit.</p>
+    <p>Aliquam erat volutpat. Morbi id risus vitae odio sollicitudin congue, non malesuada nisl dignissim. Donec semper orci sit amet lectus volutpat, a facilisis mi volutpat.</p>
+    <p>Praesent faucibus, neque at feugiat posuere, turpis risus pellentesque tortor, in condimentum lacus massa et velit. Suspendisse potenti.</p>
+  </section>
+  <section id="section-2">
+    <h2>Section 2</h2>
+    <p>Curabitur mattis nisl eu odio tempor, vitae imperdiet nibh hendrerit. Phasellus blandit magna sit amet nibh suscipit, vitae vehicula justo pharetra.</p>
+    <p>Maecenas mollis augue in libero tincidunt, a vulputate justo facilisis. Donec tincidunt, sapien non luctus tincidunt, dui nibh vulputate enim, sed scelerisque risus dui vel massa.</p>
+    <p>Quisque suscipit sem eu tellus pellentesque, a luctus turpis venenatis. Cras maximus tellus at ante posuere, sed tempor lectus vulputate.</p>
+    <p>Nam ut urna vel augue hendrerit rhoncus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</p>
+  </section>
+  <section id="section-3">
+    <h2>Section 3</h2>
+    <p>Donec non magna et sem varius feugiat. Fusce tincidunt, leo nec feugiat porttitor, libero justo cursus augue, nec aliquet odio augue sed nibh.</p>
+    <p>Integer aliquet nunc ac odio placerat, quis posuere tortor tempor. Sed consequat lectus at ipsum tincidunt, eu volutpat magna molestie.</p>
+    <p>Aenean cursus sem vel ligula facilisis, sit amet ullamcorper risus volutpat. Duis in lorem nec sapien mollis congue ut sit amet erat.</p>
+    <p>Sed a lorem a mi tristique tristique. In hac habitasse platea dictumst. Sed gravida, mauris eget accumsan hendrerit, purus orci dapibus augue, vel porttitor magna augue non erat.</p>
+  </section>
+  <section id="section-4">
+    <h2>Section 4</h2>
+    <p>Ut feugiat felis a sem ullamcorper, ut cursus purus pellentesque. Morbi in risus vitae neque porttitor ullamcorper a sit amet nunc.</p>
+    <p>Vivamus tincidunt lacus vel nisi semper, eget tincidunt mauris porta. Nullam eu eros interdum, scelerisque mauris sed, ullamcorper sapien.</p>
+    <p>Etiam tristique arcu sit amet lorem volutpat, vel tincidunt ipsum tempor. Phasellus varius risus in dui ultrices, sed tincidunt nulla volutpat.</p>
+    <p>Morbi cursus erat vel ipsum sollicitudin fermentum. Nam elementum est ut nisl volutpat, sit amet tempor lorem dictum.</p>
+  </section>
+  <section id="section-5">
+    <h2>Section 5</h2>
+    <p>Praesent bibendum metus quis mauris lobortis, sed ultricies nisi facilisis. Suspendisse sagittis metus nec lorem blandit, quis efficitur turpis dictum.</p>
+    <p>Aliquam in orci sed nibh pharetra faucibus. Phasellus viverra risus ut velit suscipit, ac posuere lorem volutpat.</p>
+    <p>Morbi posuere risus vel turpis faucibus, non tempus arcu pretium. Integer sed lectus sed ipsum volutpat feugiat.</p>
+    <p>Suspendisse at tellus nec turpis consequat convallis. Nunc finibus massa ac justo pretium, ac volutpat arcu luctus.</p>
+  </section>
+  <section id="section-6">
+    <h2>Section 6</h2>
+    <p>Integer vulputate metus in sem feugiat, vitae faucibus purus pretium. Donec sit amet purus ut lorem posuere tristique ac at velit.</p>
+    <p>Vivamus dapibus lorem sed erat feugiat, non aliquet nunc vulputate. Sed pulvinar justo at nibh gravida, non feugiat lorem malesuada.</p>
+    <p>Nullam placerat eros vel est malesuada, ut bibendum turpis aliquet. Pellentesque eu turpis vitae sapien luctus faucibus.</p>
+    <p>Curabitur a nibh ac turpis elementum aliquam. Sed ut lectus non neque varius eleifend sit amet vitae nisl.</p>
+  </section>
+</main>
+</body>
+</html>

@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fan Menu</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+  href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap"
+  rel="stylesheet"
+  fetchpriority="high">
+
+<script
+  type="module"
+  async
+  src="https://unpkg.com/invokers-polyfill@latest/invoker.min.js"
+></script>
+<style>
+:root {
+  color-scheme: light dark;
+
+  font-family: "Google Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 100%;
+
+  --card-height: 20vh;
+  --padding-x: 0.5rem;
+  --surface: light-dark(
+    color-mix(in oklab, Canvas, CanvasText 10%),
+    color-mix(in oklab, Canvas, CanvasText 25%)
+  );
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+:where(html,body) {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: Canvas;
+  color: CanvasText;
+}
+
+:where(main) {
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 1rem;
+
+  & h1 {
+    font-weight: 400;
+    font-size: clamp(2rem, 10vw, 5rem);
+  }
+}
+
+:where(.btn-circle) {
+  background-color: Canvas;
+  background-image: linear-gradient(ButtonFace, ButtonFace);
+  color: ButtonText;
+  border: 1px solid ButtonBorder;
+  padding: 0;
+  cursor: pointer;
+  border-radius: 50%;
+
+  width: 3rem;
+  aspect-ratio: 1;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    width: 1.5rem;
+    height: 2px;
+    background-color: currentColor;
+  }
+
+  &:is(:hover,:focus-visible) {
+    background-color: transparent;
+    outline: 2px solid ActiveText;
+    outline-offset: 1px;
+  }
+}
+:where(.btn-circle) {
+  position: fixed;
+  z-index: 9;
+  top: 50%;
+  right: 1rem;
+  translate: 0 -50%;
+
+  &::before {
+    transform: translate(0, -3px);
+  }
+  &::after {
+    transform: translate(0, 3px);
+  }
+}
+
+:where(dialog) {
+  border: none;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  margin: 0;
+  inset: 0;
+  background-color: transparent;
+
+  &::backdrop {
+    --bg-opacity: color-mix(in srgb, Canvas, transparent 5%);
+    opacity: 0;
+    background-color: transparent;
+    background-image:
+    radial-gradient(transparent 1px, Canvas 1px),
+    radial-gradient(
+      circle at 100%,
+      Canvas 0%,
+      var(--bg-opacity) min(50vh, 50vw),
+      transparent 75%
+    );
+    background-size: 3px 3px, auto auto;
+    transition: opacity 0.5s var(--ease-1);
+  }
+
+  &[open] {
+    &::backdrop {
+      opacity: 1;
+
+      @starting-style {
+        opacity: 0;
+      }
+    }
+  }
+
+  @supports (animation-name: test-starting-style) {
+    transition:
+      display 0.5s allow-discrete,
+      overlay 0.5s allow-discrete;
+  }
+}
+
+:where(.close-fan) {
+  &::before,&::after {
+    transition: transform 1s var(--ease-spring-3);
+  }
+}
+
+:where([popover]) {
+  position: fixed;
+  margin: auto;
+  inset: auto;
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  overflow: visible;
+
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+
+  .popover {
+    width: min(95vw, 20rem);
+    aspect-ratio: 1;
+    padding: 1.5rem;
+    padding-block-start: 3rem;
+    background-color: oklch(from Canvas l c h / 0.98);
+    border: 2px solid oklch(from CanvasText l c h / 0.1);
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    scale: 0;
+    transition: scale 0.25s ease-out;
+
+    border-radius: 20px;
+    @supports(corner-shape: squircle) {
+      border-radius: 40px;
+      corner-shape: squircle;
+    }
+  }
+
+  &:popover-open .popover {
+    scale: 1;
+    transition: all .6s var(--ease-spring-2);
+
+    @starting-style {
+      scale: 0;
+    }
+  }
+
+  @supports (animation-name: test-starting-style) {
+    transition:
+      display 0.25s allow-discrete,
+      overlay 0.25s allow-discrete;
+  }
+}
+
+:where(.wheel) {
+  --step: calc(75deg / sibling-count());
+  --offset: calc((sibling-count() - 1) / 2);
+  --degree: 0deg;
+  --move-x: max(32vw, 30vh);
+
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  counter-reset: project-list-counter;
+
+  .wheel-item {
+    counter-increment: project-list-counter;
+    position: absolute;
+    z-index: 0;
+    right: 0;
+    padding-inline-end: calc(var(--move-x) * 2);
+    transform-origin: right center;
+    white-space: nowrap;
+    transform: translate(var(--move-x), 0) rotate(var(--degree));
+    opacity: 0;
+    transition: transform 1s var(--ease-spring-3), opacity .25s var(--ease-1);
+    display: flex;
+  }
+}
+
+:where(.wheel-item) {
+  button {
+    all: unset;
+    font-size: clamp(3rem, 10vw, 5rem);
+    font-weight: 700;
+    color: color-mix(in oklab, CanvasText, Canvas 45%);
+    display: block;
+    cursor: pointer;
+    padding-inline: 0.5rem;
+
+    border-radius: 15px;
+    @supports(corner-shape: squircle) {
+      border-radius: 30px;
+      corner-shape: squircle;
+    }
+
+    &::before {
+      content: counter(project-list-counter, decimal-leading-zero);
+    }
+
+    &:is(:hover,:focus-visible) {
+      color: CanvasText;
+    }
+    &:is(:focus-visible) {
+      outline: 2px solid ActiveText;
+    }
+  }
+
+  &:first-child button::before {
+    letter-spacing: 0.05em;
+  }
+}
+
+:where(dialog[open]) {
+  .close-fan {
+    &::before {
+      transform: translate(0, 0) rotate(-45deg);
+      @starting-style {
+        transform: translate(0, -3px);
+      }
+    }
+    &::after {
+      transform: translate(0, 0) rotate(45deg);
+      @starting-style {
+        transform: translate(0, 3px);
+      }
+    }
+  }
+
+  .wheel-item {
+    opacity: 1;
+    --degree: calc(((sibling-index() - 1) - var(--offset)) * var(--step) * -1);
+
+    @starting-style {
+      transform: translate(var(--move-x), 0) rotate(0deg);
+      opacity: 0;
+    }
+  }
+}
+
+:where(.close-popover) {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  translate: 0 0;
+
+  &::before {
+    transform: translate(0, 0) rotate(45deg);
+  }
+  &::after {
+    transform: translate(0, 0) rotate(-45deg);
+  }
+}
+
+:where([data-layer]) {
+  *, *::before, *::after {
+    outline: 1px dotted hotpink;
+  }
+
+  .wheel-item, [popover] {
+    background-color: #f003;
+  }
+}
+
+:where(html) {
+  --ease-1: cubic-bezier(.25, 0, .5, 1);
+  --ease-sine-in: cubic-bezier(.47,0,.745,.715);
+  --ease-sine-in-out: cubic-bezier(.445,.05,.55,.95);
+  --ease-sine-out: cubic-bezier(.39,.575,.565,1);
+
+  --ease-in-3: cubic-bezier(.70, 0, 1, 1);
+  --ease-spring-2: linear(
+    0, 0.007, 0.029 2.2%, 0.118 4.7%, 0.625 14.4%, 0.826 19%, 0.902, 0.962,
+    1.008 26.1%, 1.041 28.7%, 1.064 32.1%, 1.07 36%, 1.061 40.5%, 1.015 53.4%,
+    0.999 61.6%, 0.995 71.2%, 1
+  );
+  --ease-spring-3: linear(
+    0, 0.009, 0.035 2.1%, 0.141 4.4%, 0.723 12.9%, 0.938 16.7%, 1.017, 1.077,
+    1.121, 1.149 24.3%, 1.159, 1.163, 1.161, 1.154 29.9%, 1.129 32.8%,
+    1.051 39.6%, 1.017 43.1%, 0.991, 0.977 51%, 0.974 53.8%, 0.975 57.1%,
+    0.997 69.8%, 1.003 76.9%, 1
+  );
+}
+</style>
+</head>
+<body>
+<main>
+  <h1>Fan Menu</h1>
+</main>
+
+<button class="btn-circle open-fan" commandfor="fanlist" command="show-modal"></button>
+
+<dialog id="fanlist">
+  <button class="btn-circle close-fan" commandfor="fanlist" command="close"></button>
+
+  <div class="wheel" style="--count: 6">
+    <div class="wheel-item" style="--index: 1">
+      <button commandfor="popover1" command="show-popover"></button>
+    </div>
+    <div class="wheel-item" style="--index: 2">
+      <button commandfor="popover2" command="show-popover"></button>
+    </div>
+    <div class="wheel-item" style="--index: 3">
+      <button commandfor="popover3" command="show-popover"></button>
+    </div>
+    <div class="wheel-item" style="--index: 4">
+      <button commandfor="popover4" command="show-popover"></button>
+    </div>
+    <div class="wheel-item" style="--index: 5">
+      <button commandfor="popover5" command="show-popover"></button>
+    </div>
+    <div class="wheel-item" style="--index: 6">
+      <button commandfor="popover6" command="show-popover"></button>
+    </div>
+  </div>
+
+  <div class="popovers">
+      <div popover id="popover1">
+        <div class="popover">
+          <button class="btn-circle close-popover" commandfor="popover1" command="hide-popover"></button>
+          <h2>01. Popover One</h2>
+          <p>Opens the first destination in the fan menu and keeps the numbered layout easy to scan.</p>
+        </div>
+      </div>
+      <div popover id="popover2">
+        <div class="popover">
+          <button class="btn-circle close-popover" commandfor="popover2" command="hide-popover"></button>
+          <h2>02. Popover Two</h2>
+          <p>Acts as a secondary stop in the arc, using the same compact card treatment as the rest of the menu.</p>
+        </div>
+      </div>
+      <div popover id="popover3">
+        <div class="popover">
+          <button class="btn-circle close-popover" commandfor="popover3" command="hide-popover"></button>
+          <h2>03. Popover Three</h2>
+          <p>Provides a midpoint action for the wheel so every command reveals a matching title and description.</p>
+        </div>
+      </div>
+      <div popover id="popover4">
+        <div class="popover">
+          <button class="btn-circle close-popover" commandfor="popover4" command="hide-popover"></button>
+          <h2>04. Popover Four</h2>
+          <p>Balances the opposite side of the fan with the same structured content instead of a single text node.</p>
+        </div>
+      </div>
+      <div popover id="popover5">
+        <div class="popover">
+          <button class="btn-circle close-popover" commandfor="popover5" command="hide-popover"></button>
+          <h2>05. Popover Five</h2>
+          <p>Extends the menu with another descriptive panel so the interaction stays consistent across all six items.</p>
+        </div>
+      </div>
+      <div popover id="popover6">
+        <div class="popover">
+          <button class="btn-circle close-popover" commandfor="popover6" command="hide-popover"></button>
+          <h2>06. Popover Six</h2>
+          <p>Rounds out the set with the final labeled card, matching the updated heading and paragraph pattern.</p>
+        </div>
+      </div>
+  </div>
+</dialog>
+</body>
+</html>

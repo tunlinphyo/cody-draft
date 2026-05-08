@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scroll Stuck</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+  href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap"
+  rel="stylesheet"
+  fetchpriority="high">
+<link href="https://fonts.googleapis.com/css2?family=Flow+Block&display=swap" rel="stylesheet">
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,300,0,0&display=block">
+<link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+<script>
+  // helper to stop parent iframe element jumping
+  if (window.self !== window.top) {
+    document.addEventListener('click', (event) => {
+      const link = event.target.closest('a[href^="#"]');
+      if (!link) return;
+
+      const target = document.querySelector(link.getAttribute('href'));
+      if (!target) return;
+
+      event.preventDefault()
+      event.stopImmediatePropagation();
+      event.stopPropagation()
+      const targetTop = target.getBoundingClientRect().top + window.scrollY;
+      const scrollPadding = Math.max(
+        parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0,
+        parseFloat(getComputedStyle(document.body).scrollPaddingTop) || 0
+      );
+      const scrollMargin = parseFloat(getComputedStyle(target).scrollMarginBlockStart) || 0;
+      window.scrollTo({ top: targetTop - scrollPadding - scrollMargin, behavior: 'smooth' });
+    });
+  }
+</script>
+<header>
+  <h1>Scroll Stuck</h1>
+  <button class="action"></button>
+</header>
+<nav>
+  <ul>
+    <li>
+      <a href="#intro">Intro</a>
+    </li>
+    <li>
+      <a href="#setup">Setup</a>
+    </li>
+    <li>
+      <a href="#behavior">Behavior</a>
+    </li>
+    <li>
+      <a href="#notes">Notes</a>
+    </li>
+    <li class="line"></li>
+  </ul>
+</nav>
+<main>
+  <div class="hero"></div>
+  <section id="intro">
+    <h2>Intro</h2>
+    <!-- add css that change text into -->
+    <p>
+      This page demonstrates a sticky navigation bar that remains available while the article content scrolls underneath it.
+    </p>
+    <p>
+      Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quidem, fugit reprehenderit. Recusandae distinctio provident dolor non molestias nesciunt. Fuga animi magni aspernatur quia corporis ipsa eius obcaecati consequuntur quos odit!
+    </p>
+    <p>
+      Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quidem, fugit reprehenderit. Recusandae distinctio provident dolor non molestias nesciunt. Fuga animi magni aspernatur quia corporis ipsa eius obcaecati consequuntur quos odit!
+    </p>
+  </section>
+  <section id="setup">
+    <h2>Setup</h2>
+    <p>
+      Use the links above to jump between page regions and confirm the stuck navigation remains in view.
+    </p>
+    <div class="gallery">
+      <div class="image"></div>
+      <div class="image"></div>
+    </div>
+    <p>
+      Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quidem, fugit reprehenderit. Recusandae distinctio provident dolor non molestias nesciunt. Fuga animi magni aspernatur quia corporis ipsa eius obcaecati consequuntur quos odit!
+    </p>
+    <p>
+      Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quidem, fugit reprehenderit. Recusandae distinctio provident dolor non molestias nesciunt. Fuga animi magni aspernatur quia corporis ipsa eius obcaecati consequuntur quos odit!
+    </p>
+    <p>
+      Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quidem, fugit reprehenderit. Recusandae distinctio provident dolor non molestias nesciunt. Fuga animi magni aspernatur quia corporis ipsa eius obcaecati consequuntur quos odit!
+    </p>
+  </section>
+  <section id="behavior">
+    <h2>Behavior</h2>
+    <p>
+      Anchor navigation scrolls each section into view while preserving the surrounding page layout.
+    </p>
+    <p>
+      Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quidem, fugit reprehenderit. Recusandae distinctio provident dolor non molestias nesciunt. Fuga animi magni aspernatur quia corporis ipsa eius obcaecati consequuntur quos odit!
+    </p>
+    <p>
+      Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quidem, fugit reprehenderit. Recusandae distinctio provident dolor non molestias nesciunt. Fuga animi magni aspernatur quia corporis ipsa eius obcaecati consequuntur quos odit!
+    </p>
+    <p>
+      Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quidem, fugit reprehenderit. Recusandae distinctio provident dolor non molestias nesciunt. Fuga animi magni aspernatur quia corporis ipsa eius obcaecati consequuntur quos odit!
+    </p>
+  </section>
+  <section id="notes">
+    <h2>Notes</h2>
+    <p>
+      The iframe click handler keeps local anchor jumps from disturbing the parent page scroll position.
+    </p>
+    <p>
+      Sticky positioning helps the navigation remain visible while the page content scrolls underneath it.
+    </p>
+    <ol>
+      <li>
+        Maiores amet at consectetur cupiditate expedita ipsam voluptates recusandae atque nesciunt repellat, similique harum vero magni eum, eos velit nemo hic alias!
+      </li>
+      <li>
+        Veritatis aliquam, recusandae corrupti dignissimos possimus voluptate tempore amet ipsum autem quisquam provident maiores vitae cum blanditiis placeat neque sequi iusto totam!
+      </li>
+      <li>
+        Quia nemo libero maxime, sunt nam expedita ipsam excepturi, vitae deleniti magni a repellat maiores aliquam temporibus illo veritatis ex perferendis quae.
+      </li>
+    </ol>
+    <p>
+      Use the section links to confirm that each target lands cleanly without clipping beneath the header.
+    </p>
+  </section>
+</main>
+</body>
+</html>

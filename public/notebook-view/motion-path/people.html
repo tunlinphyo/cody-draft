@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>People</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+  href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap"
+  rel="stylesheet"
+  fetchpriority="high">
+<script src="../../elements/circle-select.js"></script>
+<script
+  type="module"
+  async
+  src="https://unpkg.com/invokers-polyfill@latest/invoker.min.js"
+></script>
+<style>
+:root {
+  color-scheme: light dark;
+
+  font-family: "Google Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 100%;
+
+  --padding-x: 0.5rem;
+  --surface: light-dark(
+    Canvas,
+    color-mix(in oklab, Canvas, CanvasText 30%)
+  );
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+:where(html,body) {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: Canvas;
+  color: CanvasText;
+}
+
+:where(main) {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-content: center;
+
+  :is(h1) {
+    font-weight: 400;
+    font-size: clamp(1.2rem, 12vw, 2.8rem);
+  }
+}
+
+:where(button) {
+  &:is(:focus-visible) {
+    outline: 2px solid LinkText;
+    outline-offset: 2px;
+  }
+}
+
+:where(button.toggle) {
+  position: fixed;
+  z-index: 10;
+  left: 50%;
+  bottom: 1rem;
+  translate: -50% 0;
+
+  width: 3rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background-color: ButtonFace;
+  border: 2px solid ButtonBorder;
+  color: ButtonText;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+
+  &::before, &::after {
+    content: '';
+    position: absolute;
+    width: 1.5rem;
+    height: 0;
+    border-top: 2px solid currentColor;
+
+    transition: rotate .5s var(--ease-in-3);
+  }
+  &::before { rotate: 90deg; }
+  &::after { rotate: 0deg; }
+}
+
+:where(#people button) {
+  all: unset;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+
+:where(ul,li) {
+  all: unset;
+}
+
+:where(ul) {
+  display: grid;
+  grid-template-areas: 'person';
+
+  position: fixed;
+  z-index: 9;
+  left: 50%;
+  bottom: 1rem;
+  translate: -50% 0;
+
+  & li {
+    --move: 0%;
+    --distance: calc(50% + ((var(--index) - 1) * 50%) / max(1, (var(--count) - 1)) + var(--move));
+    grid-area: person;
+
+    offset-path: circle(clamp(40px, 50vw, 120px) at 50% 50%);
+    offset-rotate: 0deg;
+    offset-distance: 40%;
+    offset-anchor: auto;
+
+    transition: offset .5s var(--ease-in-3);
+
+    anchor-scope: --popover;
+
+    & button {
+      width: 3rem;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background-color: var(--surface);
+      box-shadow: rgba(0,0,0,0.2) 0px 2px 8px 0px;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 2rem;
+
+      anchor-name: --popover;
+
+    }
+  }
+
+  &[data-toggle] {
+    & li {
+      offset-distance: var(--distance);
+      transition: offset 1s var(--ease-spring-3), scale .3s ease;
+    }
+  }
+
+  & li:has(button:is(:hover,:focus-visible)) {
+    scale: 1.05;
+  }
+
+  & li:has(button:is(:hover,:focus-visible)) + li {
+    --move: 0.5%;
+  }
+  & li:has(+ li > button:is(:hover,:focus-visible)) {
+    --move: -0.5%;
+  }
+}
+
+:where(main:has(#people[data-toggle])) {
+  :is(button.toggle) {
+    &::before,&::after {
+      transition: rotate 1s var(--ease-spring-3);
+    }
+    &::before { rotate: 225deg; }
+    &::after { rotate: 135deg; }
+  }
+}
+
+
+:where([popover]) {
+  container-type: anchored;
+
+  position: fixed;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  max-width: calc(100vw - 2rem);
+  overflow: visible;
+
+  position-anchor: --popover;
+  top: auto;
+  bottom: anchor(top);
+  left: calc(anchor(left) - 0.5rem);
+  position-try-fallbacks: --try-right, --try-center;
+
+  .popover {
+    transform-origin: 2rem bottom;
+
+    min-width: 15rem;
+    padding: 1.5rem;
+    background-color: oklch(from Canvas l c h / 0.98);
+    border: 2px solid oklch(from CanvasText l c h / 0.1);
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    scale: 0;
+    transition: scale 0.25s ease-out;
+
+    border-radius: 20px;
+    @supports(corner-shape: squircle) {
+      border-radius: 40px;
+      corner-shape: squircle;
+    }
+
+    & span {
+      display: inline-block;
+      translate: 0.5rem 0;
+      scale: 1.5;
+      margin-inline-end: 0.75rem;
+    }
+
+    &::before {
+      content: '';
+      display: block;
+      position: absolute;
+      width: 0.75rem;
+      aspect-ratio: 1;
+      rotate: 45deg;
+      left: 1.5rem;
+      translate: 0 0;
+      bottom: -0.45rem;
+      background-color: oklch(from Canvas l c h / 0.98);
+      border: 2px solid oklch(from CanvasText l c h / 0.1);
+      border-left: none;
+      border-top: none;
+    }
+  }
+
+  &:popover-open .popover {
+    scale: 1;
+    transition: all .6s var(--ease-spring-2);
+
+    @starting-style {
+      scale: 0;
+    }
+  }
+
+  @supports (animation-name: test-starting-style) {
+    transition:
+      display 0.25s allow-discrete,
+      overlay 0.25s allow-discrete;
+  }
+}
+
+@position-try --try-right {
+  left: auto;
+  right: calc(anchor(right) - 0.5rem);
+}
+
+@position-try --try-center {
+  left: unset;
+  justify-self: anchor-center;
+}
+
+@container anchored(fallback: --try-right) {
+  [popover] .popover {
+    transform-origin: calc(100% - 2rem) bottom;
+
+    &::before {
+      left: unset;
+      right: 1.5rem;
+    }
+  }
+}
+
+@container anchored(fallback: --try-center) {
+  [popover] .popover {
+    transform-origin: center bottom;
+
+    &::before {
+      left: 50%;
+      translate: -50% 0;
+    }
+  }
+}
+
+:where([data-layer]) {
+  *, *::before, *::after {
+    outline: 1px dotted hotpink;
+  }
+}
+
+:where(html) {
+  --ease-sine-in: cubic-bezier(.47,0,.745,.715);
+  --ease-sine-in-out: cubic-bezier(.445,.05,.55,.95);
+  --ease-sine-out: cubic-bezier(.39,.575,.565,1);
+
+  --ease-in-3: cubic-bezier(.70, 0, 1, 1);
+  --ease-spring-2: linear(
+    0, 0.007, 0.029 2.2%, 0.118 4.7%, 0.625 14.4%, 0.826 19%, 0.902, 0.962,
+    1.008 26.1%, 1.041 28.7%, 1.064 32.1%, 1.07 36%, 1.061 40.5%, 1.015 53.4%,
+    0.999 61.6%, 0.995 71.2%, 1
+  );
+  --ease-spring-3: linear(
+    0, 0.009, 0.035 2.1%, 0.141 4.4%, 0.723 12.9%, 0.938 16.7%, 1.017, 1.077,
+    1.121, 1.149 24.3%, 1.159, 1.163, 1.161, 1.154 29.9%, 1.129 32.8%,
+    1.051 39.6%, 1.017 43.1%, 0.991, 0.977 51%, 0.974 53.8%, 0.975 57.1%,
+    0.997 69.8%, 1.003 76.9%, 1
+  );
+}
+</style>
+</head>
+<body>
+<main>
+  <h1>People in Mode</h1>
+  <button class="toggle" commandfor="people" command="--toggle"></button>
+  <ul id="people" toggle inert style="--count: 7">
+    <li style="--index: 1">
+      <button popovertarget="one">😀</button>
+      <div id="one" popover>
+        <div class="popover">Person one has a big grin on their face <span>😀</span></div>
+      </div>
+    </li>
+    <li style="--index: 2">
+      <button popovertarget="two">😭</button>
+      <div id="two" popover>
+        <div class="popover">Person two is crying their eyes out <span>😭</span></div>
+      </div>
+    </li>
+    <li style="--index: 3">
+      <button popovertarget="three">🥹</button>
+      <div id="three" popover>
+        <div class="popover">Person three looks like they are holding back tears <span>🥹</span></div>
+      </div>
+    </li>
+    <li style="--index: 4">
+      <button popovertarget="four">😊</button>
+      <div id="four" popover>
+        <div class="popover">Person four is smiling warmly <span>😊</span></div>
+      </div>
+    </li>
+    <li style="--index: 5">
+      <button popovertarget="five">😤</button>
+      <div id="five" popover>
+        <div class="popover">Person five looks fed up and is blowing off steam <span>😤</span></div>
+      </div>
+    </li>
+    <li style="--index: 6">
+      <button popovertarget="six">😡</button>
+      <div id="six" popover>
+        <div class="popover">Person six looks absolutely furious <span>😡</span></div>
+      </div>
+    </li>
+    <li style="--index: 7">
+      <button popovertarget="seven">🤪</button>
+      <div id="seven" popover>
+        <div class="popover">Person seven is feeling goofy and wild <span>🤪</span></div>
+      </div>
+    </li>
+  </ul>
+</main>
+<script>
+const lastFocusedTrigger = new WeakMap()
+const processedEvents = new WeakSet()
+const FIRST_FOCUSABLE_SELECTOR = [
+  'a[href]',
+  'area[href]',
+  'button:not([disabled])',
+  'input:not([type="hidden"]):not([disabled])',
+  'select:not([disabled])',
+  'textarea:not([disabled])',
+  'iframe',
+  'audio[controls]',
+  'video[controls]',
+  '[contenteditable]:not([contenteditable="false"])',
+  '[tabindex]:not([tabindex="-1"])',
+].join(',')
+
+function togglePolyfill() {
+  setupToggleListeners(document)
+}
+
+function handleToggleActivation(event) {
+  if (processedEvents.has(event)) return
+  if (event.defaultPrevented) return
+  if (event.type !== 'command') return
+
+  processedEvents.add(event)
+
+  if (event.command !== '--toggle') return
+
+  const trigger = getToggleTrigger(event)
+  if (!trigger) return
+
+  const target = getToggleTarget(event)
+  if (!target) return
+
+  const isOpening = target.hasAttribute('inert')
+
+  target.toggleAttribute('data-toggle', isOpening)
+  target.toggleAttribute('inert', !isOpening)
+  syncInert(target)
+
+  if (isOpening) {
+    lastFocusedTrigger.set(target, trigger)
+    focusFirstFocusableElement(target)
+    return
+  }
+
+  lastFocusedTrigger.get(target)?.focus()
+}
+
+function getToggleTrigger(event) {
+  return event.source instanceof HTMLElement ? event.source : null
+}
+
+function getToggleTarget(event) {
+  return event.target instanceof HTMLElement ? event.target : null
+}
+
+function focusFirstFocusableElement(target) {
+  target.querySelector(FIRST_FOCUSABLE_SELECTOR)?.focus()
+}
+
+function getLinkedElements(id) {
+  return document.querySelectorAll(`[data-inert-${CSS.escape(id)}]`)
+}
+
+function syncInert(target) {
+  const isOpen = target.hasAttribute('data-toggle')
+
+  if (!target.id) return
+
+  for (const linkedElement of getLinkedElements(target.id)) {
+    linkedElement.toggleAttribute('inert', isOpen)
+  }
+}
+
+function setupToggleListeners(target) {
+  target.addEventListener('command', handleToggleActivation, true)
+}
+
+window.resetToggleInert = (id) => {
+  const target = id ? document.getElementById(id) : null
+  if (!target) return
+  if (!target.hasAttribute('data-toggle')) return
+
+  target.removeAttribute('data-toggle')
+  target.setAttribute('inert', '')
+
+  for (const linkedElement of getLinkedElements(id)) {
+    linkedElement.removeAttribute('inert')
+  }
+}
+
+document.addEventListener('DOMContentLoaded', togglePolyfill)
+</script>
+</body>
+</html>

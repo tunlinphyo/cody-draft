@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Theme Changer</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+  href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap"
+  rel="stylesheet"
+  fetchpriority="high">
+<script src="../../elements/sunmoon.js"></script>
+<style>
+:root {
+  color-scheme: light dark;
+
+  font-family: "Google Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 100%;
+
+  --padding-x: 0.5rem;
+  --surface: light-dark(
+    color-mix(in oklab, Canvas, CanvasText 10%),
+    color-mix(in oklab, Canvas, CanvasText 25%)
+  );
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+:where(html,body) {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: Canvas;
+  color: CanvasText;
+}
+
+:where(h1,p,button) {
+  all: unset;
+}
+
+:where(body) {
+  background-color: Canvas;
+  transition: background-color 0s linear 0.5s;
+}
+
+:where(body[togelling]) {
+  &::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-color: Canvas;
+    clip-path: circle(0% at calc(100% - 3rem) 3rem);
+    animation: theme-changing 0.5s var(--ease-sine-in);
+  }
+}
+
+:where(main) {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+  padding: 2rem;
+
+  position: relative;
+  z-index: 1;
+}
+
+:where(button) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+:where(sun-moon) {
+  filter: drop-shadow(0 0 1rem hotpink);
+
+  &[theme=dark] {
+    filter: drop-shadow(0 0 0.5rem skyblue);
+  }
+}
+
+:where(section) {
+  padding: 1rem;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+  /* color: light-dark(CanvasText, skyblue); */
+  transition: color 0.5s var(--ease-sine-in);
+
+  & h1 {
+    width: max-content;
+    font-weight: 400;
+    display: block;
+    font-size: clamp(1.5rem, 8vw, 3rem);
+  }
+
+  & p {
+    display: block;
+    font-size: 0.9rem;
+    max-width: 22rem;
+  }
+}
+
+:where([data-layer]) {
+  *, *::before, *::after {
+    outline: 1px dotted hotpink;
+  }
+}
+
+:where(html) {
+  --ease-sine-in: cubic-bezier(.47,0,.745,.715);
+  --ease-sine-in-out: cubic-bezier(.445,.05,.55,.95);
+  --ease-sine-out: cubic-bezier(.39,.575,.565,1);
+}
+
+@keyframes theme-changing {
+  to {
+    clip-path: circle(150% at calc(100% - 3rem) 3rem);
+  }
+}
+</style>
+</head>
+<body>
+<main>
+  <button id="toggle" type="button">
+    <sun-moon theme="light" size="2rem" sun-color="hotpink" moon-color="skyblue"></sun-moon>
+  </button>
+  <section>
+    <h1>Frontend Developer</h1>
+    <p>focused on design systems, accessibility, and modern web technologies.</p>
+  </section>
+</main>
+<script>
+  const toggleButton = document.querySelector('#toggle')
+  const sunMoon = document.querySelector('sun-moon')
+  const colorScheme = window.matchMedia('(prefers-color-scheme: dark)')
+  const root = document.documentElement
+
+  const getTheme = () => {
+    const colorSchemeValue = root.style.colorScheme.trim()
+
+    if (colorSchemeValue === 'dark' || colorSchemeValue === 'light') {
+      return colorSchemeValue
+    }
+
+    return colorScheme.matches ? 'dark' : 'light'
+  }
+
+  const syncSunMoonTheme = () => {
+    const theme = getTheme()
+    sunMoon.theme = theme
+    document.body.setAttribute('togelling', '')
+    document.body.addEventListener('animationend', () => {
+      document.body.removeAttribute('togelling')
+      document.body.setAttribute('theme', theme)
+    })
+  }
+
+  const toggleTheme = () => {
+    const nextTheme = getTheme() === 'dark' ? 'light' : 'dark'
+    root.style.colorScheme = nextTheme
+  }
+
+  syncSunMoonTheme()
+  colorScheme.addEventListener('change', syncSunMoonTheme)
+  toggleButton.addEventListener('click', toggleTheme)
+
+  new MutationObserver(syncSunMoonTheme).observe(root, {
+    attributes: true,
+    attributeFilter: ['style'],
+  })
+</script>
+</body>
+</html>

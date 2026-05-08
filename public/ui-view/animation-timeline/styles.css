@@ -1,0 +1,536 @@
+:root {
+  color-scheme: light dark;
+
+  font-family: "Google Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 100%;
+}
+
+:root {
+  --theme: light-dark(orangered, chartreuse);
+  --ease-sine-out: cubic-bezier(.39,.575,.565,1);
+}
+
+:where(html,body) {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: Canvas;
+  color: CanvasText;
+}
+
+:where(html) {
+  scroll-behavior: smooth;
+  scroll-marker-group: after;
+
+  &::scroll-marker-group {
+    position: fixed;
+    z-index: 5;
+    top: 50%;
+    left: 1rem;
+    translate: 0 -50%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+}
+
+:where(body) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+:where(h1,h2,h3,h4,h5,button,ul,ol,li,input,p) {
+  all: unset;
+}
+:where(button) {
+  cursor: pointer;
+}
+
+:where(.scroll-box) {
+  width: 100%;
+  .scroll-section {
+    width: 100%;
+    /* outline: 2px dotted hotpink;
+    outline-offset: -4px; */
+
+    &::scroll-marker {
+      --bg-color: oklch(from CanvasText l c h / 0.8);
+      content: '';
+      display: block;
+      width: 1.5rem;
+      height: 1rem;
+      cursor: pointer;
+      scale: 0.3 1;
+      transition: scale 0.3s var(--ease-sine-out);
+      transform-origin: left center;
+      background-color: transparent;
+      background-image: linear-gradient(
+        to bottom,
+        transparent 0 calc(50% - 1px),
+        var(--bg-color) calc(50% - 1px) calc(50% + 1px),
+        transparent calc(50% + 1px) 100%
+      );
+    }
+
+    &::scroll-marker:target-current {
+      --bg-color: var(--theme);
+      scale: 1;
+    }
+
+    &.scroll-intro {
+      height: 54rem;
+    }
+    &.scroll-about {
+      height: 50rem;
+    }
+    &.scroll-tech {
+      height: 75rem;
+    }
+    &.scroll-work {
+      height: 69rem;
+    }
+    &.scroll-contact {
+      height: 33rem;
+    }
+  }
+}
+
+:where(.lines) {
+  pointer-events: none;
+  position: fixed;
+  z-index: 10;
+  inset: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  animation: forContainer auto linear forwards;
+  animation-timeline: scroll();
+
+  .line {
+    position: absolute;
+    width: 80%;
+    height: 0;
+    border-top: 2px solid CanvasText;
+    scale: 0 1;
+
+    &.line--one {
+      animation: lineOne auto linear forwards;
+      animation-timeline: scroll();
+    }
+    &.line--two {
+      animation: lineTwo auto linear forwards;
+      animation-timeline: scroll();
+    }
+    &.line--three {
+      animation: lineThree auto linear forwards;
+      animation-timeline: scroll();
+    }
+    &.line--four {
+      animation: lineFour auto linear forwards;
+      animation-timeline: scroll();
+    }
+  }
+}
+
+:where(.background) {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .bg {
+    position: absolute;
+    width: 4rem;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background-color: Canvas;
+    scale: 0;
+
+    animation: bgScale auto linear forwards;
+    animation-timeline: scroll();
+
+    &.bg-1 {
+      width: 40rem;
+      background-color: color-mix(in oklab, Canvas, CanvasText 2%);
+      animation-range: 50% 90%;
+    }
+    &.bg-2 {
+      width: 28rem;
+      background-color: color-mix(in oklab, Canvas, CanvasText 4%);
+      animation-range: 51% 89%;
+    }
+    &.bg-3 {
+      width: 20rem;
+      background-color: color-mix(in oklab, Canvas, CanvasText 6%);
+      animation-range: 52% 88%;
+    }
+    &.bg-4 {
+      width: 13rem;
+      background-color: color-mix(in oklab, Canvas, CanvasText 4%);
+      animation-range: 53% 87%;
+    }
+    &.bg-5 {
+      width: 8rem;
+      background-color: color-mix(in oklab, Canvas, CanvasText 2%);
+      animation-range: 54% 86%;
+    }
+    &.bg-6 {
+      animation-range: 55% 85%;
+    }
+  }
+}
+
+:where(.intro) {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  & h2 {
+    font-size: 2.5rem;
+    font-weight: 400;
+
+    animation: introTitle auto linear forwards;
+    animation-timeline: scroll();
+    animation-range: 0% 12.5%;
+  }
+
+  &::after {
+    content: "\279F";
+    font-size: 1.5rem;
+    position: absolute;
+    left: 50%;
+    bottom: 1rem;
+    translate: -50% 0;
+    rotate: 90deg;
+    animation: scrollHider auto linear forwards;
+    animation-timeline: scroll();
+    animation-range: 0% 10%;
+  }
+}
+
+:where(.about) {
+  position: fixed;
+  inset: 0;
+
+  display: grid;
+  grid-template-columns: 1rem 0.5fr 1fr 1rem;
+  grid-template-rows: 1rem auto 1fr 1rem;
+  gap: 1rem;
+
+  & h2 {
+    grid-column: 2 / 4;
+    grid-row: 2 / 3;
+    font-size: 2rem;
+    opacity: 0;
+    animation: aboutTitle auto linear forwards;
+    animation-timeline: scroll();
+    animation-range: 10% 35%;
+  }
+
+  & p {
+    grid-column: 3 / 4;
+    grid-row: 3 / 4;
+
+    opacity: 0;
+    padding-block-start: 1rem;
+    animation: aboutMessage auto linear forwards;
+    animation-timeline: scroll();
+    animation-range: 15% 30%;
+  }
+}
+
+:where(.tech) {
+  position: fixed;
+  inset: 0;
+  padding: 1rem;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr;
+  gap: 0.5rem;
+
+  .box {
+    & ul {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+
+      & li {
+        position: absolute;
+        font-size: 2rem;
+        font-weight: 700;
+        scale: 0;
+        animation: techPopup auto linear forwards;
+        animation-timeline: scroll();
+
+        &.pos-1 {
+          translate: -0.5rem -1.64rem;
+          animation-range: 32% 43%;
+        }
+        &.pos-2 {
+          translate: 0.76rem -0.68rem;
+          animation-range: 34% 45%;
+        }
+        &.pos-3 {
+          translate: 0.02rem 1.88rem;
+          animation-range: 36% 47%;
+        }
+        &.pos-4 {
+          translate: 0.24rem 0.5rem;
+          animation-range: 38% 49%;
+        }
+        &.pos-5 {
+          translate: -0.18rem -1.36rem;
+          animation-range: 33% 44%;
+        }
+        &.pos-6 {
+          translate: 0.88rem 0.32rem;
+          animation-range: 35% 46%;
+        }
+        &.pos-7 {
+          translate: -0.64rem 2rem;
+          animation-range: 37% 48%;
+        }
+        &.pos-8 {
+          translate: 0.54rem -1.92rem;
+          animation-range: 39% 50%;
+        }
+      }
+    }
+  }
+}
+
+:where(.works) {
+  position: fixed;
+  inset: 0;
+  padding: 1rem;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+
+  & > h2 {
+    position: absolute;
+    font-size: 2rem;
+    left: 50%;
+    translate: -50% 0;
+    scale: 0;
+    opacity: 0;
+
+    animation: workTitle auto linear forwards;
+    animation-timeline: scroll();
+    animation-range: 50% 70%;
+  }
+
+  .work-list {
+    width: 3rem;
+    aspect-ratio: 1;
+    background-color: #f002;
+
+    position: absolute;
+    top: 50%;
+    right: 0;
+    translate: 6rem -50%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+
+    & li {
+      position: absolute;
+      offset-path: circle(12rem at 50% 50%);
+      offset-rotate: 0deg;
+      offset-distance: 25%;
+
+      display: grid;
+      place-content: center;
+      font-size: 3rem;
+      font-weight: 700;
+
+      animation: workArc auto linear forwards;
+      animation-timeline: scroll();
+    }
+  }
+
+  .name-list {
+    position: relative;
+    display: grid;
+    grid-template-areas: 'project';
+
+    & > li {
+      grid-area: project;
+      opacity: 0;
+      padding-block: 0 1rem;
+      padding-inline: 3rem 1rem;
+
+      animation: nameShow auto linear forwards;
+      animation-timeline: scroll();
+
+      & h3 {
+        display: block;
+        font-size: 1.5rem;
+      }
+      & p {
+        display: block;
+        max-width: 16rem;
+      }
+      & ol {
+        display: flex;
+        margin-block: 1rem 0.5rem;
+        align-items: center;
+
+        &::before {
+          content: '';
+          display: block;
+          width: 1rem;
+          height: 0;
+          border-top: 2px solid GrayText;
+        }
+
+        & li {
+          font-size: 0.85rem;
+          color: var(--theme);
+          padding-inline: 0.5rem;
+          line-height: 1;
+
+          &:not(:last-child) {
+            border-right: 1px solid GrayText;
+          }
+        }
+      }
+    }
+  }
+
+  .work-list li,
+  .name-list li {
+    &.work-1 { animation-range: 62.5% 74.5%; }
+    &.work-2 { animation-range: 65.5% 77.5%; }
+    &.work-3 { animation-range: 68.5% 80.5%; }
+    &.work-4 { animation-range: 71.5% 83.5%; }
+    &.work-5 { animation-range: 74.5% 86.5%; }
+  }
+
+  .logo {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    padding: 1rem;
+
+    & svg {
+      width: 3rem;
+      color: color-mix(in oklab, CanvasText, Canvas 40%);
+
+      .draw {
+        stroke-dasharray: 105;
+        stroke-dashoffset: 105;
+        animation: logoDraw auto linear forwards;
+        animation-timeline: scroll();
+        
+        &.draw-1 { animation-range: 81% 84%; }
+        &.draw-2 { animation-range: 84% 87%; }
+        &.draw-3 { animation-range: 87% 92%; }
+      }
+    }
+
+  }
+}
+
+:where(.contact) {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 1fr;
+
+  .start {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: clip;
+    padding-block-start: 2rem;
+
+    & h2 {
+      font-size: 2rem;
+      translate: 0 50vh;
+
+      animation: contactTitle auto linear forwards;
+      animation-timeline: scroll();
+      animation-range: 90% 95%;
+    }
+  }
+  .end {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    overflow: clip;
+
+    & ul {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+      padding-block-start: 2rem;
+
+      & li {
+        translate: 0 -50vh;
+
+        animation: contactLink auto linear forwards;
+        animation-timeline: scroll();
+
+        &.link-1 {
+          animation-range: 90% 100%;
+        }
+        &.link-2 {
+          animation-range: 89% 99%;
+        }
+        &.link-3 {
+          animation-range: 88% 98%;
+        }
+      }
+    }
+
+    & a {
+      text-decoration: none;
+      color: var(--theme);
+    }
+  }
+
+  /* &::after {
+    content: "\279F";
+    font-size: 1.5rem;
+    position: absolute;
+    left: 50%;
+    bottom: 1rem;
+    translate: -50% 20vh;
+    rotate: -90deg;
+    animation: scrollShow auto linear forwards;
+    animation-timeline: scroll();
+    animation-range: 90% 100%;
+  } */
+}
+
+:where([data-layer]) {
+  *, *::before, *::after {
+    outline: 1px dotted hotpink;
+  }
+}

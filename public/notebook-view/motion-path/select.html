@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>offset-path</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+  href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap"
+  rel="stylesheet"
+  fetchpriority="high">
+<script src="../../elements/circle-select.js"></script>
+<style>
+:root {
+  color-scheme: light dark;
+
+  font-family: "Google Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 100%;
+
+  --padding-x: 0.5rem;
+  --surface: light-dark(
+    Canvas,
+    color-mix(in oklab, Canvas, CanvasText 30%)
+  );
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+:where(html,body) {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: Canvas;
+  color: CanvasText;
+}
+
+:where(main) {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+}
+
+:where(circle-select) {
+  position: relative;
+  width: 3rem;
+  aspect-ratio: 1;
+  display: grid;
+  grid-template-areas: "option";
+  place-items: center;
+}
+
+:where(circle-option) {
+  position: relative;
+  z-index: 0;
+  grid-area: option;
+  width: 3rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+
+  display: grid;
+  place-content: center;
+
+  offset-path: circle(0 at 50% 50%);
+  offset-anchor: center;
+  offset-rotate: 0deg;
+  offset-distance: calc(-75% + (var(--index) - 1) * 100% / var(--count));
+  scale: 0;
+
+  transition: offset .35s var(--ease-sine-out), scale .35s var(--ease-sine-out);
+
+  &:is(:hover,:focus-visible) {
+    scale: 1.1;
+  }
+
+  &:is([selected]) {
+    z-index: 1;
+  }
+}
+
+:where(circle-selected) {
+  grid-area: option;
+  border-radius: 50%;
+
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid ButtonBorder;
+
+  .people {
+    opacity: 0;
+  }
+
+  &::before, &::after {
+    content: '';
+    position: absolute;
+    width: 1.25rem;
+    height: 0;
+    border-top: 2px solid CanvasText;
+  }
+  &::before { rotate: 45deg; }
+  &::after { rotate: -45deg; }
+}
+
+:where(circle-select:not([open]):has(circle-selected:focus-visible)) {
+  :is(circle-option[selected]) {
+    outline: 2px solid LinkText;
+    outline-offset: 2px;
+  }
+}
+:where(circle-selected, circle-option) {
+  &:is(:focus-visible) {
+    outline: 2px solid LinkText;
+    outline-offset: 2px;
+  }
+}
+
+:where(.people) {
+  cursor: pointer;
+  width: 3rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--surface);
+  color: CanvasText;
+  font-size: 1.8rem;
+  /* box-shadow: oklch(from CanvasText l c h / 0.2) 0px 5px 18px 0px; */
+  box-shadow: rgba(0,0,0,0.2) 0px 2px 8px 0px;
+}
+
+:where(circle-select[open]) {
+  z-index: 10;
+  :is(circle-option) {
+    scale: 1;
+    offset-path: circle(clamp(40px, 35vw, 80px) at 50% 50%);
+    offset-distance: calc(-25% + (var(--index) - 1) * 100% / var(--count));
+  }
+
+  :where(circle-option[selected]) > * {
+    background-color: SelectedItem;
+  }
+}
+
+:where(circle-select:not([open])) {
+  circle-option[selected] {
+    scale: 1.3;
+    z-index: 1;
+    offset-rotate: 0deg;
+    offset-path: circle(1px at 50% 50%);
+    offset-distance: calc(-75% + (var(--index) - 1) * 100% / var(--count));
+  }
+}
+
+:where(p em) {
+  display: inline-block;
+  padding-inline: 0.5rem;
+  background-color: light-dark(
+    oklch(from ActiveText 0.95 calc(c - 0.2) h),
+    oklch(from ActiveText 0.15 c h)
+  );
+  color: ActiveText;
+  font-style: normal;
+
+  border-radius: 5px;
+  @supports(corner-shape: squircle) {
+    border-radius: 10px;
+    corner-shape: squircle;
+  }
+}
+
+:where([data-layer]) {
+  *, *::before, *::after {
+    outline: 1px dotted hotpink;
+  }
+}
+
+:where(html) {
+  --ease-sine-in: cubic-bezier(.47,0,.745,.715);
+  --ease-sine-in-out: cubic-bezier(.445,.05,.55,.95);
+  --ease-sine-out: cubic-bezier(.39,.575,.565,1);
+}
+</style>
+</head>
+<body>
+<main>
+  <circle-select name="person" value="1">
+    <circle-selected></circle-selected>
+    <circle-option value="1">
+      <div class="people">😀</div>
+    </circle-option>
+    <circle-option value="2">
+      <div class="people">😎</div>
+    </circle-option>
+    <circle-option value="3">
+      <div class="people">🤠</div>
+    </circle-option>
+    <circle-option value="4">
+      <div class="people">🤓</div>
+    </circle-option>
+    <circle-option value="5">
+      <div class="people">🥳</div>
+    </circle-option>
+    <circle-option value="6">
+      <div class="people">😍</div>
+    </circle-option>
+    <!-- <circle-option value="7">
+      <div class="people">👻</div>
+    </circle-option> -->
+    <circle-option value="8">
+      <div class="people">❤️</div>
+    </circle-option>
+    <circle-option value="9">
+      <div class="people">👍</div>
+    </circle-option>
+  </circle-select>
+</main>
+</body>
+</html>

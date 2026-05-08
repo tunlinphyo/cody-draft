@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>scroll-state(scrollable: top)</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+  href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap"
+  rel="stylesheet"
+  fetchpriority="high">
+<style>
+:root {
+  color-scheme: light dark;
+
+  font-family: "Google Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 100%;
+
+  --padding-x: 0.5rem;
+  --surface: light-dark(
+    color-mix(in oklab, Canvas, CanvasText 10%),
+    color-mix(in oklab, Canvas, CanvasText 25%)
+  );
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+:where(html,body) {
+  margin: 0;
+  padding: 0;
+  background-color: light-dark(var(--surface), Canvas);
+  color: CanvasText;
+}
+
+:where(ul) {
+  width: 100vw;
+  height: 100vh;
+  overflow-y: auto;
+  position: relative;
+
+  list-style: none;
+  margin: 0;
+  padding: var(--padding-x);
+  display: grid;
+  gap: 0.5rem;
+
+  container-type: scroll-state size;
+}
+
+:where(li) {
+  font-size: clamp(2rem, 8vw, 5rem);
+  padding: 1rem;
+  background-color: light-dark(Canvas, var(--surface));
+
+  border-radius: 15px;
+  @supports(corner-shape: squircle) {
+    border-radius: 30px;
+    corner-shape: squircle;
+  }
+}
+
+:where(li.action) {
+  padding: 0;
+  height: 0;
+  position: sticky;
+  pointer-events: none;
+
+  &::before {
+    content: "\279F";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    width: 2.5rem;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background-color: ButtonFace;
+    color: ButtonText;
+    border: 1px solid ButtonBorder;
+    display: grid;
+    scale: 0.25;
+    opacity: 0;
+    transition: all .1s ease;
+
+    place-content: center;
+    font-size: 1.5rem;
+    padding-left: 0.1rem;
+  }
+
+  &.action--top {
+    top: 0;
+
+    &::before {
+      translate: -50% 0%;
+      rotate: -90deg;
+    }
+  }
+  &.action--bottom {
+    bottom: 0;
+
+    &::before {
+      translate: -50% -100%;
+      rotate: 90deg;
+    }
+  }
+}
+
+@container scroll-state(scrollable: top) {
+  li.action--top::before {
+    scale: 1;
+    opacity: 1;
+  }
+}
+
+@container scroll-state(scrollable: bottom) {
+  li.action--bottom::before {
+    scale: 1;
+    opacity: 1;
+  }
+}
+
+:where([data-layer]) {
+  *, *::before, *::after {
+    outline: 1px dotted hotpink;
+  }
+}
+</style>
+</head>
+<body>
+<ul>
+  <li class="action action--top"></li>
+  <li>One</li>
+  <li>Two</li>
+  <li>Three</li>
+  <li>Four</li>
+  <li>Five</li>
+  <li>Six</li>
+  <li>Seven</li>
+  <li>Eight</li>
+  <li>Nine</li>
+  <li>Ten</li>
+  <li class="action action--bottom"></li>
+</ul>
+</body>
+</html>

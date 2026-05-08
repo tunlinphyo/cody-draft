@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mega Menu</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+  href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap"
+  rel="stylesheet"
+  fetchpriority="high">
+
+<script
+  type="module"
+  async
+  src="https://unpkg.com/invokers-polyfill@latest/invoker.min.js"
+></script>
+<style>
+:root {
+  color-scheme: light dark;
+
+  font-family: "Google Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 100%;
+
+  --accent: light-dark(orangered, chartreuse);
+  --surface: light-dark(
+    color-mix(in oklab, Canvas, CanvasText 5%),
+    color-mix(in oklab, Canvas, CanvasText 10%)
+  );
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+:where(html,body) {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: var(--surface);
+  color: CanvasText;
+}
+
+:where(main) {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-rows: 1fr auto 1fr;
+  justify-content: center;
+}
+
+:where(button) {
+  background-color: ButtonFace;
+  color: ButtonText;
+  border: 1px solid ButtonBorder;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 2px;
+  padding: 0.25rem 0.75rem;
+  cursor: pointer;
+
+  position: relative;
+
+  border-radius: 10px;
+  @supports(corner-shape: squircle) {
+    border-radius: 20px;
+    corner-shape: squircle;
+  }
+
+  &:is(:hover,:focus-visible) {
+    background-color: transparent;
+    outline: 2px solid ActiveText;
+    outline-offset: 1px;
+  }
+}
+
+:where(a) {
+  display: inline-block;
+  padding-inline: 0.5rem;
+  border-radius: 0.25rem;
+  @supports(corner-shape: squircle) {
+    border-radius: 1rem;
+    corner-shape: squircle;
+  }
+}
+
+[interestfor] {
+  interest-delay: 0.2s;
+}
+:interest-source {
+  background-color: var(--accent);
+  color: contrast-color(var(--accent));
+}
+
+[popover] {
+  position: absolute;
+  margin: 0;
+  padding: 0;
+  inset: auto;
+  position-area: top;
+
+  border: none;
+  outline: none;
+  background-color: transparent;
+  overflow: visible;
+  max-width: 100%;
+  max-height: 100%;
+
+  .popover {
+    min-width: 200px;
+    max-width: 25ch;
+    background-color: Canvas;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    padding: 1rem;
+    scale: 0.5;
+    opacity: 0;
+    translate: 0 0;
+    transform-origin: bottom center;
+    transition: all 0.2s var(--ease-sine-out);
+    position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      translate: -50% 40%;
+      background-color: Canvas;
+
+      width: 0.6rem;
+      aspect-ratio: 1;
+      rotate: 45deg;
+    }
+
+    & p {
+      margin: 0;
+    }
+
+    border-radius: 20px;
+    @supports(corner-shape: squircle) {
+      border-radius: 40px;
+      corner-shape: squircle;
+    }
+  }
+
+  &:popover-open {
+    .popover {
+      scale: 1;
+      opacity: 1;
+      translate: 0 -0.5rem;
+
+      @starting-style {
+        scale: 0.5;
+        opacity: 0;
+        translate: 0 0;
+      }
+    }
+  }
+
+  @supports (animation-name: test-starting-style) {
+    transition:
+      display 0.2s allow-discrete,
+      overlay 0.2s allow-discrete;
+  }
+}
+
+:where([data-layer]) {
+  *, *::before, *::after {
+    outline: 1px dotted hotpink;
+  }
+}
+
+:where(html) {
+  --ease-sine-in: cubic-bezier(.47,0,.745,.715);
+  --ease-sine-in-out: cubic-bezier(.445,.05,.55,.95);
+  --ease-sine-out: cubic-bezier(.39,.575,.565,1);
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>Mega Menu</h1>
+  <nav aria-label="Primary">
+    <ul>
+      <li>
+        <button interestfor="menu1">Product</button>
+      </li>
+      <li>
+        <button interestfor="menu2">Pricing</button>
+      </li>
+      <li>
+        <button interestfor="menu3">Docs</button>
+      </li>
+      <li>
+        <button interestfor="menu4">Contact</button>
+      </li>
+    </ul>
+  </nav>
+
+  <div id="menu1" class="mega-menu" popover="hint">
+    <div class="popover">
+      <p>Explore the product suite.</p>
+      <section aria-labelledby="menu1-build">
+        <h2 id="menu1-build">Build</h2>
+        <ul>
+          <li><a href="/">Notebook Workspace</a></li>
+          <li><a href="/">Reusable Components</a></li>
+          <li><a href="/">Automation Flows</a></li>
+        </ul>
+      </section>
+      <section aria-labelledby="menu1-launch">
+        <h2 id="menu1-launch">Launch</h2>
+        <ul>
+          <li><a href="/">Deployments</a></li>
+          <li><a href="/">Analytics</a></li>
+          <li><a href="/">Team Access</a></li>
+        </ul>
+      </section>
+      <section aria-labelledby="menu1-learn">
+        <h2 id="menu1-learn">Learn</h2>
+        <ul>
+          <li><a href="/">Getting Started</a></li>
+          <li><a href="/">Case Studies</a></li>
+          <li><a href="/">API Reference</a></li>
+        </ul>
+      </section>
+    </div>
+  </div>
+
+  <div id="menu2" class="mega-menu" popover="hint">
+    <div class="popover">
+      <p>Choose the plan that fits your team.</p>
+      <section aria-labelledby="menu2-plans">
+        <h2 id="menu2-plans">Plans</h2>
+        <ul>
+          <li><a href="/">Starter</a></li>
+          <li><a href="/">Growth</a></li>
+          <li><a href="/">Enterprise</a></li>
+        </ul>
+      </section>
+      <section aria-labelledby="menu2-billing">
+        <h2 id="menu2-billing">Billing</h2>
+        <ul>
+          <li><a href="/">Monthly Pricing</a></li>
+          <li><a href="/">Annual Savings</a></li>
+          <li><a href="/">Invoices</a></li>
+        </ul>
+      </section>
+      <section aria-labelledby="menu2-support">
+        <h2 id="menu2-support">Support</h2>
+        <ul>
+          <li><a href="/">Plan Comparison</a></li>
+          <li><a href="/">FAQ</a></li>
+          <li><a href="/">Talk to Sales</a></li>
+        </ul>
+      </section>
+    </div>
+  </div>
+
+  <div id="menu3" class="mega-menu" popover="hint">
+    <div class="popover">
+      <p>Browse documentation and developer resources.</p>
+      <section aria-labelledby="menu3-guides">
+        <h2 id="menu3-guides">Guides</h2>
+        <ul>
+          <li><a href="/">Quickstart</a></li>
+          <li><a href="/">Tutorials</a></li>
+          <li><a href="/">Examples</a></li>
+        </ul>
+      </section>
+      <section aria-labelledby="menu3-reference">
+        <h2 id="menu3-reference">Reference</h2>
+        <ul>
+          <li><a href="/">Components</a></li>
+          <li><a href="/">CLI</a></li>
+          <li><a href="/">API Docs</a></li>
+        </ul>
+      </section>
+      <section aria-labelledby="menu3-community">
+        <h2 id="menu3-community">Community</h2>
+        <ul>
+          <li><a href="/">Changelog</a></li>
+          <li><a href="/">Roadmap</a></li>
+          <li><a href="/">GitHub</a></li>
+        </ul>
+      </section>
+    </div>
+  </div>
+
+  <div id="menu4" class="mega-menu" popover="hint">
+    <div class="popover">
+      <p>Reach the right team quickly.</p>
+      <section aria-labelledby="menu4-sales">
+        <h2 id="menu4-sales">Sales</h2>
+        <ul>
+          <li><a href="/">Book a Demo</a></li>
+          <li><a href="/">Enterprise Contact</a></li>
+          <li><a href="/">Partner Program</a></li>
+        </ul>
+      </section>
+      <section aria-labelledby="menu4-help">
+        <h2 id="menu4-help">Help</h2>
+        <ul>
+          <li><a href="/">Support Center</a></li>
+          <li><a href="/">Status Page</a></li>
+          <li><a href="/">Report an Issue</a></li>
+        </ul>
+      </section>
+      <section aria-labelledby="menu4-company">
+        <h2 id="menu4-company">Company</h2>
+        <ul>
+          <li><a href="/">About</a></li>
+          <li><a href="/">Press</a></li>
+          <li><a href="/">Careers</a></li>
+        </ul>
+      </section>
+    </div>
+  </div>
+</header>
+<main>
+</main>
+</body>
+</html>

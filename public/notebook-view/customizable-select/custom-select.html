@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Custom Select</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+  href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap"
+  rel="stylesheet"
+  fetchpriority="high">
+<style>
+:root {
+  color-scheme: light dark;
+
+  font-family: "Google Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 100%;
+
+  --padding-x: 0.5rem;
+  --surface: light-dark(
+    Canvas,
+    color-mix(in oklab, Canvas, CanvasText 30%)
+  );
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+:where(html,body) {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: Canvas;
+  color: CanvasText;
+}
+
+:where(main) {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+}
+
+@supports (appearance: base-select) {
+  select,
+  ::picker(select) {
+    appearance: base-select;
+  }
+
+  :where(select) {
+    border-radius: 100vh;
+    padding: 0.25rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-inline-end: 1rem;
+    border: none;
+    background-color: var(--surface);
+    box-shadow: rgba(0,0,0,0.2) 0px 2px 8px 0px;
+
+    &:focus-visible {
+      outline: 2px solid ActiveText;
+      outline-offset: 2px;
+    }
+
+    &::picker-icon {
+      color: GrayText;
+    }
+
+    & selectedcontent {
+      & span {
+        display: none;
+      }
+    }
+
+    & option {
+      padding: 0.25rem;
+      border-radius: 100vh;
+
+      & span {
+        display: block;
+      }
+
+      &::checkmark {
+        display: none;
+      }
+
+      &:checked {
+        background-color: Highlight;
+      }
+    }
+  }
+
+  ::picker(select) {
+    outline: none;
+    border: none;
+    background-color: Canvas;
+    padding: 0.25rem;
+    border-radius: 1.75rem;
+    max-height: 18rem;
+    gap: 0.25rem;
+
+    /* top: calc(anchor(top) + 0.25rem);
+    left: anchor(center);
+    justify-self: anchor-center; */
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+
+    /* @supports (animation-name: test-starting-style) {
+      transition:
+        all 0.3s ease,
+        display 0.3s allow-discrete,
+        overlay 0.3s allow-discrete;
+    } */
+  }
+
+  select:open {
+    &::picker(select) {
+      scale: 1;
+
+      @starting-style {
+        display: block;
+        scale: 0.5;
+      }
+    }
+
+    & option {
+      scale: 1;
+
+      @starting-style {
+        scale: 0.5;
+      }
+    }
+  }
+
+  :where(.person) {
+    display: grid;
+    grid-template-columns: 2.5rem 1fr;
+    align-items: center;
+    gap: 0.5rem;
+
+    img {
+      width: 2.5rem;
+      aspect-ratio: 1;
+      display: grid;
+      border-radius: 50%;
+    }
+
+    .about {
+      padding-inline-end: 0.5rem;
+
+      & h3 {
+        margin: 0;
+        font-size: 1rem;
+        font-weight: 400;
+      }
+
+      & span {
+        font-size: 0.8rem;
+        color: GrayText;
+      }
+    }
+  }
+}
+
+:where([data-layer]) {
+  *, *::before, *::after {
+    outline: 1px dotted hotpink;
+  }
+}
+
+:where(html) {
+  --ease-sine-in: cubic-bezier(.47,0,.745,.715);
+  --ease-sine-in-out: cubic-bezier(.445,.05,.55,.95);
+  --ease-sine-out: cubic-bezier(.39,.575,.565,1);
+}
+</style>
+</head>
+<body>
+<main>
+  <select>
+    <button>
+      <selectedcontent></selectedcontent>
+    </button>
+    <option value="1">
+      <div class="person">
+        <img src="../../people/1.jpg" alt="">
+        <div class="about">
+          <h3>Olivia Carter</h3>
+          <span>Chief Executive Officer</span>
+        </div>
+      </div>
+    </option>
+    <option value="2">
+      <div class="person">
+        <img src="../../people/2.jpg" alt="">
+        <div class="about">
+          <h3>Ethan Brooks</h3>
+          <span>Product Designer</span>
+        </div>
+      </div>
+    </option>
+    <option value="3">
+      <div class="person">
+        <img src="../../people/3.jpg" alt="">
+        <div class="about">
+          <h3>Sophia Nguyen</h3>
+          <span>Engineering Manager</span>
+        </div>
+      </div>
+    </option>
+    <option value="4">
+      <div class="person">
+        <img src="../../people/4.jpg" alt="">
+        <div class="about">
+          <h3>Liam Turner</h3>
+          <span>Marketing Director</span>
+        </div>
+      </div>
+    </option>
+    <option value="5">
+      <div class="person">
+        <img src="../../people/5.jpg" alt="">
+        <div class="about">
+          <h3>Mia Patel</h3>
+          <span>Data Scientist</span>
+        </div>
+      </div>
+    </option>
+    <option value="6">
+      <div class="person">
+        <img src="../../people/6.jpg" alt="">
+        <div class="about">
+          <h3>Noah Bennett</h3>
+          <span>Operations Lead</span>
+        </div>
+      </div>
+    </option>
+    <option value="7">
+      <div class="person">
+        <img src="../../people/7.jpg" alt="">
+        <div class="about">
+          <h3>Ava Richardson</h3>
+          <span>HR Manager</span>
+        </div>
+      </div>
+    </option>
+    <option value="8">
+      <div class="person">
+        <img src="../../people/8.jpg" alt="">
+        <div class="about">
+          <h3>James Foster</h3>
+          <span>Finance Director</span>
+        </div>
+      </div>
+    </option>
+    <option value="9">
+      <div class="person">
+        <img src="../../people/9.jpg" alt="">
+        <div class="about">
+          <h3>Charlotte Kim</h3>
+          <span>Customer Success Lead</span>
+        </div>
+      </div>
+    </option>
+    <option value="10">
+      <div class="person">
+        <img src="../../people/10.jpg" alt="">
+        <div class="about">
+          <h3>Benjamin Lee</h3>
+          <span>Sales Manager</span>
+        </div>
+      </div>
+    </option>
+  </select>
+</main>
+</body>
+</html>

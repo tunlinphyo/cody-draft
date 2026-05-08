@@ -1,0 +1,177 @@
+@keyframes animator-card-state {
+  0%, 49.99% {
+    width: 4rem;
+    translate: 0 0;
+    rotate: 0deg;
+    color: CanvasText;
+  }
+  50%, 74.99% {
+    width: 2.5rem;
+    translate: -5rem 0;
+    rotate: 0deg;
+    color: CanvasText;
+  }
+  75%, 100% {
+    width: 2.2rem;
+    translate: 2rem 2rem;
+    rotate: 360deg;
+    color: CanvasText;
+  }
+}
+
+@keyframes animator-icon-state {
+  0%, 74.99% {
+    content: 'wallet';
+    font-weight: 600;
+    font-size: 2.5rem;
+  }
+  75%, 100% {
+    content: 'explore';
+    font-weight: 400;
+    font-size: 2rem;
+  }
+}
+
+@keyframes about-enter {
+  from {
+    scale: 0.95;
+    opacity: 0;
+  }
+  to {
+    scale: 1;
+    opacity: 1;
+  }
+}
+@keyframes wallet-enter {
+  from {
+    rotate: 45deg;
+  }
+  to {
+    rotate: 0deg;
+  }
+}
+@keyframes wallet-enter-left {
+  from {
+    translate: -4rem 0;
+    scale: 0.5;
+  }
+  to {
+    translate: 0 0;
+    scale: 1;
+  }
+}
+@keyframes wallet-enter-bottom {
+  from {
+    rotate: 45deg;
+    translate: 2rem 2rem;
+    scale: 0.5;
+  }
+  to {
+    rotate: 0deg;
+    translate: 0 0;
+    scale: 1;
+  }
+}
+@keyframes download-enter {
+  from {
+    translate: 0 0;
+    rotate: 90deg;
+  }
+  to {
+    translate: -3.75rem 0;
+    rotate: 0deg;
+  }
+}
+@keyframes send-enter {
+  from {
+    translate: 0 0;
+    rotate: -90deg;
+  }
+  to {
+    translate: 3.75rem 0;
+    rotate: 0deg;
+  }
+}
+@keyframes wallet-small-enter {
+  from {
+    translate: 5rem 0;
+    scale: 1.8;
+  }
+  to {
+    translate: 0 0;
+    scale: 1;
+  }
+}
+@keyframes wallet-small-enter-bottom {
+  from {
+    translate: 8rem 1rem;
+    rotate: 90deg;
+  }
+  to {
+    translate: 0 0;
+    rotate: 0;
+  }
+}
+@keyframes code-enter {
+  from {
+    scale: 0.5 1;
+  }
+  to {
+    scale: 1;
+  }
+}
+@keyframes key-enter {
+  from {
+    rotate: 45deg;
+  }
+  to {
+    rotate: 0deg;
+  }
+}
+@keyframes globe-enter {
+  from {
+    scale: 0;
+  }
+  to {
+    scale: 1;
+  }
+}
+@keyframes explore-enter {
+  from {
+    translate: 0 0;
+    scale: 2;
+  }
+  to {
+    translate: 2rem 2rem;
+    scale: 1;
+  }
+}
+@keyframes explore-enter-left {
+  from {
+    translate: -2rem 0;
+  }
+  to {
+    translate: 2rem 2rem;
+  }
+}
+@keyframes rotate-enter {
+  from {
+    rotate: 0deg;
+  }
+  to {
+    rotate: 180deg;
+  }
+}
+@keyframes rotating {
+  from {
+    rotate: 0deg;
+  }
+  to {
+    rotate: 360deg;
+  }
+}
+@keyframes globe-spin {
+  to {
+    background-position-x: calc(-7rem * 277 / 128);
+  }
+}

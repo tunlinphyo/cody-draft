@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>anchor-card</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+  href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap"
+  rel="stylesheet"
+  fetchpriority="high">
+<style>
+:root {
+  color-scheme: light dark;
+
+  font-family: "Google Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 100%;
+
+  --padding-x: 0.5rem;
+  --surface: light-dark(
+    color-mix(in oklab, Canvas, CanvasText 10%),
+    color-mix(in oklab, Canvas, CanvasText 25%)
+  );
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+:where(html,body) {
+  margin: 0;
+  padding: 0;
+  background-color: light-dark(var(--surface), Canvas);
+  color: CanvasText;
+}
+
+:where(ul) {
+  list-style: none;
+  margin: 0;
+  padding: 0.5rem;
+
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(8rem, 1fr));
+  grid-gap: 0.5rem;
+
+  & li {
+    & button {
+      all: unset;
+
+      width: 100%;
+      aspect-ratio: 3/2;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background-color: light-dark(Canvas, var(--surface));
+
+      border-radius: 15px;
+      @supports(corner-shape: squircle) {
+        border-radius: 30px;
+        corner-shape: squircle;
+      }
+    }
+  }
+}
+
+:where(article) {
+  background-color: transparent;
+  z-index: 9;
+
+  border-radius: 20px;
+  @supports(corner-shape: squircle) {
+    border-radius: 40px;
+    corner-shape: squircle;
+  }
+
+  & button {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+
+    width: 3rem;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: 2px solid ButtonBorder;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+
+    &::before, &::after {
+      content: '';
+      position: absolute;
+      width: 1.5rem;
+      height: 0;
+      border-top: 2px solid ButtonText;
+    }
+    &::before { rotate: 45deg; }
+    &::after { rotate: -45deg; }
+  }
+
+  .scroll-y {
+    width: 100%;
+    height: 100%;
+    padding: 1rem;
+    overflow-y: auto;
+  }
+}
+
+:where([anchoritem]) {
+  &[anchoritem=open] {
+    opacity: 0;
+    anchor-name: --anchor-card;
+  }
+}
+
+:where([anchordialog]) {
+  position: fixed;
+  z-index: 9;
+  margin: 0;
+  inset: 0.5rem 10vw;
+
+  display: none;
+  opacity: 0;
+
+  &[anchordialog=open] {
+    opacity: 1;
+  }
+
+  @media (max-width: 24rem) {
+    inset: 0;
+  }
+}
+
+:where([anchorgroup=open]) {
+  [anchordialog] {
+    display: block;
+    anchor-name: --anchor-card;
+  }
+}
+
+:where([anchorgroup])::after {
+  content: '';
+  position-anchor: --anchor-card;
+  position: fixed;
+  z-index: 8;
+  top: anchor(top);
+  left: anchor(left);
+  bottom: anchor(bottom);
+  right: anchor(right);
+  pointer-events: none;
+
+  background-color: oklch(from Canvas l c h / 0.98);
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+
+  border-radius: 20px;
+  @supports(corner-shape: squircle) {
+    border-radius: 40px;
+    corner-shape: squircle;
+  }
+
+  transition: all .3s var(--ease-sine-out);
+}
+
+:where([anchoritem],[anchorclose]) {
+  &:is(:focus-visible) {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
+  }
+}
+
+:where([data-layer]) {
+  *, *::before, *::after {
+    outline: 1px dotted hotpink;
+  }
+}
+
+:where(html) {
+  --ease-sine-in: cubic-bezier(.47,0,.745,.715);
+  --ease-sine-in-out: cubic-bezier(.445,.05,.55,.95);
+  --ease-sine-out: cubic-bezier(.39,.575,.565,1);
+}
+</style>
+</head>
+<body>
+<main anchorgroup>
+  <ul anchorlist>
+    <li><button anchoritem>Card One</button></li>
+    <li><button anchoritem>Card Two</button></li>
+    <li><button anchoritem>Card Three</button></li>
+    <li><button anchoritem>Card Four</button></li>
+    <li><button anchoritem>Card Five</button></li>
+    <li><button anchoritem>Card Six</button></li>
+    <li><button anchoritem>Card Seven</button></li>
+    <li><button anchoritem>Card Eight</button></li>
+    <li><button anchoritem>Card Nine</button></li>
+    <li><button anchoritem>Card Ten</button></li>
+    <li><button anchoritem>Card Eleven</button></li>
+  </ul>
+
+  <article anchordialog>
+    <button anchorclose></button>
+    <div class="scroll-y">
+      <h1 id="title"></h1>
+      <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore maiores minus
+        laudantium recusandae suscipit, enim repellat magni optio asperiores mollitia
+        officia assumenda, obcaecati ullam exercitationem facere quisquam molestias vitae eum!
+      </p>
+      <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore maiores minus
+        laudantium recusandae suscipit, enim repellat magni optio asperiores mollitia
+        officia assumenda, obcaecati ullam exercitationem facere quisquam molestias vitae eum!
+      </p>
+    </div>
+  </article>
+</main>
+
+<script>
+function anchorCardPolyfill() {
+  const groups = document.querySelectorAll('[anchorgroup]')
+
+  for (let group of groups) {
+    const items = group.querySelectorAll('[anchoritem]')
+    const list = group.querySelector('[anchorlist]')
+    const target = group.querySelector('[anchordialog]')
+    const targetClose = group.querySelector('[anchorclose]')
+
+    if (!(list && target && targetClose)) continue
+
+    let currentItem = null
+    target.setAttribute('inert', '')
+
+    for (let item of items) {
+      item.addEventListener('click', () => handleItemClick(item))
+    }
+
+    targetClose.addEventListener('click', handleItemClose)
+
+    function handleItemClick(item) {
+      currentItem = item
+      currentItem.setAttribute('anchoritem', 'open')
+      group.dispatchEvent(new CustomEvent('anchorcard:open', {
+        detail: { item, target }
+      }))
+      list.setAttribute('inert', '')
+      setTimeout(() => {
+        group.setAttribute('anchorgroup', 'open')
+        group.addEventListener('transitionend', () => {
+          target.removeAttribute('inert')
+          target.setAttribute('anchordialog', 'open')
+          group.dispatchEvent(new CustomEvent('anchorcard:opened', {
+            detail: { item, target }
+          }))
+          targetClose.focus()
+        }, { once: true })
+      }, 0)
+    }
+
+    function handleItemClose() {
+      if (!currentItem) return
+      group.setAttribute('anchorgroup', '')
+      target.setAttribute('anchordialog', '')
+      group.dispatchEvent(new CustomEvent('anchorcard:close', {
+        detail: { item: currentItem, target }
+      }))
+      target.setAttribute('inert', '')
+      group.addEventListener('transitionend', () => {
+        list.removeAttribute('inert')
+        currentItem.setAttribute('anchoritem', '')
+        group.dispatchEvent(new CustomEvent('anchorcard:closed', {
+          detail: { item: currentItem, target }
+        }))
+        currentItem.focus()
+        currentItem = null
+      }, { once: true })
+    }
+  }
+}
+
+document.addEventListener('DOMContentLoaded', anchorCardPolyfill)
+
+
+// document.addEventListener('anchorcard:open', ({ detail }) => {
+//   console.log("OPEN", detail)
+// })
+// document.addEventListener('anchorcard:opened', ({ detail }) => {
+//   console.log("OPENED", detail)
+// })
+// document.addEventListener('anchorcard:close', ({ detail }) => {
+//   console.log("CLOSE", detail)
+// })
+// document.addEventListener('anchorcard:closed', ({ detail }) => {
+//   console.log("CLOSED", detail)
+// })
+
+const main = document.querySelector('main')
+main.addEventListener('anchorcard:open', ({ detail }) => {
+  const item = detail.item
+  const target = detail.target
+  const content = item.textContent.trim()
+  const title = target.querySelector('#title')
+
+  title.textContent = content
+})
+</script>
+</body>
+</html>

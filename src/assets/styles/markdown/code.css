@@ -1,0 +1,53 @@
+pre {
+  overflow-x: auto;
+  border: 1px solid light-dark(#ded8cc, #3d444d);
+  border-radius: 8px;
+  background: light-dark(#ffffff, #24292e);
+  padding: 20px;
+}
+
+pre code {
+  background: transparent;
+  color: light-dark(#24292f, #e1e4e8);
+  padding: 0;
+}
+
+pre.shiki {
+  padding: 0;
+}
+
+pre.shiki code {
+  display: block;
+  padding: 20px 0;
+}
+
+pre.shiki .line {
+  display: block;
+  min-height: 1.5rem;
+  padding: 0 20px;
+}
+
+pre.shiki .line.highlighted {
+  background: light-dark(rgba(9, 105, 218, 0.08), rgba(255, 255, 255, 0.12));
+}
+
+pre.shiki.line-numbers code {
+  counter-reset: code-line;
+}
+
+pre.shiki.line-numbers .line {
+  counter-increment: code-line;
+  padding-left: 4rem;
+  position: relative;
+}
+
+pre.shiki.line-numbers .line::before {
+  content: attr(data-line);
+  color: light-dark(rgba(36, 41, 47, 0.42), rgba(255, 255, 255, 0.42));
+  font-variant-numeric: tabular-nums;
+  left: 0;
+  position: absolute;
+  text-align: right;
+  user-select: none;
+  width: 2.75rem;
+}

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scroll Button</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+  href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap"
+  rel="stylesheet"
+  fetchpriority="high">
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&icon_names=arrow_back_ios_new,arrow_forward_ios&display=block">
+<style>
+:root {
+  color-scheme: light dark;
+  interpolate-size: allow-keywords;
+
+  font-family: "Google Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 100%;
+
+  --padding-x: 0.5rem;
+  --surface: light-dark(
+    Canvas,
+    color-mix(in oklab, Canvas, CanvasText 30%)
+  );
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+:where(html,body) {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: var(--surface);
+  color: CanvasText;
+}
+
+:where(main) {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+:where(ul,li,h1,h2,h3,p) {
+  all: unset;
+}
+
+:where(.carousel) {
+  --carousel-padding: 1rem;
+  --card-width: min(100vw, 20rem);
+
+  box-sizing: border-box;
+  width: 100%;
+  padding: var(--carousel-padding);
+  overflow-x: auto;
+  padding: 1rem calc(var(--carousel-padding) * 2);
+
+  display: grid;
+  gap: 1rem;
+  grid-auto-flow: column;
+  scroll-snap-type: x mandatory;
+
+  scrollbar-width: none;
+  scroll-behavior: smooth;
+  overscroll-behavior-x: none;
+  anchor-name: --carousel-control;
+
+  &::scroll-button(inline-start) {
+    content: "arrow_back_ios_new" / "Scroll Left";
+    left: calc(anchor(left) + (var(--carousel-padding) * 0.5));
+  }
+  &::scroll-button(inline-end) {
+    content: "arrow_forward_ios" / "Scroll Right";
+    right: calc(anchor(right) + (var(--carousel-padding) * 0.5));
+  }
+
+  &::scroll-button(*) {
+    position: absolute;
+    position-anchor: --carousel-control;
+    cursor: pointer;
+
+    width: 3rem;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    padding: 0;
+    border: none;
+    background-color: var(--surface);
+    box-shadow: rgba(0,0,0,0.2) 0px 7px 29px 0px;
+
+    display: grid;
+    place-content: center;
+
+    font-family: "Material Symbols Outlined";
+    font-weight: 100;
+    font-style: normal;
+    color: oklch(from CanvasText l c h / 0.75);
+    font-size: 1.2rem;
+    line-height: 1;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: normal;
+    white-space: nowrap;
+    direction: ltr;
+    font-feature-settings: "liga";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+.carousel::scroll-button(*):disabled {
+  opacity: 0.2;
+}
+.carousel::scroll-button(*):focus-visible {
+  outline: 2px solid ActiveText;
+  outline-offset: 2px;
+}
+
+:where(.carousel-item) {
+  container-type: scroll-state;
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+}
+
+:where(.card) {
+  width: var(--card-width);
+  height: 17rem;
+  background-color: Canvas;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+
+  border-radius: 15px;
+  @supports(corner-shape: squircle) {
+    border-radius: 30px;
+    corner-shape: squircle;
+  }
+
+  & h1 {
+    display: block;
+    text-align: center;
+    font-size: 2rem;
+    margin-block: 1rem;
+  }
+
+  & p {
+    display: block;
+    height: 0;
+    overflow: hidden;
+    text-align: center;
+
+    transition: height 0.3s var(--ease-sine-out);
+  }
+}
+
+@supports (container-type: scroll-state) {
+  @container scroll-state(snapped: x) {
+    .card {
+      & p {
+        height: auto;
+      }
+    }
+  }
+}
+@supports not (container-type: scroll-state) {
+  .card {
+    & p {
+      height: auto;
+    }
+  }
+}
+
+:where([data-layer]) {
+  *, *::before, *::after {
+    outline: 1px dotted hotpink;
+  }
+}
+
+:where(html) {
+  --ease-sine-in: cubic-bezier(.47,0,.745,.715);
+  --ease-sine-in-out: cubic-bezier(.445,.05,.55,.95);
+  --ease-sine-out: cubic-bezier(.39,.575,.565,1);
+}
+</style>
+</head>
+<body>
+<main>
+  <ul class="carousel">
+    <li class="carousel-item">
+      <div class="card">
+        <h1>Morning Notes</h1>
+        <p>Start with the shortlist, clear the obvious work, and leave the noisy tasks for later.</p>
+      </div>
+    </li>
+    <li class="carousel-item">
+      <div class="card">
+        <h1>Design Review</h1>
+        <p>Check spacing, motion, and typography before adding another layer of visual detail.</p>
+      </div>
+    </li>
+    <li class="carousel-item">
+      <div class="card">
+        <h1>Component Audit</h1>
+        <p>Confirm the states are readable, keyboard friendly, and resilient across narrow layouts.</p>
+      </div>
+    </li>
+    <li class="carousel-item">
+      <div class="card">
+        <h1>Prototype Pass</h1>
+        <p>Keep the interaction simple first, then tighten the transitions once the behavior feels solid.</p>
+      </div>
+    </li>
+    <li class="carousel-item">
+      <div class="card">
+        <h1>Content Queue</h1>
+        <p>Write real labels early so the interface is shaped by meaning instead of placeholder text.</p>
+      </div>
+    </li>
+    <li class="carousel-item">
+      <div class="card">
+        <h1>Browser Check</h1>
+        <p>Test the edge cases, note the gaps, and avoid shipping a demo that only works on one machine.</p>
+      </div>
+    </li>
+    <li class="carousel-item">
+      <div class="card">
+        <h1>Ship Notes</h1>
+        <p>Document the intent, the tradeoffs, and the next improvement while the context is still fresh.</p>
+      </div>
+    </li>
+  </ul>
+</main>
+</body>
+</html>

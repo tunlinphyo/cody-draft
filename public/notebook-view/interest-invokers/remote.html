@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Remote Interestfor</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+  href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap"
+  rel="stylesheet"
+  fetchpriority="high">
+
+<script
+  type="module"
+  async
+  src="https://unpkg.com/invokers-polyfill@latest/invoker.min.js"
+></script>
+<style>
+:root {
+  color-scheme: light dark;
+
+  font-family: "Google Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 100%;
+
+  --accent: light-dark(orangered, chartreuse);
+  --surface: light-dark(
+    color-mix(in oklab, Canvas, CanvasText 5%),
+    color-mix(in oklab, Canvas, CanvasText 10%)
+  );
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+:where(html,body) {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: var(--surface);
+  color: CanvasText;
+}
+
+:where(main) {
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+:where(.remote) {
+  position: relative;
+  width: 100%;
+  height: 90%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  & img {
+    width: auto;
+    height: 100%;
+    display: grid;
+    object-fit: contain;
+  }
+}
+
+:where(button) {
+  border: 2px solid var(--accent);
+  background-color: transparent;
+  outline: none;
+  cursor: pointer;
+  background-color: oklch(from var(--accent) l c h / 0.2);
+  padding: 0;
+
+  position: absolute;
+  opacity: 0;
+
+  &[interestfor=mic] {
+    width: 4vh;
+    height: 3vh;
+    border-radius: 100vh;
+    translate: 0 -40.25vh;
+  }
+  &[interestfor=power] {
+    width: 5.5vh;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    translate: 7vh -40.25vh;
+  }
+  &[interestfor=clickpad] {
+    width: 22vh;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    translate: 0 -26.1vh;
+  }
+  &[interestfor=back] {
+    width: 9.5vh;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    translate: -4.95vh -10.95vh;
+  }
+  &[interestfor=home] {
+    width: 9.5vh;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    translate: 4.95vh -10.95vh;
+  }
+  &[interestfor=play] {
+    width: 9.5vh;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    translate: -4.95vh -1.25vh;
+  }
+  &[interestfor=mute] {
+    width: 9.5vh;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    translate: -4.95vh 8.5vh;
+  }
+  &[interestfor=volume] {
+    width: 9.5vh;
+    aspect-ratio: 1/2;
+    border-radius: 100vw;
+    translate: 4.95vh 3.7vh;
+  }
+  &[interestfor=siri] {
+    width: 3vh;
+    aspect-ratio: 1/3.8;
+    border-radius: 100vw;
+    translate: 12vh -26vh;
+  }
+}
+
+:where(.remote:has(button:hover)) {
+  button:not(:hover) {
+    background-color: transparent;
+    border-color: oklch(from var(--accent) l c h / 0.2);
+    opacity: 1;
+  }
+}
+
+[interestfor] {
+  interest-delay: 0.2s;
+}
+:interest-source {
+  opacity: 1;
+  /* background-color: var(--accent);
+  color: contrast-color(var(--accent)); */
+}
+
+[popover] {
+  container-type: anchored;
+
+  position: absolute;
+  margin: 0.2rem 1rem;
+  padding: 0;
+  inset: auto;
+  top: anchor(bottom);
+  left: calc(anchor(left) - 6rem);
+  position-try-fallbacks: --try-top, --try-top-left, --try-bottom-left, --try-bottom-right, --try-center;
+
+  border: none;
+  outline: none;
+  background-color: transparent;
+  overflow: visible;
+  max-width: 100%;
+  max-height: 100%;
+
+  .popover {
+    min-width: 16rem;
+    max-width: 28ch;
+    background-color: oklch(from Canvas l c h / 0.9);
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    padding: 1.5rem;
+    scale: 0.25;
+    opacity: 0;
+    translate: 0 0;
+    transform-origin: 40% 0%;
+    transition: all 0.2s var(--ease-sine-out);
+    position: relative;
+    /* outline: 2px solid CanvasText; */
+
+    & h3 {
+      all: unset;
+      display: block;
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+      position: relative;
+
+      &::after {
+        content: '';
+        display: block;
+        position: absolute;
+        left: 0;
+        bottom: -0.35rem;
+        width: 1.2rem;
+        height: 2px;
+        border-radius: 2px;
+        background-color: var(--accent);
+      }
+    }
+    & p {
+      margin: 0;
+      color: color-mix(in oklab, CanvasText, Canvas 20%);
+    }
+
+    border-radius: 20px;
+    @supports(corner-shape: squircle) {
+      border-radius: 40px;
+      corner-shape: squircle;
+    }
+  }
+
+  &:popover-open {
+    .popover {
+      scale: 1;
+      opacity: 1;
+
+      @starting-style {
+        scale: 0.25;
+        opacity: 0;
+      }
+    }
+  }
+
+  @supports (animation-name: test-starting-style) {
+    transition:
+      display 0.2s allow-discrete,
+      overlay 0.2s allow-discrete;
+  }
+}
+
+@position-try --try-top {
+  top: auto;
+  bottom: anchor(top);
+  left: calc(anchor(left) - 6rem);
+}
+@position-try --try-top-left {
+  top: auto;
+  bottom: anchor(top);
+  left: auto;
+  right: calc(anchor(right) - 6rem);
+}
+@position-try --try-bottom-left {
+  top: anchor(bottom);
+  buttom: auto;
+  left: auto;
+  right: calc(anchor(right) - 6rem);
+}
+@position-try --try-center {
+  left: unset;
+  justify-self: anchor-center;
+}
+
+@container anchored(fallback: --try-top) {
+  [popover] {
+    .popover {
+      outline-color: purple;
+      transform-origin: 40% 100%;
+    }
+  }
+}
+
+@container anchored(fallback: --try-center) {
+  [popover] {
+    .popover {
+      outline-color:  blue;
+      transform-origin: 50% 0%;
+    }
+  }
+}
+
+@container anchored(fallback: --try-top-left) {
+  [popover] {
+    .popover {
+      outline-color:  hotpink;
+      transform-origin: 60% 100%;
+    }
+  }
+}
+
+@container anchored(fallback: --try-bottom-left) {
+  [popover] {
+    .popover {
+      outline-color:  red;
+      transform-origin: 60% 0%;
+    }
+  }
+}
+
+:where([data-layer]) {
+  *, *::before, *::after {
+    outline: 1px dotted hotpink;
+  }
+}
+
+:where(html) {
+  --ease-sine-in: cubic-bezier(.47,0,.745,.715);
+  --ease-sine-in-out: cubic-bezier(.445,.05,.55,.95);
+  --ease-sine-out: cubic-bezier(.39,.575,.565,1);
+}
+</style>
+</head>
+<body>
+<main>
+  <div class="remote">
+    <img src="/assets/apple-tv-siri-remote.png" alt="Remote">
+    <button interestfor="mic"></button>
+    <button interestfor="power"></button>
+    <button interestfor="clickpad"></button>
+    <button interestfor="back"></button>
+    <button interestfor="home"></button>
+    <button interestfor="play"></button>
+    <button interestfor="mute"></button>
+    <button interestfor="volume"></button>
+    <button interestfor="siri"></button>
+  </div>
+</main>
+<div id="mic" popover="hint">
+  <div class="popover">
+    <h3>Microphone for Siri</h3>
+    <p>Hold to talk to Siri for voice search, playback control, and quick system commands.</p>
+  </div>
+</div>
+<div id="power" popover="hint">
+  <div class="popover">
+    <h3>Power</h3>
+    <p>Press and hold to turn your TV or connected equipment on or off.</p>
+  </div>
+</div>
+<div id="clickpad" popover="hint">
+  <div class="popover">
+    <h3>Touch-enabled clickpad</h3>
+    <p>Swipe to move through menus, then click the center to select an item.</p>
+  </div>
+</div>
+<div id="back" popover="hint">
+  <div class="popover">
+    <h3>Back</h3>
+    <p>Returns to the previous screen or backs out of the current menu.</p>
+  </div>
+</div>
+<div id="home" popover="hint">
+  <div class="popover">
+    <h3>TV/Home</h3>
+    <p>Opens the Apple TV Home screen and can switch back to the TV view.</p>
+  </div>
+</div>
+<div id="play" popover="hint">
+  <div class="popover">
+    <h3>Play/Pause</h3>
+    <p>Starts or pauses playback for the current movie, show, song, or app.</p>
+  </div>
+</div>
+<div id="mute" popover="hint">
+  <div class="popover">
+    <h3>Mute</h3>
+    <p>Instantly silences the audio until you press it again or adjust volume.</p>
+  </div>
+</div>
+<div id="volume" popover="hint">
+  <div class="popover">
+    <h3>Volume</h3>
+    <p>Raises or lowers the sound level on your TV, receiver, or soundbar.</p>
+  </div>
+</div>
+<div id="siri" popover="hint">
+  <div class="popover">
+    <h3>Siri</h3>
+    <p>Press and hold the side button to talk to Siri for voice search, playback control, and quick commands.</p>
+  </div>
+</div>
+</body>
+</html>

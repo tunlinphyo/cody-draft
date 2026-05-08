@@ -1,0 +1,352 @@
+:root {
+  color-scheme: light dark;
+  interpolate-size: allow-keywords;
+
+  font-family: "Google Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 100%;
+
+  --padding-x: 0.5rem;
+  --surface: light-dark(
+    Canvas,
+    color-mix(in oklab, Canvas, CanvasText 15%)
+  );
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+:where(html,body) {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: Canvas;
+  color: CanvasText;
+  interpolate-size: allow-keywords;
+}
+
+:where(main) {
+  width: 100%;
+  height: 100%;
+}
+
+:where(ul,li,h1,h2,h3,p) {
+  all: unset;
+}
+
+:where(.carousel) {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-auto-flow: column;
+  scroll-snap-type: x mandatory;
+  position: relative;
+
+  overflow-x: auto;
+  scrollbar-width: none;
+  scroll-behavior: smooth;
+  overscroll-behavior-x: none;
+  anchor-name: --carousel-control;
+
+  scroll-marker-group: after;
+
+  &::scroll-marker-group {
+    position: fixed;
+    z-index: 2;
+    position-anchor: --carousel-control;
+    bottom: calc(anchor(bottom) + 2.5rem);
+    justify-self: anchor-center;
+    margin-top: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+}
+
+:where(.carousel-item) {
+  container-type: scroll-state;
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+
+  width: 100vw;
+
+  &::scroll-marker {
+    content: '';
+    width: 1.1rem;
+    aspect-ratio: 2/1;
+    border-radius: 0.2rem;
+    --bg-color: oklch(from CanvasText l c h / 0.25);
+    background-color: transparent;
+    background-image: linear-gradient(
+      to bottom,
+      transparent 0 calc(50% - 2px),
+      var(--bg-color) calc(50% - 2px) calc(50% + 2px),
+      transparent calc(50% + 2px) 100%
+    );
+  }
+
+  &::scroll-marker:target-current {
+    --bg-color: CanvasText;
+  }
+  &::scroll-marker:is(:focus-visible) {
+    outline: 2px solid ActiveText;
+    outline-offset: 0;
+  }
+}
+
+:where(.card) {
+  position: fixed;
+  z-index: 0;
+  position-anchor: --carousel-control;
+  overflow: clip;
+
+  top: anchor(top);
+  bottom: anchor(bottom);
+  left: anchor(left);
+  right: anchor(right);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: Canvas;
+  padding-bottom: 2.5rem;
+
+  display: none;
+  opacity: 0;
+
+  .media {
+    width: 100%;
+    aspect-ratio: 2.2/1;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+  .about {
+    text-align: center;
+    padding: 1rem;
+
+    & h3 {
+      display: block;
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    & p {
+      display: block;
+      color: oklch(from CanvasText l c h / 0.75);
+    }
+  }
+}
+
+:where(.media--access) {
+  & > div {
+    position: absolute;
+
+    width: 5rem;
+    aspect-ratio: 1;
+    border-radius: 100%;
+    background-color: var(--surface);
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+
+    display: grid;
+    place-content: center;
+
+    &::before {
+      content: 'wallet';
+      font-family: "Material Symbols Outlined";
+      font-weight: 600;
+      font-style: normal;
+      font-size: 3.5rem;
+    }
+
+    &.download {
+      width: 3.5rem;
+      translate: -3.75rem 0;
+      background-color: mediumslateblue;
+      color: white;
+
+      &::before {
+        content: 'arrow_downward';
+        font-size: 2.5rem;
+      }
+    }
+    &.send {
+      width: 3.5rem;
+      translate: 3.75rem 0;
+      background-color: dodgerblue;
+      color: white;
+
+      &::before {
+        content: 'signature';
+        font-size: 2.4rem;
+      }
+    }
+  }
+}
+
+:where(.media--login) {
+  translate: 0.25rem 0;
+
+  .wallet-small {
+    width: 2.5rem;
+    aspect-ratio: 1;
+    border-radius: 100%;
+    background-color: var(--surface);
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+
+    display: grid;
+    place-content: center;
+    margin-right: 0.5rem;
+
+    &::before {
+      content: 'wallet';
+      font-family: "Material Symbols Outlined";
+      font-weight: 600;
+      font-style: normal;
+      font-size: 1.5rem;
+    }
+  }
+
+  .code {
+    font-size: 1.1rem;
+  }
+
+  .key {
+    color: light-dark(silver, darkgray);
+    --border: light-dark(darkgray, gray);
+    filter: drop-shadow(0 0 1px #0009);
+  }
+}
+
+:where(.media--web) {
+  .globe {
+    width: calc(7rem + 10px);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background-color: light-dark(#368DC5, #074A71);
+    border: 5px solid var(--surface);
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+
+    background-image: url("/assets/images/world-map.png");
+    background-size: auto 100%;
+    background-repeat: repeat-x;
+    background-position: 0 center;
+
+    & img {
+      width: 100%;
+      display: grid;
+      display: none;
+    }
+  }
+
+  .explore {
+    position: absolute;
+
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 100%;
+    background-color: var(--surface);
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+
+    display: grid;
+    place-content: center;
+
+    translate: 2rem 2rem;
+
+    &::before {
+      content: 'explore';
+      font-family: "Material Symbols Outlined";
+      font-weight: 400;
+      font-style: normal;
+      font-size: 2rem;
+    }
+  }
+}
+
+@supports (container-type: scroll-state) {
+  @container scroll-state(snapped: x) {
+    .card {
+      z-index: 1;
+      display: flex;
+      opacity: 1;
+
+      .about {
+        animation: about-enter 0.3s var(--ease-sine-out);
+      }
+      .wallet {
+        animation: wallet-enter 0.6s var(--ease-spring-1);
+      }
+      .download {
+        animation: download-enter 0.6s var(--ease-spring-1);
+      }
+      .send {
+        animation: send-enter 0.6s var(--ease-spring-1);
+      }
+      .wallet-small {
+        animation: wallet-small-enter 0.6s var(--ease-spring-1);
+      }
+      .code {
+        animation: code-enter 0.6s var(--ease-spring-1);
+      }
+      .key {
+        animation: key-enter 0.6s var(--ease-spring-1);
+      }
+      .globe {
+        animation: globe-enter 0.6s var(--ease-spring-1), globe-spin 30s linear infinite;;
+      }
+      .explore {
+        animation: explore-enter 0.6s var(--ease-spring-1);
+      }
+      .explore::before {
+        animation: rotate-enter 2.5s var(--ease-spring-3);
+      }
+    }
+
+    .card[data-previndex="2"] {
+      .wallet {
+        animation: wallet-enter-left 0.6s var(--ease-spring-1);
+      }
+      .explore {
+        animation: explore-enter-left 0.6s var(--ease-spring-1);
+      }
+    }
+    .card[data-previndex="3"] {
+      .wallet {
+        animation: wallet-enter-bottom 0.6s var(--ease-spring-1);
+      }
+      .wallet-small {
+        animation: wallet-small-enter-bottom 0.6s var(--ease-spring-1);
+      }
+    }
+  }
+}
+
+:where([data-layer]) {
+  *, *::before, *::after {
+    outline: 1px dotted hotpink;
+  }
+}
+
+:where(html) {
+  --ease-sine-in: cubic-bezier(.47,0,.745,.715);
+  --ease-sine-in-out: cubic-bezier(.445,.05,.55,.95);
+  --ease-sine-out: cubic-bezier(.39,.575,.565,1);
+  --ease-spring-1: linear(
+    0, 0.006, 0.025 2.8%, 0.101 6.1%, 0.539 18.9%, 0.721 25.3%, 0.849 31.5%,
+    0.937 38.1%, 0.968 41.8%, 0.991 45.7%, 1.006 50.1%, 1.015 55%, 1.017 63.9%,
+    1.001
+  );
+  --ease-spring-3: linear(
+    0, 0.009, 0.035 2.1%, 0.141 4.4%, 0.723 12.9%, 0.938 16.7%, 1.017, 1.077,
+    1.121, 1.149 24.3%, 1.159, 1.163, 1.161, 1.154 29.9%, 1.129 32.8%,
+    1.051 39.6%, 1.017 43.1%, 0.991, 0.977 51%, 0.974 53.8%, 0.975 57.1%,
+    0.997 69.8%, 1.003 76.9%, 1
+  );
+}

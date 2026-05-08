@@ -1,0 +1,56 @@
+/* :where([anchorgroup]) {
+  &[open] {
+    [anchoritem] {
+      anchor-name: --anchor-card;
+    }
+  }
+} */
+
+:where([anchoritem]) {
+  &[anchoritem="open"] {
+    anchor-name: --anchor-card;
+  }
+}
+
+:where([anchorpos]) {
+  position: fixed;
+  inset: 3rem;
+  border: 1px solid hotpink;
+  pointer-events: none;
+  &[anchorpos="open"] {
+    anchor-name: --anchor-card;
+  }
+}
+
+:where([anchortarget]) {
+  opacity: 0.8;
+  position-anchor: --anchor-card;
+  inset: auto;
+  margin: 0;
+  overflow: clip;
+  top: anchor(top);
+  left: anchor(left);
+  width: anchor-size(width);
+  height: anchor-size(height);
+  transition:
+    top 300ms var(--ease-sine-out),
+    left 300ms var(--ease-sine-out),
+    width 300ms var(--ease-sine-out),
+    height 300ms var(--ease-sine-out),
+    opacity 200ms var(--ease-sine-out),
+    display 300ms allow-discrete,
+    overlay 300ms allow-discrete;
+  
+  &[show] {
+    opacity: 1;
+  }
+
+  &[open] {
+    @starting-style {
+      top: anchor(top);
+      left: anchor(left);
+      width: anchor-size(width);
+      height: anchor-size(height);
+    }
+  }
+}

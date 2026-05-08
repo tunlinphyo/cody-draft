@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 21 16">
+  <g stroke="orangered" fill="none">
+    <path class="draw" stroke-width="1.8" style="--duration: 150ms; --delay: 200ms" pathLength="100" d="M9 1L4 15" />
+		<path class="draw" stroke-width="1.8" style="--duration: 150ms; --delay: 350ms" pathLength="100" d="M1 6L19 2" />
+		<path class="draw" stroke-width="1.4" style="--duration: 200ms; --delay: 500ms" pathLength="100" d="M9 6L8 9Q7 13 11 8T12.5 8T14 8Q18 2 17 7T18.5 8" />
+  </g>
+</svg>

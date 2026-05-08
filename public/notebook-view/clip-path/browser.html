@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Browser</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+  href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap"
+  rel="stylesheet"
+  fetchpriority="high">
+<style>
+:root {
+  color-scheme: light dark;
+
+  font-family: "Google Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 100%;
+
+  --accent: light-dark(orangered, chartreuse);
+  --surface: light-dark(
+    color-mix(in oklab, Canvas, CanvasText 10%),
+    color-mix(in oklab, Canvas, CanvasText 25%)
+  );
+}
+
+* {
+  box-sizing: border-box;
+}
+
+:where(html,body) {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: Canvas;
+  color: CanvasText;
+}
+
+:where(h1,p,button) {
+  all: unset;
+}
+
+:where(body) {
+  padding: 1rem;
+}
+
+:where(.browser) {
+  --control: 10px;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  background-color: light-dark(Canvas, var(--surface));
+  overflow: clip;
+  clip-path: polygon(0 0, 40% 0, 2% 100%, 8% 100%, 46% 0, 100% 0, 100% 100%, 0 100%);
+  border: 2px solid ActiveText;
+  position: relative;
+
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr;
+
+  border-radius: 15px;
+  @supports(corner-shape: squircle) {
+    border-radius: 30px;
+    corner-shape: squircle;
+  }
+
+  &::before,
+  &::after {
+    content: "";
+    display: block;
+    position: absolute;
+    z-index: 5;
+    inset: 0;
+    background-color: ActiveText;
+  }
+
+  &::before {
+    clip-path: polygon(calc(40% - 4px) 0, 40% 0, 2% 100%, calc(2% - 3px) 100%);
+  }
+  &::after {
+    /* clip-path: polygon(46% 0, calc(46% + 2px) 0, calc(8% + 2px) 100%, 8% 100%); */
+    clip-path: polygon(calc(46% - 2px) 0, calc(46% + 1px) 0, calc(8% + 2px) 100%, calc(8% - 2px) 100%);
+  }
+
+  .bar {
+    width: 100%;
+    height: 38px;
+    display: grid;
+    grid-template-columns: .5fr 1fr .5fr;
+    justify-content: space-between;
+    align-items: center;
+    padding-inline: 0.75rem;
+
+    .controls {
+      display: flex;
+      gap: calc(var(--control) * 0.5);
+
+      & > div {
+        width: var(--control);
+        aspect-ratio: 1;
+        border-radius: 50%;
+
+        &.red {
+          background-color: rgb(236,103,101);
+        }
+        &.yellow {
+          background-color: rgb(242,202,68);
+        }
+        &.green {
+          background-color: rgb(101,196,102);
+        }
+      }
+    }
+
+    .search-bar {
+      height: 24px;
+      background-color: GrayText;
+
+      border-radius: 20px;
+      @supports(corner-shape: squircle) {
+        border-radius: 30px;
+        corner-shape: squircle;
+      }
+    }
+  }
+
+  .content {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    background-color: var(--accent);
+
+    border-radius: 0 0 15px 15px;
+    @supports(corner-shape: squircle) {
+      border-radius: 0 0 25px 25px;
+      corner-shape: squircle;
+    }
+
+    /* &::before {
+      position: absolute;
+      content: 'loading...';
+      inset: 50% 50% auto auto;
+      translate: 50% -50%;
+      color: var(--text-color);
+    } */
+
+    & picture > img {
+      display: block;
+      position: relative;
+      width: 100%;
+      height: auto;
+      clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+    }
+
+  }
+}
+
+:where(section) {
+  padding: 1rem;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+  color: Canvas;
+
+  & h1 {
+    width: max-content;
+    font-weight: 400;
+    display: block;
+    font-size: clamp(1.5rem, 8vw, 3rem);
+  }
+
+  & p {
+    display: block;
+    font-size: 0.9rem;
+    max-width: 22rem;
+  }
+}
+
+:where([data-layer]) {
+  *, *::before, *::after {
+    outline: 1px dotted hotpink;
+  }
+}
+</style>
+</head>
+<body>
+<div class="browser">
+  <div class="bar">
+    <div class="controls">
+      <div class="red"></div>
+      <div class="yellow"></div>
+      <div class="green"></div>
+    </div>
+    <div class="search-bar"></div>
+  </div>
+  <div class="content">
+    <section>
+      <h1>Frontend Developer</h1>
+      <p>focused on design systems, accessibility, and modern web technologies.</p>
+    </section>
+  </div>
+</div>
+</body>
+</html>

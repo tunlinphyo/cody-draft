@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scroll State</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+  href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap"
+  rel="stylesheet"
+  fetchpriority="high">
+<script src="../../elements/circle-select.js"></script>
+<style>
+:root {
+  color-scheme: light dark;
+
+  font-family: "Google Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 100%;
+
+  --padding-x: 0.5rem;
+  --surface: light-dark(
+    color-mix(in oklab, Canvas, CanvasText 10%),
+    color-mix(in oklab, Canvas, CanvasText 25%)
+  );
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+:where(html,body) {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: light-dark(var(--surface), Canvas);
+  color: CanvasText;
+}
+
+:where(main) {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-content: center;
+}
+
+@supports (appearance: base-select) {
+  select,
+  ::picker(select) {
+    appearance: base-select;
+  }
+
+  select {
+    width: 20rem;
+    height: 20rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    overflow: visible;
+
+    &:hover,
+    &:focus,
+    &:active {
+      background-color: transparent;
+      outline: none;
+      border: none;
+    }
+
+    selectedcontent {
+      z-index: 2;
+      font-size: 6rem;
+      width: 8rem;
+      height: 8rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 4rem;
+      position: relative;
+    }
+
+    &::picker-icon {
+      display: none;
+    }
+
+    position: relative;
+
+    option {
+      cursor: pointer;
+      position: absolute;
+      left: calc(50% - 2.5rem);
+      top: calc(50% - 2.5rem);
+      font-size: 3rem;
+      width: 5rem;
+      height: 5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 3rem;
+      transition: all 0.5s;
+
+      &:hover {
+        scale: 1.05;
+      }
+
+      &::checkmark {
+        display: none;
+      }
+    }
+
+    &:open option {
+      transform: rotate(calc(sibling-index() * 50deg)) translate(100px) rotate(calc(sibling-index() * -50deg));
+    }
+  }
+
+  ::picker(select):popover-open {
+    opacity: 1;
+
+    @starting-style {
+      display: block;
+    }
+
+    top: calc(anchor(center) - 10em);
+    left: calc(anchor(center) - 10em);
+  }
+
+  ::picker(select) {
+    z-index: 1;
+    outline: none;
+    border: none;
+    interpolate-size: allow-keywords;
+    border-radius: 10em;
+    background: transparent;
+    width: 20em;
+    height: 20em;
+    position: absolute;
+    top: calc(anchor(center) - 10em);
+    left: calc(anchor(center) - 10em);
+    transition: all 1s;
+    opacity: 0;
+    display: block;
+  }
+}
+
+:where(html) {
+  --ease-sine-in: cubic-bezier(.47,0,.745,.715);
+  --ease-sine-in-out: cubic-bezier(.445,.05,.55,.95);
+  --ease-sine-out: cubic-bezier(.39,.575,.565,1);
+}
+</style>
+</head>
+<body>
+<main>
+  <select>
+    <button>
+      <selectedcontent></selectedcontent>
+    </button>
+    <option>🤔</option>
+    <option>❤️</option>
+    <option>🤣</option>
+    <option>🤡</option>
+    <option>🐷</option>
+    <option>😻</option>
+    <option>🤠</option>
+  </select>
+</main>
+</body>
+</html>

@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scroll Button (Multiple)</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+  href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap"
+  rel="stylesheet"
+  fetchpriority="high">
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&icon_names=arrow_back_ios_new,arrow_forward_ios&display=block">
+<style>
+:root {
+  color-scheme: light dark;
+  interpolate-size: allow-keywords;
+
+  font-family: "Google Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 100%;
+
+  --padding-x: 0.5rem;
+  --surface: light-dark(
+    color-mix(in oklab, Canvas, CanvasText 5%),
+    color-mix(in oklab, Canvas, CanvasText 20%)
+  );
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+:where(html,body) {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: var(--surface);
+  color: CanvasText;
+}
+
+:where(html) {
+  --thumb: light-dark(deeppink, hotpink);
+  scrollbar-width: 6px;
+  scrollbar-color: var(--thumb);
+}
+:where(html)::-webkit-scrollbar {
+  width: 6px;
+}
+:where(html)::-webkit-scrollbar-thumb {
+  background-color: var(--thumb);
+  border-radius: 10px;
+}
+
+:where(main) {
+  width: 100%;
+  padding-block: 1.5rem 0;
+}
+
+:where(ul,li,h1,h2,h3,p) {
+  all: unset;
+}
+
+:where(h1) {
+  display: block;
+  font-size: 1.75rem;
+  padding: 1rem 1rem 0;
+}
+
+:where(section) {
+  margin-bottom: 1rem;
+}
+
+:where(.carousel) {
+  --carousel-padding: 1rem;
+  --card-width: max(30vw, 10rem);
+
+  box-sizing: border-box;
+  width: 100%;
+  padding: var(--carousel-padding);
+  overflow-x: auto;
+  padding: 1rem var(--carousel-padding);
+
+  display: grid;
+  gap: 0.5rem;
+  grid-auto-flow: column;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline-start: 1rem;
+
+  scrollbar-width: none;
+  scroll-behavior: smooth;
+  overscroll-behavior-x: none;
+  anchor-name: --carousel-control;
+  anchor-scope: --carousel-control;
+}
+
+:where(.carousel) {
+  &::scroll-button(inline-start) {
+    content: "arrow_back_ios_new" / "Scroll Left";
+    right: calc(anchor(right) + var(--carousel-padding) + 3.5rem);
+    top: calc(anchor(top) - 2.75rem);
+  }
+  &::scroll-button(inline-end) {
+    content: "arrow_forward_ios" / "Scroll Right";
+    right: calc(anchor(right) + var(--carousel-padding));
+    top: calc(anchor(top) - 2.75rem);
+  }
+
+  &::scroll-button(*) {
+    position: absolute;
+    position-anchor: --carousel-control;
+    cursor: pointer;
+
+    width: 3rem;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    padding: 0;
+    border: none;
+    background-color: Canvas;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+
+    display: grid;
+    place-content: center;
+
+    font-family: "Material Symbols Outlined";
+    font-weight: 100;
+    font-style: normal;
+    color: oklch(from CanvasText l c h / 0.75);
+    font-size: 1.2rem;
+    line-height: 1;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: normal;
+    white-space: nowrap;
+    direction: ltr;
+    font-feature-settings: "liga";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+.carousel::scroll-button(*):disabled {
+  opacity: 0.2;
+}
+.carousel::scroll-button(*):focus-visible {
+  outline: 2px solid ActiveText;
+  outline-offset: 2px;
+}
+
+:where(.carousel-item) {
+  container-type: scroll-state;
+  scroll-snap-align: start;
+}
+
+:where(.card) {
+  width: var(--card-width);
+  height: 15rem;
+  background-color: Canvas;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  overflow: clip;
+  padding: 0.2rem;
+
+  border-radius: 15px;
+  @supports(corner-shape: squircle) {
+    border-radius: 30px;
+    corner-shape: squircle;
+  }
+
+  .product-image {
+    display: block;
+    width: 100%;
+    height: 9.5rem;
+    object-fit: cover;
+
+    border-radius: 12px;
+    @supports(corner-shape: squircle) {
+      border-radius: 26px;
+      corner-shape: squircle;
+    }
+  }
+
+  .about {
+    padding: 0.5rem 0.75rem;
+
+    & h2 {
+      display: block;
+      text-align: left;
+      font-size: 1rem;
+      font-weight: 600;
+      margin-block-end: 0.25rem;
+    }
+
+    & p {
+      font-size: 0.9rem;
+      display: block;
+      text-align: left;
+      color: color-mix(in oklab, CanvasText, Canvas 35%);
+    }
+  }
+}
+
+:where([data-layer]) {
+  *, *::before, *::after {
+    outline: 1px dotted hotpink;
+  }
+}
+
+:where(html) {
+  --ease-sine-in: cubic-bezier(.47,0,.745,.715);
+  --ease-sine-in-out: cubic-bezier(.445,.05,.55,.95);
+  --ease-sine-out: cubic-bezier(.39,.575,.565,1);
+}
+</style>
+</head>
+<body>
+<main>
+  <section>
+    <h1>News</h1>
+    <ul class="carousel">
+      <li class="carousel-item">
+        <div class="card">
+          <img class="product-image" src="https://loremflickr.com/480/480/nature?lock=1" alt="Forest Trail photo" onerror="this.src='https://picsum.photos/seed/nature-1/480/480'">
+          <div class="about">
+            <h2>Forest Trail</h2>
+            <p>Misty evergreen trail</p>
+          </div>
+        </div>
+      </li>
+      <li class="carousel-item">
+        <div class="card">
+          <img class="product-image" src="https://loremflickr.com/480/480/nature?lock=2" alt="Mountain Lake photo" onerror="this.src='https://picsum.photos/seed/nature-2/480/480'">
+          <div class="about">
+            <h2>Mountain Lake</h2>
+            <p>Still alpine lake</p>
+          </div>
+        </div>
+      </li>
+      <li class="carousel-item">
+        <div class="card">
+          <img class="product-image" src="https://loremflickr.com/480/480/nature?lock=3" alt="Waterfall Mist photo" onerror="this.src='https://picsum.photos/seed/nature-3/480/480'">
+          <div class="about">
+            <h2>Waterfall Mist</h2>
+            <p>Rushing canyon falls</p>
+          </div>
+        </div>
+      </li>
+      <li class="carousel-item">
+        <div class="card">
+          <img class="product-image" src="https://loremflickr.com/480/480/nature?lock=4" alt="Desert Dunes photo" onerror="this.src='https://picsum.photos/seed/nature-4/480/480'">
+          <div class="about">
+            <h2>Desert Dunes</h2>
+            <p>Sunlit desert dunes</p>
+          </div>
+        </div>
+      </li>
+      <li class="carousel-item">
+        <div class="card">
+          <img class="product-image" src="https://loremflickr.com/480/480/nature?lock=5" alt="Wild Meadow photo" onerror="this.src='https://picsum.photos/seed/nature-5/480/480'">
+          <div class="about">
+            <h2>Wild Meadow</h2>
+            <p>Open meadow bloom</p>
+          </div>
+        </div>
+      </li>
+      <li class="carousel-item">
+        <div class="card">
+          <img class="product-image" src="https://loremflickr.com/480/480/nature?lock=6" alt="River Bend photo" onerror="this.src='https://picsum.photos/seed/nature-6/480/480'">
+          <div class="about">
+            <h2>River Bend</h2>
+            <p>Mossy river bend</p>
+          </div>
+        </div>
+      </li>
+      <li class="carousel-item">
+        <div class="card">
+          <img class="product-image" src="https://loremflickr.com/480/480/nature?lock=7" alt="Pine Ridge photo" onerror="this.src='https://picsum.photos/seed/nature-7/480/480'">
+          <div class="about">
+            <h2>Pine Ridge</h2>
+            <p>Deep green ridge</p>
+          </div>
+        </div>
+      </li>
+      <li class="carousel-item">
+        <div class="card">
+          <img class="product-image" src="https://loremflickr.com/480/480/nature?lock=8" alt="Ocean Cliffs photo" onerror="this.src='https://picsum.photos/seed/nature-8/480/480'">
+          <div class="about">
+            <h2>Ocean Cliffs</h2>
+            <p>Steep ocean cliffs</p>
+          </div>
+        </div>
+      </li>
+      <li class="carousel-item">
+        <div class="card">
+          <img class="product-image" src="https://loremflickr.com/480/480/nature?lock=9" alt="Autumn Grove photo" onerror="this.src='https://picsum.photos/seed/nature-9/480/480'">
+          <div class="about">
+            <h2>Autumn Grove</h2>
+            <p>Golden autumn grove</p>
+          </div>
+        </div>
+      </li>
+      <li class="carousel-item">
+        <div class="card">
+          <img class="product-image" src="https://loremflickr.com/480/480/nature?lock=10" alt="Snow Peak photo" onerror="this.src='https://picsum.photos/seed/nature-10/480/480'">
+          <div class="about">
+            <h2>Snow Peak</h2>
+            <p>Bright snowy summit</p>
+          </div>
+        </div>
+      </li>
+      <li class="carousel-item">
+        <div class="card">
+          <img class="product-image" src="https://loremflickr.com/480/480/nature?lock=11" alt="Sunrise Valley photo" onerror="this.src='https://picsum.photos/seed/nature-11/480/480'">
+          <div class="about">
+            <h2>Sunrise Valley</h2>
+            <p>Wide sunrise valley</p>
+          </div>
+        </div>
+      </li>
+      <li class="carousel-item">
+        <div class="card">
+          <img class="product-image" src="https://loremflickr.com/480/480/nature?lock=12" alt="Green Canopy photo" onerror="this.src='https://picsum.photos/seed/nature-12/480/480'">
+          <div class="about">
+            <h2>Green Canopy</h2>
+            <p>Leafy green canopy</p>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </section>
+  <section>
+    <h1>Popular</h1>
+    <ul class="carousel">
+      <li class="carousel-item">
+        <div class="card">
+          <img class="product-image" src="https://loremflickr.com/480/480/dog?lock=1" alt="Golden Retriever photo" onerror="this.src='https://picsum.photos/seed/dog-1/480/480'">
+          <div class="about">
+            <h2>Golden Retriever</h2>
+            <p>Friendly family dog</p>
+          </div>
+        </div>
+      </li>
+      <li class="carousel-item">
+        <div class="card">
+          <img class="product-image" src="https://loremflickr.com/480/480/cat?lock=2" alt="British Shorthair photo" onerror="this.src='https://picsum.photos/seed/cat-2/480/480'">
+          <div class="about">
+            <h2>British Shorthair</h2>
+            <p>Calm plush cat</p>
+          </div>
+        </div>
+      </li>
+      <li class="carousel-item">
+        <div class="card">
+          <img class="product-image" src="https://loremflickr.com/480/480/dog?lock=3" alt="Corgi photo" onerror="this.src='https://picsum.photos/seed/dog-3/480/480'">
+          <div class="about">
+            <h2>Corgi</h2>
+            <p>Playful herding dog</p>
+          </div>
+        </div>
+      </li>
+      <li class="carousel-item">
+        <div class="card">
+          <img class="product-image" src="https://loremflickr.com/480/480/cat?lock=4" alt="Maine Coon photo" onerror="this.src='https://picsum.photos/seed/cat-4/480/480'">
+          <div class="about">
+            <h2>Maine Coon</h2>
+            <p>Gentle long-haired cat</p>
+          </div>
+        </div>
+      </li>
+      <li class="carousel-item">
+        <div class="card">
+          <img class="product-image" src="https://loremflickr.com/480/480/dog?lock=5" alt="Shiba Inu photo" onerror="this.src='https://picsum.photos/seed/dog-5/480/480'">
+          <div class="about">
+            <h2>Shiba Inu</h2>
+            <p>Confident fox-faced dog</p>
+          </div>
+        </div>
+      </li>
+      <li class="carousel-item">
+        <div class="card">
+          <img class="product-image" src="https://loremflickr.com/480/480/cat?lock=6" alt="Ragdoll photo" onerror="this.src='https://picsum.photos/seed/cat-6/480/480'">
+          <div class="about">
+            <h2>Ragdoll</h2>
+            <p>Relaxed blue-eyed cat</p>
+          </div>
+        </div>
+      </li>
+      <li class="carousel-item">
+        <div class="card">
+          <img class="product-image" src="https://loremflickr.com/480/480/dog?lock=7" alt="Dalmatian photo" onerror="this.src='https://picsum.photos/seed/dog-7/480/480'">
+          <div class="about">
+            <h2>Dalmatian</h2>
+            <p>Energetic spotted dog</p>
+          </div>
+        </div>
+      </li>
+      <li class="carousel-item">
+        <div class="card">
+          <img class="product-image" src="https://loremflickr.com/480/480/cat?lock=8" alt="Siamese photo" onerror="this.src='https://picsum.photos/seed/cat-8/480/480'">
+          <div class="about">
+            <h2>Siamese</h2>
+            <p>Vocal sleek cat</p>
+          </div>
+        </div>
+      </li>
+      <li class="carousel-item">
+        <div class="card">
+          <img class="product-image" src="https://loremflickr.com/480/480/dog?lock=9" alt="Border Collie photo" onerror="this.src='https://picsum.photos/seed/dog-9/480/480'">
+          <div class="about">
+            <h2>Border Collie</h2>
+            <p>Focused working dog</p>
+          </div>
+        </div>
+      </li>
+      <li class="carousel-item">
+        <div class="card">
+          <img class="product-image" src="https://loremflickr.com/480/480/cat?lock=10" alt="Persian photo" onerror="this.src='https://picsum.photos/seed/cat-10/480/480'">
+          <div class="about">
+            <h2>Persian</h2>
+            <p>Quiet long-haired cat</p>
+          </div>
+        </div>
+      </li>
+      <li class="carousel-item">
+        <div class="card">
+          <img class="product-image" src="https://loremflickr.com/480/480/dog?lock=11" alt="Beagle photo" onerror="this.src='https://picsum.photos/seed/dog-11/480/480'">
+          <div class="about">
+            <h2>Beagle</h2>
+            <p>Curious scent hound</p>
+          </div>
+        </div>
+      </li>
+      <li class="carousel-item">
+        <div class="card">
+          <img class="product-image" src="https://loremflickr.com/480/480/cat?lock=12" alt="Bengal photo" onerror="this.src='https://picsum.photos/seed/cat-12/480/480'">
+          <div class="about">
+            <h2>Bengal</h2>
+            <p>Active wild cat</p>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </section>
+</main>
+</body>
+</html>

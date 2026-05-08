@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>scroll-state(stuck: top)</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+  href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap"
+  rel="stylesheet"
+  fetchpriority="high">
+<style>
+:root {
+  color-scheme: light dark;
+
+  font-family: "Google Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 100%;
+
+  --padding-x: 0.5rem;
+  --surface: light-dark(
+    color-mix(in oklab, Canvas, CanvasText 10%),
+    color-mix(in oklab, Canvas, CanvasText 25%)
+  );
+}
+
+
+:where(html,body) {
+  margin: 0;
+  padding: 0;
+  background-color: light-dark(var(--surface), Canvas);
+  color: CanvasText;
+}
+
+:where(ul) {
+  list-style: none;
+  margin: 0;
+  padding: var(--padding-x);
+
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+:where(li) {
+  display: grid;
+  padding: 5rem 3rem;
+  font-size: 2rem;
+  background-color: light-dark(Canvas, var(--surface));
+
+  border-radius: 15px;
+  @supports(corner-shape: squircle) {
+    border-radius: 30px;
+    corner-shape: squircle;
+  }
+}
+
+:where(li.sticky-title) {
+  padding: 0;
+  font-size: 2rem;
+  position: sticky;
+  z-index: 2;
+  top: 0;
+  background: none;
+  container-type: scroll-state;
+}
+
+:where(.sticky-title span) {
+  display: flex;
+  padding: 1rem 3rem;
+  transition: all .3s ease;
+  background-color: light-dark(Canvas, var(--surface));
+  border-block: 2px solid transparent;
+  position: relative;
+  z-index: 1;
+  white-space: nowrap;
+  overflow: clip;
+
+  border-radius: 15px;
+  @supports(corner-shape: squircle) {
+    border-radius: 30px;
+    corner-shape: squircle;
+  }
+
+  & em {
+    display: none;
+  }
+}
+
+@container scroll-state(stuck: top) {
+  .sticky-title span {
+    padding: 1rem;
+    margin-inline: calc(var(--padding-x) * -1);
+    border-block-end-color: CanvasText;
+
+    & em {
+      display: block;
+    }
+  }
+}
+
+:where([data-layer]) {
+  *, *::before, *::after {
+    outline: 1px dotted hotpink;
+  }
+}
+</style>
+</head>
+<body>
+<ul>
+  <li class="sticky-title">
+    <span>01<em>. Zero One</em></span>
+  </li>
+  <li>01.A</li>
+  <li>01.B</li>
+  <li>01.C</li>
+  <li>01.D</li>
+</ul>
+<ul>
+  <li class="sticky-title">
+    <span>02<em>. Zero Two</em></span>
+  </li>
+  <li>02.A</li>
+  <li>02.B</li>
+  <li>02.C</li>
+  <li>02.D</li>
+</ul>
+<ul>
+  <li class="sticky-title">
+    <span>03<em>. Zero Three</em></span>
+  </li>
+  <li>03.A</li>
+  <li>03.B</li>
+  <li>03.C</li>
+  <li>03.D</li>
+</ul>
+<ul>
+  <li class="sticky-title">
+    <span>04<em>. Zero Four</em></span>
+  </li>
+  <li>04.A</li>
+  <li>04.B</li>
+  <li>04.C</li>
+  <li>04.D</li>
+</ul>
+</body>
+</html>

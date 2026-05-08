@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About Me Card</title>
+    <link rel="stylesheet" href="./style.css" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap"
+      rel="stylesheet"
+      fetchpriority="high">
+  </head>
+  <body>
+
+    <main>
+      <h1>Fan Menu</h1>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+        incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
+        nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore
+        eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,
+        sunt in culpa qui officia deserunt mollit anim id est laborum.
+      </p>
+    </main>
+
+    <button class="btn-circle open-fan" dialogtarget="fanlist"></button>
+
+    <dialog id="fanlist">
+      <button class="btn-circle close-fan" dialogclose></button>
+
+      <div class="wheel" style="--count: 6">
+        <div class="wheel-item" style="--index: 1"></div>
+        <div class="wheel-item" style="--index: 2"></div>
+        <div class="wheel-item" style="--index: 3"></div>
+        <div class="wheel-item" style="--index: 4"></div>
+        <div class="wheel-item" style="--index: 5"></div>
+        <div class="wheel-item" style="--index: 6"></div>
+      </div>
+    </dialog>
+
+    <script src="./script.js"></script>
+  </body>
+</html>

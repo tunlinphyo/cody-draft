@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mini Calendar</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap"
+    rel="stylesheet"
+    fetchpriority="high">
+
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <script>
+    // helper to stop parent iframe element jumping
+    if (window.self !== window.top) {
+      document.addEventListener('click', (event) => {
+        const link = event.target.closest('a[href^="#"]');
+        if (!link) return;
+
+        const target = document.querySelector(link.getAttribute('href'));
+        if (!target) return;
+
+        event.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+      });
+    }
+  </script>
+  <header>
+    <div class="date">
+      <div class="month">April</div>
+      <div class="year">2026</div>
+    </div>
+  </header>
+  <nav>
+    <ul>
+      <li>
+        <a href="#day-1" class="weekend"><span class="day">1</span><span class="week">Sun</span></a>
+      </li>
+      <li>
+        <a href="#day-2"><span class="day">2</span><span class="week">Mon</span></a>
+      </li>
+      <li>
+        <a href="#day-3"><span class="day">3</span><span class="week">Tue</span></a>
+      </li>
+      <li>
+        <a href="#day-4"><span class="day">4</span><span class="week">Wed</span></a>
+      </li>
+      <li>
+        <a href="#day-5"><span class="day">5</span><span class="week">Thu</span></a>
+      </li>
+      <li>
+        <a href="#day-6"><span class="day">6</span><span class="week">Fri</span></a>
+      </li>
+      <li>
+        <a href="#day-7" class="weekend"><span class="day">7</span><span class="week">Sat</span></a>
+      </li>
+    </ul>
+    <div class="blob"></div>
+  </nav>
+  <main>
+    <div class="scroll-y">
+      <div class="times">
+        <div class="time">0</div>
+        <div class="time">1</div>
+        <div class="time">2</div>
+        <div class="time">3</div>
+        <div class="time">4</div>
+        <div class="time">5</div>
+        <div class="time">6</div>
+        <div class="time">7</div>
+        <div class="time">8</div>
+        <div class="time">9</div>
+        <div class="time">10</div>
+        <div class="time">11</div>
+        <div class="time">12</div>
+        <div class="time">13</div>
+        <div class="time">14</div>
+        <div class="time">15</div>
+        <div class="time">16</div>
+        <div class="time">17</div>
+        <div class="time">18</div>
+        <div class="time">19</div>
+        <div class="time">20</div>
+        <div class="time">21</div>
+        <div class="time">22</div>
+        <div class="time">23</div>
+        <div class="time">24</div>
+      </div>
+      <div class="days">
+        <section id="day-1">
+          <div class="event" data-hour-start="6" data-hour-end="8">
+            Morning Run
+          </div>
+          <div class="event" data-hour-start="9" data-hour-end="10">
+            Standup
+          </div>
+          <div class="event" data-hour-start="12" data-hour-end="15">
+            Product Workshop
+          </div>
+          <div class="event" data-hour-start="20" data-hour-end="23">
+            Dinner with Friends
+          </div>
+        </section>
+        <section id="day-2">
+          <div class="event" data-hour-start="7" data-hour-end="10">
+            Design Sprint
+          </div>
+          <div class="event" data-hour-start="13" data-hour-end="14">
+            Client Check-In
+          </div>
+          <div class="event" data-hour-start="16" data-hour-end="18">
+            Gym Session
+          </div>
+        </section>
+        <section id="day-3">
+          <div class="event" data-hour-start="8" data-hour-end="9">
+            Breakfast Meetup
+          </div>
+          <div class="event" data-hour-start="11" data-hour-end="13">
+            Roadmap Review
+          </div>
+          <div class="event" data-hour-start="18" data-hour-end="20">
+            Language Class
+          </div>
+        </section>
+        <section id="day-4">
+          <div class="event" data-hour-start="7" data-hour-end="8">
+            Yoga
+          </div>
+          <div class="event" data-hour-start="10" data-hour-end="12">
+            Deep Work Block
+          </div>
+          <div class="event" data-hour-start="14" data-hour-end="15">
+            Dentist Appointment
+          </div>
+        </section>
+        <section id="day-5">
+          <div class="event" data-hour-start="9" data-hour-end="11">
+            Feature Planning
+          </div>
+          <div class="event" data-hour-start="12" data-hour-end="13">
+            Team Lunch
+          </div>
+          <div class="event" data-hour-start="17" data-hour-end="19">
+            Flight to Seoul
+          </div>
+        </section>
+        <section id="day-6">
+          <div class="event" data-hour-start="10" data-hour-end="12">
+            Museum Visit
+          </div>
+          <div class="event" data-hour-start="14" data-hour-end="16">
+            Coffee Catch-Up
+          </div>
+          <div class="event" data-hour-start="19" data-hour-end="21">
+            Live Show
+          </div>
+        </section>
+        <section id="day-7">
+          <div class="event" data-hour-start="8" data-hour-end="10">
+            Brunch
+          </div>
+          <div class="event" data-hour-start="11" data-hour-end="13">
+            Weekly Reset
+          </div>
+          <div class="event" data-hour-start="15" data-hour-end="17">
+            Family Call
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

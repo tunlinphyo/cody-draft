@@ -1,0 +1,341 @@
+:root {
+  color-scheme: light dark;
+
+  font-family: "Google Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 100%;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+:where(h1,h2,h3,h4,h5,button,ul,ol,li,input,p) {
+  all: unset;
+}
+:where(button) {
+  cursor: pointer;
+}
+:where(h1,h2,h3,h4,h5,p) {
+  display: block;
+}
+
+:where(html, body) {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+
+  display: grid;
+  place-content: center;
+  background-color: Canvas;
+}
+
+:where(.spacer) {
+  flex: 1;
+}
+
+:where(.card) {
+  width: 20rem;
+  height: 22rem;
+  background-color: light-dark(
+    oklch(from Highlight 0.8 c h / 1),
+    oklch(from Highlight 0.2 c h / 1)
+  );
+  background-image: url(https://tun-online.web.app/tunlinphyo.png);
+  background-size: auto 80%;
+  background-repeat: no-repeat;
+  background-position: bottom -20% center;
+  border: 2px solid color-mix(in oklab, Highlight, transparent 50%);
+  color: CanvasText;
+
+  overflow: clip;
+  anchor-name: --about;
+
+  border-radius: 35px;
+  @supports(corner-shape: squircle) {
+    border-radius: 80px;
+    corner-shape: squircle;
+  }
+}
+
+:where(.bottom-line) {
+  width: 3rem;
+  height: 2px;
+  anchor-name: --contact;
+}
+
+:where(.about) {
+  position: relative;
+  z-index: 1;
+
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 2.5rem 2rem 2rem;
+
+  background-image: linear-gradient(
+    transparent,
+    transparent,
+    Canvas
+  );
+
+  > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  & h1 {
+    font-size: clamp(2rem, 6vw, 2.5rem);
+  }
+
+  & p {
+    margin-block-start: 0.75rem;
+  }
+
+  & ul {
+    margin-block-end: 0.5rem;
+
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    justify-content: cventer;
+    align-items: stretch;
+
+    & li:has([commandfor="github"]) {
+      anchor-name: --github;
+    }
+    & li:has([commandfor="linkedin"]) {
+      anchor-name: --linkedin;
+    }
+    & li:has([commandfor="email"]) {
+      anchor-name: --email;
+    }
+  }
+}
+
+:where(.contact-opener) {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0.3rem;
+  height: 100%;
+  aspect-ratio: 1;
+  color: ButtonText;
+
+  border-radius: 15px;
+  @supports(corner-shape: squircle) {
+    border-radius: 40px;
+    corner-shape: squircle;
+  }
+
+  &:is(:hover,:focus-visible) {
+    anchor-name: --contact;
+    color: ButtonText;
+  }
+
+  &:is(:focus-visible) {
+    outline: 2px solid ActiveText;
+    outline-offset: 2px;
+  }
+}
+
+:where(.about:has(.contact-opener:hover,.contact-opener:focus-visible)) {
+  .bottom-line {
+    anchor-name: none;
+  }
+}
+
+:where(.blob) {
+  position-anchor: --contact;
+  position: absolute;
+  z-index: 0;
+  top: anchor(top);
+  left: anchor(left);
+  bottom: anchor(bottom);
+  right: anchor(right);
+
+  background-color: ButtonFace;
+  border: 2px solid ButtonBorder;
+
+  transition: all .7s var(--ease-spring-3);
+
+  border-radius: 15px;
+  @supports(corner-shape: squircle) {
+    border-radius: 40px;
+    corner-shape: squircle;
+  }
+}
+
+:where(.contact-detail) {
+  position: absolute;
+  z-index: 2;
+  top: anchor(top);
+  left: anchor(left);
+  bottom: anchor(bottom);
+  right: anchor(right);
+  overflow: clip;
+  padding: 2rem;
+
+  background-color: light-dark(
+    oklch(from Highlight 0.8 c h / 1),
+    oklch(from Highlight 0.2 c h / 1)
+  );
+  border: 2px solid color-mix(in oklab, Highlight, transparent 50%);
+  transition: all .3s var(--ease-sine-out);
+  /* backdrop-filter: blur(15px); */
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 1rem;
+
+  & h2 {
+    font-size: clamp(2rem, 6vw, 2.5rem);
+  }
+
+  & p {
+    width: calc(20rem - 4rem);
+    text-wrap: pretty;
+  }
+
+  & a {
+    margin-top: 1rem;
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background-color: Canvas;
+    color: CanvasText;
+    text-decoration: none;
+
+    border-radius: 10px;
+    @supports(corner-shape: squircle) {
+      border-radius: 20px;
+      corner-shape: squircle;
+    }
+
+    &:is(:hover) {
+      outline: 2px solid ButtonBorder;
+    }
+
+    &:is(:focus-visible) {
+      outline: 2px solid ActiveText;
+      outline-offset: 2px;
+    }
+  }
+
+  border-radius: 35px;
+  @supports(corner-shape: squircle) {
+    border-radius: 80px;
+    corner-shape: squircle;
+  }
+
+  &[inert] {
+    opacity: 0;
+    transition: all .3s var(--ease-sine-out), opacity 0.04s ease 0.28s;
+
+    > * {
+      opacity: 0;
+    }
+  }
+
+  &#github {
+    position-anchor: --github;
+  }
+  &#linkedin {
+    position-anchor: --linkedin;
+  }
+  &#email {
+    position-anchor: --email;
+  }
+}
+
+:where(.contact-close) {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.25rem;
+
+  width: 3rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background-color: ButtonFace;
+  color: ButtonText;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: opacity .2s ease;
+
+  &:is(:hover) {
+    outline: 2px solid ButtonBorder;
+  }
+
+  &:is(:focus-visible) {
+    outline: 2px solid ActiveText;
+    outline-offset: 2px;
+  }
+
+  &::before, &::after {
+    content: '';
+    position: absolute;
+    display: block;
+    width: 1.5rem;
+    height: 2px;
+    background-color: currentColor;
+  }
+
+  &::before {
+    rotate: 45deg;
+  }
+  &::after {
+    rotate: -45deg;
+  }
+}
+
+.card:has(#github:not([inert])) {
+  anchor-name: --github;
+
+  & li:has([commandfor="github"]) {
+    anchor-name: none;
+  }
+}
+
+.card:has(#linkedin:not([inert])) {
+  anchor-name: --linkedin;
+
+  & li:has([commandfor="linkedin"]) {
+    anchor-name: none;
+  }
+}
+
+.card:has(#email:not([inert])) {
+  anchor-name: --email;
+
+  & li:has([commandfor="email"]) {
+    anchor-name: none;
+  }
+}
+
+:where([data-layer]) {
+  *, *::before, *::after {
+    outline: 1px dotted hotpink;
+  }
+}
+
+/* OPEN PROPS https://open-props.style/#easing */
+:where(html) {
+  --ease-spring-3: linear(
+    0, 0.009, 0.035 2.1%, 0.141 4.4%, 0.723 12.9%, 0.938 16.7%, 1.017, 1.077,
+    1.121, 1.149 24.3%, 1.159, 1.163, 1.161, 1.154 29.9%, 1.129 32.8%,
+    1.051 39.6%, 1.017 43.1%, 0.991, 0.977 51%, 0.974 53.8%, 0.975 57.1%,
+    0.997 69.8%, 1.003 76.9%, 1
+  );
+
+  --ease-sine-out: cubic-bezier(.39, .575, .565, 1);
+}

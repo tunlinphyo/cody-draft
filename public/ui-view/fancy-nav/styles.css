@@ -1,0 +1,132 @@
+@import "https://fonts.googleapis.com/css2?family=Sancreek&display=swap";
+@import "https://unpkg.com/open-props";
+
+html,
+body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--brown-12);
+    background-image: linear-gradient(
+        var(--brown-11),
+        var(--brown-12)
+    );
+
+    font-family: "Sancreek", serif;
+    font-weight: 400;
+    font-style: normal;
+
+    main {
+        width: 100%;
+        height: 100%;
+        display: grid;
+        justify-content: center;
+        align-items: center;
+        isolation: isolate;
+
+        .container {
+            padding: 6px;
+            background-color: var(--brown-8);
+            border-radius: 100px;
+            background-image: linear-gradient(
+                var(--brown-9),
+                var(--brown-11)
+            );
+            /* border: 3px solid var(--brown-8); */
+            box-shadow: inset 0 1px 4px var(--brown-12);
+            position: relative;
+
+            &::before {
+                content: '';
+                position: absolute;
+                inset: -3px;
+                z-index: -4;
+                border-radius: 100px;
+                background-image: linear-gradient(
+                    var(--brown-9),
+                    var(--brown-11)
+                );
+                box-shadow: 0 2px 2px var(--brown-12);
+            }
+
+            .hovered {
+                position: absolute;
+                inset: 0;
+                position-anchor: --nav;
+                left: anchor(left);
+                right: anchor(right);
+                top: anchor(top);
+                bottom: anchor(bottom);
+                border-radius: 100px;
+                background-image: linear-gradient(
+                    var(--brown-9),
+                    var(--brown-10)
+                );
+                box-shadow: inset 0 2px 2px var(--brown-8);
+
+                transition: all .5s var(--ease-spring-3);
+            }
+
+            .activated {
+                position: absolute;
+                z-index: 1;
+                inset: 0;
+                position-anchor: --active;
+                left: anchor(left);
+                right: anchor(right);
+                top: anchor(top);
+                bottom: anchor(bottom);
+                border-radius: 100px;
+                background-image: linear-gradient(
+                    var(--brown-11),
+                    var(--brown-12)
+                );
+                box-shadow: inset 0 2px 2px var(--brown-10), 0 1px 2px var(--choco-12);
+                transition: all .5s var(--ease-spring-3);
+            }
+
+            nav {
+                display: flex;
+                gap: 6px;
+                anchor-name: --nav;
+                position: relative;
+                z-index: 2;
+
+                a {
+                    display: block;
+                    padding: 14px 26px 12px;
+                    text-decoration: none;
+                    font-size: 1.2rem;
+                    color: var(--sand-12);
+                    text-shadow: 0 1px 2px var(--brown-12);
+                    position: relative;
+
+                    &:hover {
+                        anchor-name: --nav;
+                    }
+
+                    &::before {
+                        content: '';
+                        position: absolute;
+                        inset: 0;
+                    }
+
+                    &.active {
+                        color: var(--brown-2);
+                        &::before {
+                            anchor-name: --active;
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+
+}
+
+:where([data-layer]) {
+  *, *::before, *::after {
+    outline: 1px dotted hotpink;
+  }
+}

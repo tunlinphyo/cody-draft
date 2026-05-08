@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>::details-content</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+  href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap"
+  rel="stylesheet"
+  fetchpriority="high">
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&icon_names=arrow_back_ios_new,arrow_forward_ios&display=block">
+<style>
+:root {
+  color-scheme: light dark;
+  interpolate-size: allow-keywords;
+
+  font-family: "Google Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 100%;
+
+  --accent: light-dark(orangered, chartreuse);
+  --surface: light-dark(
+    Canvas,
+    color-mix(in oklab, Canvas, CanvasText 30%)
+  );
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+:where(html,body) {
+  margin: 0;
+  padding: 0;
+  background-color: Canvas;
+  color: CanvasText;
+
+  /* overscroll-behavior-block: none; */
+}
+
+:where(header) {
+  width: 100%;
+  height: 4rem;
+  background-color: oklch(from Canvas l c h / 0.5);
+  backdrop-filter: blur(5px);
+  border-bottom: 2px solid Canvas;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-inline: 1rem;
+
+  position: sticky;
+  z-index: 9;
+  top: 0;
+
+  :is(h1) {
+    all: unset;
+    font-size: 1.2rem;
+  }
+}
+
+:where(fieldset) {
+  all: unset;
+
+  display: grid;
+  grid-auto-flow: column;
+  gap: 0.75rem;
+
+  & label {
+    display: grid;
+    place-content: center;
+    width: 1.25rem;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    cursor: pointer;
+
+    &:has([value="pink"]) {
+      background-color: light-dark(deeppink, hotpink);
+    }
+    &:has([value="blue"]) {
+      background-color: light-dark(deepskyblue, skyblue);
+    }
+    &:has([value="green"]) {
+      background-color: light-dark(forestgreen, darkseagreen);
+    }
+
+    &:has(:checked) {
+      outline: 2px solid currentColor;
+      outline-offset: 2px;
+    }
+
+    & > * {
+      cursor: pointer;
+      opacity: 0;
+    }
+  }
+}
+
+:where(main) {
+  padding: 1rem;
+}
+
+details {
+  interpolate-size: allow-keywords;
+  margin-block: 0.25rem;
+  overflow: clip;
+
+  border: 1px solid GrayText;
+  border-radius: 20px;
+  @supports(corner-shape: squircle) {
+    border-radius: 40px;
+    corner-shape: squircle;
+  }
+
+  :is(p) {
+    margin: 0;
+  }
+
+  summary {
+    padding: 0.5rem 1rem;
+
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 0.5rem;
+
+    /* &::marker {
+      display: none;
+    } */
+
+    &::after {
+      content: "arrow_forward_ios";
+      font-family: "Material Symbols Outlined";
+      font-weight: 100;
+      font-style: normal;
+      display: inline-block;
+      color: var(--accent);
+      transition: transform 0.3s var(--ease-sine-out);
+    }
+
+  }
+
+  &::details-content {
+    padding: 0 1rem;
+    background-color: var(--accent);
+    height: 0;
+
+    transition: all 0.3s var(--ease-sine-out);
+    transition-behavior: allow-discrete;
+    /* content-visibility 0.3s allow-discrete */
+
+    @supports (color: contrast-color(red)) {
+      color: contrast-color(var(--accent));
+    }
+  }
+
+  &[open] {
+    summary::after {
+      transform: rotate(90deg);
+    }
+
+    &::details-content {
+      padding: 1rem;
+      height: auto;
+
+      @starting-style {
+        height: 0;
+        padding: 0 1rem;
+      }
+    }
+  }
+}
+
+:where([data-layer]) {
+  *, *::before, *::after {
+    outline: 1px dotted hotpink;
+  }
+}
+
+:where(html) {
+  --ease-sine-in: cubic-bezier(.47,0,.745,.715);
+  --ease-sine-in-out: cubic-bezier(.445,.05,.55,.95);
+  --ease-sine-out: cubic-bezier(.39,.575,.565,1);
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>::details-content</h1>
+  <fieldset>
+    <label>
+      <input type="radio" name="theme" value="pink" checked>
+    </label>
+    <label>
+      <input type="radio" name="theme" value="blue">
+    </label>
+    <label>
+      <input type="radio" name="theme" value="green">
+    </label>
+  </fieldset>
+</header>
+<main>
+<details name="psudo" open>
+  <summary>What is the details element used for?</summary>
+  <p>The details element reveals extra information only when a reader asks for it.</p>
+  <!-- <p>
+    It works well for FAQs, notes, and compact explanations that should stay
+    out of the way until needed.
+  </p> -->
+</details>
+<details name="psudo">
+  <summary>Why group these sections together?</summary>
+  <p>Using the same name value turns these panels into an accordion.</p>
+  <!-- <p>
+    Opening one section automatically closes the others, which keeps the layout
+    tidy and easier to scan.
+  </p> -->
+</details>
+<details name="psudo">
+  <summary>When should you use this pattern?</summary>
+  <p>Choose this pattern when several related topics share the same space.</p>
+  <!-- <p>
+    It helps readers compare sections quickly without forcing them to scroll
+    through every answer at once.
+  </p> -->
+</details>
+</main>
+<script>
+function themePicker() {
+  const fieldset = document.querySelector("fieldset")
+  const root = document.documentElement
+
+  const setAccent = (value) => {
+    let theme = value
+    if (value === 'pink') theme = 'light-dark(deeppink, hotpink)'
+    if (value === 'blue') theme = 'light-dark(deepskyblue, skyblue)'
+    if (value === 'green') theme = 'light-dark(forestgreen, darkseagreen)'
+    root.style.setProperty("--accent", theme)
+  }
+
+  fieldset.addEventListener("change", ({ target }) => {
+    if (target.name === "theme") {
+      setAccent(target.value)
+    }
+  })
+
+  setAccent(fieldset.querySelector(":checked").value)
+}
+
+themePicker()
+</script>
+</body>
+</html>

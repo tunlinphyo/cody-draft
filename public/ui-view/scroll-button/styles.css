@@ -1,0 +1,296 @@
+:root {
+  color-scheme: light dark;
+  interpolate-size: allow-keywords;
+
+  font-family: "Google Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 100%;
+
+  --padding-x: 0.5rem;
+  --surface: light-dark(
+    color-mix(in oklab, Canvas, CanvasText 10%),
+    color-mix(in oklab, Canvas, CanvasText 15%)
+  );
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+:where(html,body) {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: Canvas;
+  color: CanvasText;
+  interpolate-size: allow-keywords;
+}
+
+:where(main) {
+  width: 100%;
+  height: 100%;
+}
+
+:where(ul,li,h1,h2,h3,p) {
+  all: unset;
+}
+
+:where(.carousel) {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-auto-flow: column;
+  scroll-snap-type: x mandatory;
+  position: relative;
+  background-color: light-dark(Canvas, CanvasText);
+
+  overflow-x: auto;
+  scrollbar-width: none;
+  scroll-behavior: smooth;
+  overscroll-behavior-x: none;
+  anchor-name: --carousel-control;
+
+  &::scroll-button(inline-start) {
+    content: "keyboard_arrow_up" / "Scroll Left";
+    top: calc(50% - 2.25rem);
+  }
+  &::scroll-button(inline-end) {
+    content: "keyboard_arrow_down" / "Scroll Right";
+    bottom: calc(50% - 2.25rem);
+  }
+
+  &::scroll-button(*) {
+    position: absolute;
+    z-index: 3;
+    position-anchor: --carousel-control;
+    cursor: pointer;
+
+    width: 2rem;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    padding: 0;
+    border: none;
+
+    display: grid;
+    place-content: center;
+    left: calc(anchor(left) + 0.5rem);
+
+    font-family: "Material Symbols Outlined";
+    font-weight: 600;
+    font-style: normal;
+    background-color: light-dark(
+      oklch(from Canvas l c h / 0.8),
+      oklch(from Canvas l c h / 0.4)
+    );
+    color: oklch(from CanvasText l c h / 0.75);
+    font-size: 1.2rem;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: normal;
+    white-space: nowrap;
+    direction: ltr;
+    font-feature-settings: "liga";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+.carousel::scroll-button(*):disabled {
+  color: oklch(from CanvasText l c h / 0.2);
+}
+.carousel::scroll-button(*):focus-visible {
+  outline: 2px solid ActiveText;
+  outline-offset: 2px;
+}
+
+:where(.carousel-item) {
+  container-type: scroll-state;
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+
+  width: 100vw;
+}
+
+:where(.card) {
+  position: fixed;
+  z-index: 0;
+  position-anchor: --carousel-control;
+  overflow: clip;
+
+  top: anchor(top);
+  bottom: anchor(bottom);
+  left: anchor(left);
+  right: anchor(right);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: light-dark(Canvas, CanvasText);
+
+  display: none;
+  opacity: 0;
+  scale: 0.9;
+  translate: -20vw 0;
+
+  transition: all 0.5s var(--ease-sine-in-out);
+  transition-behavior: allow-discrete;
+
+  border-radius: 20px;
+  @supports(corner-shape: squircle) {
+    border-radius: 40px;
+    corner-shape: squircle;
+  }
+
+  & img {
+    display: grid;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+@supports (container-type: scroll-state) {
+  @container scroll-state(snapped: x) {
+    .card {
+      z-index: 1;
+      display: flex;
+      opacity: 1;
+      scale: 1.1;
+      translate: 0 0;
+
+      @starting-style {
+        z-index: 1;
+        opacity: 0;
+        scale: 0.9;
+        translate: 30vw 0;
+      }
+    }
+  }
+}
+
+:where(.target) {
+  --duration: 0.5s;
+  scroll-target-group: auto;
+
+  position: absolute;
+  z-index: 5;
+  left: 3rem;
+  top: 50%;
+  translate: 0 -50%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+:where(.target li a) {
+  position: relative;
+  z-index: 1;
+  width: var(--w, 10rem);
+  height: 2.4rem;
+  padding: 0;
+  font-size: 0.85rem;
+  text-decoration: none;
+  color: CanvasText;
+  overflow: clip;
+
+  transition: width var(--duration) var(--ease-spring-1), height var(--duration) var(--ease-spring-1);
+
+  interpolate-size: allow-keywords;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+
+  border-radius: 20px;
+  background-color: light-dark(
+    oklch(from Canvas l c h / 0.8),
+    oklch(from Canvas l c h / 0.4)
+  );
+
+  .mini {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    white-space: nowrap;
+
+    &::before {
+      content: "add";
+      flex-shrink: 0;
+      width: 1.3rem;
+      aspect-ratio: 1;
+      border: 1px solid currentColor;
+      border-radius: 50%;
+
+      display: grid;
+      place-content: center;
+
+      font-family: "Material Symbols Outlined";
+      font-weight: 600;
+      font-style: normal;
+      font-size: 1rem;
+    }
+  }
+
+  .opened {
+    display: none;
+    padding: 1rem;
+    max-width: 15rem;
+  }
+
+  &:target-current {
+    width: 15rem;
+    height: var(--h);
+
+    .mini {
+      display: none;
+      transition: none;
+    }
+    .opened {
+      display: block;
+      transition: all 0.1s ease calc(var(--duration) - 0.1s);
+
+      @starting-style {
+        opacity: 0;
+      }
+    }
+  }
+  &:not(:target-current) {
+    .mini {
+      display: flex;
+      transition: all 0.1s ease calc(var(--duration) - 0.1s);
+
+      @starting-style {
+        opacity: 0;
+      }
+    }
+  }
+
+  &:is(:focus-visible) {
+    outline: 2px solid ActiveText;
+    outline-offset: 2px;
+  }
+}
+
+:where([data-layer]) {
+  *, *::before, *::after {
+    outline: 1px dotted hotpink;
+  }
+}
+
+:where(html) {
+  --ease-sine-in: cubic-bezier(.47,0,.745,.715);
+  --ease-sine-in-out: cubic-bezier(.445,.05,.55,.95);
+  --ease-sine-out: cubic-bezier(.39,.575,.565,1);
+  --ease-spring-1: linear(
+    0, 0.006, 0.025 2.8%, 0.101 6.1%, 0.539 18.9%, 0.721 25.3%, 0.849 31.5%,
+    0.937 38.1%, 0.968 41.8%, 0.991 45.7%, 1.006 50.1%, 1.015 55%, 1.017 63.9%,
+    1.001
+  );
+}

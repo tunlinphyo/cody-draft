@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>scroll-state(snapped: x)</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+  href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap"
+  rel="stylesheet"
+  fetchpriority="high">
+<style>
+:root {
+  color-scheme: light dark;
+
+  font-family: "Google Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 100%;
+
+  --padding-x: 0.5rem;
+  --surface: light-dark(
+    color-mix(in oklab, Canvas, CanvasText 10%),
+    color-mix(in oklab, Canvas, CanvasText 25%)
+  );
+}
+
+* {
+  box-sizing: border-box;
+}
+
+:where(html,body) {
+  margin: 0;
+  padding: 0;
+  background-color: light-dark(var(--surface), Canvas);
+  color: CanvasText;
+}
+
+:where(ul) {
+  list-style: none;
+  margin: 0;
+  padding: var(--padding-x);
+  height: 100vh;
+
+  display: flex;
+  overflow-y: auto;
+  scroll-snap-type: x mandatory;
+}
+
+:where(li) {
+  flex: 0 0 80%;
+  height: 100%;
+
+  container-type: scroll-state;
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+}
+
+:where(li > div) {
+  width: 100%;
+  height: 100%;
+  background-color: light-dark(Canvas, var(--surface));
+
+  display: grid;
+  place-content: center;
+  font-size: clamp(2rem, 8vw, 5rem);
+
+  opacity: 0.8;
+  scale: 0.8;
+  transition: all .3s ease;
+
+  border-radius: 15px;
+  @supports(corner-shape: squircle) {
+    border-radius: 30px;
+    corner-shape: squircle;
+  }
+}
+
+@supports (container-type: scroll-state) {
+  @container scroll-state(snapped: x) {
+    li > div {
+      scale: 1;
+      opacity: 1;
+    }
+  }
+}
+@supports not (container-type: scroll-state) {
+  ul {
+    gap: 1rem;
+  }
+  li > div {
+    scale: 1;
+    opacity: 1;
+  }
+}
+
+:where([data-layer]) {
+  *, *::before, *::after {
+    outline: 1px dotted hotpink;
+  }
+}
+</style>
+</head>
+<body>
+<ul>
+  <li><div>One</div></li>
+  <li><div>Two</div></li>
+  <li><div>Three</div></li>
+  <li><div>Four</div></li>
+  <li><div>Five</div></li>
+  <li><div>Six</div></li>
+  <li><div>Seven</div></li>
+  <li><div>Eight</div></li>
+  <li><div>Nine</div></li>
+  <li><div>Ten</div></li>
+</ul>
+</body>
+</html>

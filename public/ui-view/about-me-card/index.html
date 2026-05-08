@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Anchor Demo</title>
+    <link rel="stylesheet" href="./style.css" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap"
+      rel="stylesheet"
+      fetchpriority="high">
+    <script
+      type="module"
+      async
+      src="https://unpkg.com/invokers-polyfill@latest/invoker.min.js"
+    ></script>
+  </head>
+  <body>
+    <section class="card">
+      <div class="about" data-inert-github data-inert-linkedin data-inert-email>
+        <h1>Tun Lin Phyo</h1>
+        <p>Frontend Engineer</p>
+        <div class="spacer"></div>
+        <ul>
+          <li>
+            <button class="contact-opener" commandfor="github" command="--toggle">
+              <div class="icon" aria-hidden="true" role="presentation">
+                <svg width="24" height="24" viewBox="0 0 152 152">
+                  <g transform="matrix(1.13,0,0,1.13,-11.38,-11.38)">
+                    <path fill="currentColor" d="M53.1 141c4.6 0 5.9-1.8 5.9-4.1s0-7.3-.1-14.4c-23.9 5.1-29-11.4-29-11.4-3.9-9.7-9.6-12.4-9.6-12.4-7.8-5.2.6-5.1.6-5.1 8.6.6 13.2 8.7 13.2 8.7 7.7 13 20.1 9.2 25 7 .4-4.3 2.3-8.4 5.5-11.4-19.1-2.1-39.2-9.4-39.2-41.8-.1-8.4 3.1-16.6 8.9-22.7-1-2.1-3.9-10.7.7-22.4 0 0 7.2-2.3 23.7 8.7 14.1-3.8 28.9-3.8 43 0C118 8.8 125.3 11 125.3 11c4.6 11.6 1.7 20.2.9 22.4 5.8 6.1 8.9 14.3 8.8 22.7 0 32.5-20.1 39.6-39.3 41.7 3 2.5 5.8 7.7 5.8 15.6 0 11.4-.1 20.4-.1 23.1 0 2.2 1 4 5.9 4z"></path>
+                  </g>
+                </svg>
+              </div>
+              <div class="label">GitHub</div>
+            </button>
+          </li>
+          <li>
+            <button class="contact-opener" commandfor="linkedin" command="--toggle">
+              <div class="icon" aria-hidden="true" role="presentation">
+                <svg width="24" height="24" viewBox="0 0 24 24" style="scale: 1.05;translate: 0 -1px;">
+                  <g>
+                    <path fill="currentColor" d="M23.994 24v-.001H24v-8.802c0-4.306-.927-7.623-5.961-7.623-2.42 0-4.044 1.328-4.707 2.587h-.07V7.976H8.489v16.023h4.97v-7.934c0-2.089.396-4.109 2.983-4.109 2.549 0 2.587 2.384 2.587 4.243V24zM.396 7.977h4.976V24H.396zM2.882 0C1.291 0 0 1.291 0 2.882s1.291 2.909 2.882 2.909 2.882-1.318 2.882-2.909A2.884 2.884 0 0 0 2.882 0z"></path>
+                  </g>
+                </svg>
+              </div>
+              <div class="label">LinkedIn</div>
+            </button>
+          </li>
+          <li>
+            <button class="contact-opener" commandfor="email" command="--toggle">
+              <div class="icon" aria-hidden="true" role="presentation">
+                <svg width="24" height="24" viewBox="0 0 433.664 433.664">
+                  <g>
+                    <path fill="currentColor" d="M229.376 271.616c-4.096 2.56-8.704 3.584-12.8 3.584s-8.704-1.024-12.8-3.584L0 147.2v165.376c0 35.328 28.672 64 64 64h305.664c35.328 0 64-28.672 64-64V147.2L229.376 271.616z"></path>
+                    <path fill="currentColor" d="M369.664 57.088H64c-30.208 0-55.808 21.504-61.952 50.176l215.04 131.072 214.528-131.072c-6.144-28.672-31.744-50.176-61.952-50.176z"></path>
+                  </g>
+                </svg>
+              </div>
+              <div class="label">Email</div>
+            </button>
+          </li>
+        </ul>
+
+        <div class="bottom-line"></div>
+
+        <div class="blob"></div>
+      </div>
+
+      <div class="contact-detail" id="github" toggle inert>
+        <button class="contact-close" commandfor="github" command="--toggle" aria-label="Close GitHub detail"></button>
+        <h2>GitHub</h2>
+        <p>
+          Check out my modern Web APIs experiments: clean UI, smooth interactions.
+        </p>
+        <a href="https://github.com/tunlinphyo" target="_blank" rel="noopener noreferrer" aria-label="Visit Tun's GitHub profile">Visit
+          GitHub Profile</a>
+      </div>
+
+      <div class="contact-detail" id="linkedin" toggle inert>
+        <button class="contact-close" commandfor="linkedin" command="--toggle"></button>
+        <h2>LinkedIn</h2>
+        <p>
+          Connect with me if you'd like to discuss opportunities or exchange ideas.
+        </p>
+        <a href="https://www.linkedin.com/in/tunlinphyo" target="_blank" rel="noopener noreferrer"
+          aria-label="Connect with Tun on LinkedIn">Connect on LinkedIn</a>
+      </div>
+
+      <div class="contact-detail" id="email" toggle inert>
+        <button class="contact-close" commandfor="email" command="--toggle"></button>
+        <h2>Email</h2>
+        <p>
+          For collaborations or product questions, email is the fastest way to reach me.
+        </p>
+        <a href="mailto:tunlinphyo.it@gmail.com" target="_blank" rel="noopener noreferrer" aria-label="Send email to Tun">Send Me an
+          Email</a>
+      </div>
+    </section>
+
+    <script src="./script.js"></script>
+  </body>
+</html>

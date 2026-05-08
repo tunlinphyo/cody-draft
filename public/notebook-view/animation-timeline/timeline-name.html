@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>scroll-timeline-name</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+  href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap"
+  rel="stylesheet"
+  fetchpriority="high">
+<style>
+:root {
+  color-scheme: light dark;
+
+  font-family: "Google Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 100%;
+
+  --padding-x: 0.5rem;
+  --surface: light-dark(
+    color-mix(in oklab, Canvas, CanvasText 10%),
+    color-mix(in oklab, Canvas, CanvasText 25%)
+  );
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+:where(html,body) {
+  margin: 0;
+  padding: 0;
+  background-color: light-dark(var(--surface), Canvas);
+  color: CanvasText;
+}
+
+:where(body) {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 40vh;
+  padding-block: 40vh 5vh;
+  timeline-scope: --one-scroller, --two-scroller;
+}
+
+:where(article) {
+  position: relative;
+  z-index: 1;
+  width: 50vw;
+  aspect-ratio: 1;
+  border: 2px solid LinkText;
+
+  container-type: scroll-state size;
+  overflow-y: auto;
+
+  border-radius: 15px;
+  @supports(corner-shape: squircle) {
+    border-radius: 30px;
+    corner-shape: squircle;
+  }
+
+  .scroll-container {
+    width: 100%;
+    height: 200vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.5rem;
+    --line: oklch(from LinkText l c h / 0.2);
+    background-image:  linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(to right, var(--line) 1px, transparent 1px);
+    background-size: 20px 20px;
+
+    &::before,
+    &::after {
+      position: sticky;
+      display: block;
+      content: "\279F";
+      opacity: 0;
+      scale: 0;
+    }
+
+    &::before {
+      top: 0;
+      rotate: 90deg;
+    }
+    &::after {
+      bottom: 0;
+      rotate: -90deg;
+    }
+  }
+
+  @container scroll-state(scrollable: top) {
+    .scroll-container::after {
+      scale: 1;
+      opacity: 1;
+    }
+  }
+
+  @container scroll-state(scrollable: bottom) {
+    .scroll-container::before {
+      scale: 1;
+      opacity: 1;
+    }
+  }
+}
+
+:where(.scroll--one) {
+  scroll-timeline-name: --one-scroller;
+  scroll-timeline-axis: y;
+  /* scroll-timeline: --one-scroller block; */
+}
+
+:where(.scroll--two) {
+  scroll-timeline-name: --two-scroller;
+  scroll-timeline-axis: y;
+}
+
+:where(ul) {
+  all: unset;
+
+  position: fixed;
+  z-index: 0;
+  top: 0.5rem;
+  left: 0.5rem;
+  right: 0.5rem;
+
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  & li {
+    width: 100%;
+    height: 2rem;
+    background-color: light-dark(
+      oklch(from Canvas l c h / 0.5),
+      oklch(from CanvasText l c h / 0.2)
+    );
+    position: relative;
+    overflow: clip;
+    /* backdrop-filter: blur(5px); */
+
+    border-radius: 10px;
+    @supports(corner-shape: squircle) {
+      border-radius: 20px;
+      corner-shape: squircle;
+    }
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-color: color-mix(in oklab, ActiveText, transparent 75%);
+      transform-origin: left center;
+      scale: 0 1;
+
+      animation: scale-x auto linear forwards;
+    }
+
+    &::after {
+      content: '';
+      font-size: 1rem;
+      position: absolute;
+      inset: 0;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+  }
+
+  .default {
+    &::before {
+      animation-timeline: scroll();
+    }
+    &::after {
+      content: 'scroll()';
+    }
+  }
+
+  .one {
+    &::before {
+      animation-timeline: --one-scroller;
+    }
+    &::after {
+      content: 'animation-timeline: --one-scroller';
+    }
+  }
+  .two {
+    &::before {
+      animation-timeline: --two-scroller;
+    }
+    &::after {
+      content: 'animation-timeline: --two-scroller';
+    }
+  }
+}
+
+
+:where([data-layer]) {
+  *, *::before, *::after {
+    outline: 1px dotted hotpink;
+  }
+}
+
+@keyframes scale-x {
+  0% { scale: 0 1; }
+  100% { scale: 1 1; }
+}
+</style>
+</head>
+<body>
+<ul>
+  <li class="default"></li>
+  <li class="one"></li>
+  <li class="two"></li>
+</ul>
+
+<article class="scroll scroll--one">
+  <div class="scroll-container"></div>
+</article>
+<article class="scroll scroll--two">
+  <div class="scroll-container"></div>
+</article>
+</body>
+</html>

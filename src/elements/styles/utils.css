@@ -1,0 +1,17 @@
+:host {
+  --element-brand-1: #0f766e;
+  --element-brand-2: #0f766e;
+  --element-divider: light-dark(#ded8cc, #3d444d);
+  --element-bg-soft: light-dark(#f8fafc, #161b22);
+  --element-bg-elevated: light-dark(#ffffff, #0d1117);
+  --element-text-1: light-dark(#111827, #f8fafc);
+  --element-text-2: light-dark(#4b5563, #c9d1d9);
+  --element-text-3: light-dark(#9ca3af, #8b949e);
+  --element-shadow: 0 20px 50px rgba(15, 23, 42, 0.12);
+  --element-radius-sm: 8px;
+  --element-radius-md: 24px;
+  --element-radius-lg: 48px;
+  --element-radius-pill: 999px;
+  --element-transition: 0.2s ease;
+  color-scheme: light dark;
+}

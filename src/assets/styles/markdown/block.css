@@ -1,0 +1,53 @@
+.markdown-card {
+  --card-accent: #2563eb;
+  --card-bg: light-dark(#eff6ff, #172033);
+  --card-border: light-dark(#bfdbfe, #274472);
+  border: 1px solid var(--card-border);
+  border-left: 4px solid var(--card-accent);
+  border-radius: 8px;
+  background: var(--card-bg);
+  margin: 24px 0;
+  padding: 16px 18px;
+}
+
+.markdown-card--tip {
+  --card-accent: #16a34a;
+  --card-bg: light-dark(#f0fdf4, #14281b);
+  --card-border: light-dark(#bbf7d0, #285b35);
+}
+
+.markdown-card--warning {
+  --card-accent: #d97706;
+  --card-bg: light-dark(#fffbeb, #302411);
+  --card-border: light-dark(#fde68a, #72521f);
+}
+
+.markdown-card--danger {
+  --card-accent: #dc2626;
+  --card-bg: light-dark(#fef2f2, #321a1a);
+  --card-border: light-dark(#fecaca, #713333);
+}
+
+.markdown-card--details {
+  --card-accent: #7c3aed;
+  --card-bg: light-dark(#f5f3ff, #251d35);
+  --card-border: light-dark(#ddd6fe, #564177);
+}
+
+.markdown-card__title,
+.markdown-card summary {
+  color: var(--card-accent);
+  font-weight: 700;
+}
+
+.markdown-card__title {
+  margin: 0 0 8px;
+}
+
+.markdown-card summary {
+  cursor: pointer;
+}
+
+.markdown-card > :last-child {
+  margin-bottom: 0;
+}

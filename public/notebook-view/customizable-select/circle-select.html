@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Circle Select</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+  href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap"
+  rel="stylesheet"
+  fetchpriority="high">
+<style>
+:root {
+  color-scheme: light dark;
+
+  font-family: "Google Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 100%;
+
+  --padding-x: 0.5rem;
+  --surface: light-dark(
+    Canvas,
+    color-mix(in oklab, Canvas, CanvasText 30%)
+  );
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+:where(html,body) {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: Canvas;
+  color: CanvasText;
+}
+
+:where(main) {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+}
+
+@supports (appearance: base-select) {
+  select,
+  ::picker(select) {
+    appearance: base-select;
+  }
+
+  :where(select) {
+    border: none;
+    padding: 0;
+    background-color: transparent;
+    overflow: visible;
+    border-radius: 50%;
+    position: relative;
+
+    &::picker-icon {
+      display: none;
+    }
+
+    & selectedcontent {
+      width: 3rem;
+      aspect-ratio: 1;
+      display: grid;
+      place-content: center;
+      font-size: 2rem;
+      border-radius: 50%;
+      background-color: color-mix(in oklab, Canvas, CanvasText 8%);
+
+      .person {
+        display: none;
+      }
+    }
+
+    &:is(:focus-visible) {
+      outline: 2px solid ActiveText;
+      outline-offset: 2px;
+    }
+
+    & option {
+      appearance: base-select;
+      grid-area: option;
+      position: relative;
+      z-index: 0;
+      width: 3rem;
+      aspect-ratio: 1;
+      display: grid;
+      place-content: center;
+      font-size: 2rem;
+      border-radius: 50%;
+      background-color: var(--surface);
+      box-shadow: rgba(0,0,0,0.2) 0px 2px 8px 0px;
+
+      offset-path: circle(0 at 50% 50%);
+      offset-anchor: center;
+      offset-rotate: 0deg;
+      offset-distance: calc(-100% + (sibling-index()) * 100% / calc(sibling-count() - 1));
+      scale: 0;
+
+      cursor: pointer;
+      transition: offset .35s var(--ease-sine-out), scale .35s var(--ease-sine-out);
+
+      &::checkmark {
+        display: none;
+      }
+
+      &:checked {
+        scale: 1;
+        z-index: 9;
+      }
+    }
+
+    &:open {
+      option {
+        scale: 1;
+        offset-path: circle(clamp(40px, 30vw, 80px) at 50% 50%);
+        offset-distance: calc(-50% + (sibling-index()) * 100% / calc(sibling-count() - 1));
+
+        &:is(:hover,:focus-visible) {
+          scale: 1.1;
+        }
+        &:is(:focus-visible) {
+          outline: 2px solid ActiveText;
+          outline-offset: 2px;
+        }
+
+        &:checked {
+          background-color: light-dark(oklch(from HighLight 0.8 c h / 1), oklch(from HighLight 0.4 c h / 1));
+        }
+      }
+    }
+  }
+
+  ::picker(select) {
+    outline: none;
+    border: none;
+    background-color: transparent;
+
+    display: grid;
+    grid-template-areas: 'option';
+    overflow: visible;
+
+    top: anchor(top);
+    left: anchor(left);
+    right: anchor(right);
+    bottom: anchor(bottom);
+  }
+}
+
+:where([data-layer]) {
+  *, *::before, *::after {
+    outline: 1px dotted hotpink;
+  }
+}
+
+:where(html) {
+  --ease-sine-in: cubic-bezier(.47,0,.745,.715);
+  --ease-sine-in-out: cubic-bezier(.445,.05,.55,.95);
+  --ease-sine-out: cubic-bezier(.39,.575,.565,1);
+}
+</style>
+</head>
+<body>
+<main>
+  <select>
+    <button>
+      <selectedcontent></selectedcontent>
+    </button>
+    <option value="1">
+      <div class="person">😀</div>
+    </option>
+    <option value="2">
+      <div class="person">😎</div>
+    </option>
+    <option value="3">
+      <div class="person">🤠</div>
+    </option>
+    <option value="4">
+      <div class="person">🤓</div>
+    </option>
+    <option value="5">
+      <div class="person">🥳</div>
+    </option>
+    <option value="6">
+      <div class="person">😍</div>
+    </option>
+    <option value="7">
+      <div class="person">❤️</div>
+    </option>
+    <option value="8">
+      <div class="person">👍</div>
+    </option>
+  </select>
+</main>
+</body>
+</html>

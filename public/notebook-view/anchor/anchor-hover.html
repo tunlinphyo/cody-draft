@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>transition between anchor-name</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+  href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap"
+  rel="stylesheet"
+  fetchpriority="high">
+
+<style>
+:root {
+  color-scheme: light dark;
+
+  font-family: "Google Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 100%;
+
+  --surface: light-dark(
+    color-mix(in oklab, Canvas, CanvasText 10%),
+    color-mix(in oklab, Canvas, CanvasText 25%)
+  );
+
+  --ease-sine-in: cubic-bezier(.47,0,.745,.715);
+  --ease-sine-in-out: cubic-bezier(.445,.05,.55,.95);
+  --ease-sine-out: cubic-bezier(.39,.575,.565,1);
+
+  --card-radius: 20px;
+  --card-radius-large: 40px;
+  --anim-ms: 320ms;
+  --backdrop-ms: 220ms;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+:where(html, body) {
+  width: 100%;
+  height: 100%;
+
+  margin: 0;
+  padding: 0;
+  background-color: light-dark(var(--surface), Canvas);
+  color: CanvasText;
+}
+
+:where(body) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+:where(ul,li,a) {
+  all: unset;
+}
+
+:where(ul) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-inline: 0.5rem;
+
+  position: relative;
+  z-index: 1;
+  anchor-name: --anchorhover;
+
+  & a {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: ButtonText;
+
+    width: 4rem;
+    aspect-ratio: 3/2;
+
+    &:is(:hover,:focus-visible) {
+      anchor-name: --anchorhover;
+    }
+  }
+}
+
+:where(.blob) {
+  position-anchor: --anchorhover;
+  position: fixed;
+  z-index: 0;
+  top: anchor(top);
+  left: anchor(left);
+  bottom: anchor(bottom);
+  right: anchor(right);
+  pointer-events: none;
+
+  background-color: ButtonFace;
+  border: 1px solid light-dark(ButtonFace, ButtonBorder);
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+
+  border-radius: 20px;
+  @supports(corner-shape: squircle) {
+    border-radius: 40px;
+    corner-shape: squircle;
+  }
+
+  transition: all .6s var(--ease-spring-3);
+}
+
+:where([data-layer]) {
+  *, *::before, *::after {
+    outline: 1px dotted hotpink;
+  }
+}
+
+/* OPEN PROPS https://open-props.style/#easing */
+:where(html) {
+  --ease-spring-3: linear(
+    0, 0.009, 0.035 2.1%, 0.141 4.4%, 0.723 12.9%, 0.938 16.7%, 1.017, 1.077,
+    1.121, 1.149 24.3%, 1.159, 1.163, 1.161, 1.154 29.9%, 1.129 32.8%,
+    1.051 39.6%, 1.017 43.1%, 0.991, 0.977 51%, 0.974 53.8%, 0.975 57.1%,
+    0.997 69.8%, 1.003 76.9%, 1
+  );
+
+  --ease-sine-out: cubic-bezier(.39, .575, .565, 1);
+}
+</style>
+</head>
+<body>
+
+<ul>
+  <li>
+    <a href="https://github.com/tunlinphyo" target="_blank" rel="noopener noreferrer" aria-label="Visit Tun's GitHub profile">
+      <svg width="24" height="24" viewBox="0 0 152 152">
+        <g transform="matrix(1.13,0,0,1.13,-11.38,-11.38)">
+          <path fill="currentColor" d="M53.1 141c4.6 0 5.9-1.8 5.9-4.1s0-7.3-.1-14.4c-23.9 5.1-29-11.4-29-11.4-3.9-9.7-9.6-12.4-9.6-12.4-7.8-5.2.6-5.1.6-5.1 8.6.6 13.2 8.7 13.2 8.7 7.7 13 20.1 9.2 25 7 .4-4.3 2.3-8.4 5.5-11.4-19.1-2.1-39.2-9.4-39.2-41.8-.1-8.4 3.1-16.6 8.9-22.7-1-2.1-3.9-10.7.7-22.4 0 0 7.2-2.3 23.7 8.7 14.1-3.8 28.9-3.8 43 0C118 8.8 125.3 11 125.3 11c4.6 11.6 1.7 20.2.9 22.4 5.8 6.1 8.9 14.3 8.8 22.7 0 32.5-20.1 39.6-39.3 41.7 3 2.5 5.8 7.7 5.8 15.6 0 11.4-.1 20.4-.1 23.1 0 2.2 1 4 5.9 4z"></path>
+        </g>
+      </svg>
+    </a>
+  </li>
+  <li>
+    <a href="https://www.linkedin.com/in/tunlinphyo" target="_blank" rel="noopener noreferrer" aria-label="Connect with Tun on LinkedIn">
+      <svg width="24" height="24" viewBox="0 0 24 24" style="scale: 1.05;translate: 0 -1px;">
+        <g>
+          <path fill="currentColor" d="M23.994 24v-.001H24v-8.802c0-4.306-.927-7.623-5.961-7.623-2.42 0-4.044 1.328-4.707 2.587h-.07V7.976H8.489v16.023h4.97v-7.934c0-2.089.396-4.109 2.983-4.109 2.549 0 2.587 2.384 2.587 4.243V24zM.396 7.977h4.976V24H.396zM2.882 0C1.291 0 0 1.291 0 2.882s1.291 2.909 2.882 2.909 2.882-1.318 2.882-2.909A2.884 2.884 0 0 0 2.882 0z"></path>
+        </g>
+      </svg>
+    </a>
+  </li>
+  <li>
+    <a href="mailto:tunlinphyo.it@gmail.com" target="_blank" rel="noopener noreferrer" aria-label="Send email to Tun">
+      <svg width="24" height="24" viewBox="0 0 433.664 433.664">
+        <g>
+          <path fill="currentColor" d="M229.376 271.616c-4.096 2.56-8.704 3.584-12.8 3.584s-8.704-1.024-12.8-3.584L0 147.2v165.376c0 35.328 28.672 64 64 64h305.664c35.328 0 64-28.672 64-64V147.2L229.376 271.616z"></path>
+          <path fill="currentColor" d="M369.664 57.088H64c-30.208 0-55.808 21.504-61.952 50.176l215.04 131.072 214.528-131.072c-6.144-28.672-31.744-50.176-61.952-50.176z"></path>
+        </g>
+      </svg>
+    </a>
+  </li>
+</ul>
+
+<div class="blob"></div>
+
+</body>
+</html>

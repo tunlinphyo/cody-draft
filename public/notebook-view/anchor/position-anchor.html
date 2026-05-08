@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>position-try-fallbacks</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+  href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap"
+  rel="stylesheet"
+  fetchpriority="high">
+<link href="https://fonts.googleapis.com/css2?family=Flow+Block&display=swap" rel="stylesheet">
+<style>
+:root {
+  color-scheme: light dark;
+
+  font-family: "Google Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 100%;
+
+  --padding-x: 0.5rem;
+  --surface: light-dark(
+    color-mix(in oklab, Canvas, CanvasText 10%),
+    color-mix(in oklab, Canvas, CanvasText 25%)
+  );
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+:where(html,body) {
+  margin: 0;
+  padding: 0;
+  /* background-color: light-dark(var(--surface), Canvas); */
+  background-color: Canvas;
+  color: CanvasText;
+}
+
+:where(main) {
+  padding: 1rem;
+
+  & p {
+    font-family: "Flow Block", system-ui;
+    font-weight: 400;
+    font-style: normal;
+    text-align: justify;
+  }
+}
+
+:where(button) {
+  background-color: ButtonFace;
+  color: ButtonText;
+  border: 1px solid ButtonBorder;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 2px;
+  padding: 0.25rem 0.75rem;
+  cursor: pointer;
+
+  border-radius: 10px;
+  @supports(corner-shape: squircle) {
+    border-radius: 20px;
+    corner-shape: squircle;
+  }
+
+  &:is(:hover,:focus-visible) {
+    background-color: transparent;
+    outline: 1px solid ButtonBorder;
+  }
+
+  &[popovertarget="popover1"] {
+    anchor-name: --popover-1;
+  }
+  &[popovertarget="popover2"] {
+    anchor-name: --popover-2;
+  }
+  &[popovertarget="popover3"] {
+    anchor-name: --popover-3;
+  }
+}
+
+:where([popover]) {
+  container-type: anchored;
+
+  position: fixed;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  max-width: calc(100vw - 2rem);
+  overflow: visible;
+
+  .popover-content {
+    padding: 1.5rem;
+    background-color: oklch(from Canvas l c h / 0.98);
+    border: 2px solid oklch(from CanvasText l c h / 0.1);
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    scale: 0;
+    transition: scale 0.25s ease-out;
+
+    border-radius: 20px;
+    @supports(corner-shape: squircle) {
+      border-radius: 40px;
+      corner-shape: squircle;
+    }
+  }
+
+  &:popover-open .popover-content {
+    scale: 1;
+    transition: all .6s var(--ease-spring-2);
+
+    @starting-style {
+      scale: 0;
+    }
+  }
+
+  @supports (animation-name: test-starting-style) {
+    transition:
+      display 0.25s allow-discrete,
+      overlay 0.25s allow-discrete;
+  }
+
+  &#popover1 {
+    position-anchor: --popover-1;
+    top: auto;
+    bottom: calc(anchor(top) - 10px);
+    left: calc(anchor(right) - 10px);
+    position-try-fallbacks: --try-bottom-1;
+
+    .popover-content {
+      transform-origin: 10px calc(100% - 10px);
+    }
+  }
+
+  &#popover2 {
+    position-anchor: --popover-2;
+    top: auto;
+    bottom: anchor(top);
+    left: anchor(left);
+    position-try-fallbacks: flip-block;
+
+    .popover-content {
+      transform-origin: 65px bottom;
+    }
+  }
+
+  &#popover3 {
+    position-anchor: --popover-3;
+    top: auto;
+    bottom: anchor(top);
+    left: anchor(left);
+    position-try-fallbacks: --try-bottom-3;
+
+    .popover-content {
+      transform-origin: 65px bottom;
+    }
+  }
+}
+
+@position-try --try-bottom-1 {
+  top: calc(anchor(bottom) - 10px);
+  bottom: auto;
+  left: calc(anchor(right) - 10px);
+}
+
+@position-try --try-bottom-3 {
+  top: anchor(bottom);
+  bottom: auto;
+  left: anchor(left);
+}
+
+@container anchored(fallback: --try-bottom-1) {
+  #popover1[popover] .popover-content {
+    transform-origin: 10px 10px;
+  }
+}
+
+@container anchored(fallback: --try-bottom-3) {
+  #popover3[popover] .popover-content {
+    transform-origin: 65px top;
+  }
+}
+
+:where([data-layer]) {
+  *, *::before, *::after {
+    outline: 1px dotted hotpink;
+  }
+}
+
+:where(html) {
+  --ease-spring-2: linear(
+    0, 0.007, 0.029 2.2%, 0.118 4.7%, 0.625 14.4%, 0.826 19%, 0.902, 0.962,
+    1.008 26.1%, 1.041 28.7%, 1.064 32.1%, 1.07 36%, 1.061 40.5%, 1.015 53.4%,
+    0.999 61.6%, 0.995 71.2%, 1
+  );
+}
+</style>
+</head>
+<body>
+<main>
+  <h1>Position Anchor</h1>
+  <p>
+    Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore maiores minus
+    laudantium recusandae suscipit, enim repellat magni optio asperiores mollitia
+    officia assumenda, obcaecati ullam exercitationem facere quisquam molestias vitae eum!
+  </p>
+  <button popovertarget="popover1">Anchor one</button>
+  <p>
+    Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore maiores minus
+    laudantium recusandae suscipit, enim repellat magni optio asperiores mollitia
+    officia assumenda, obcaecati ullam exercitationem facere quisquam molestias vitae eum!
+  </p>
+  <button popovertarget="popover2">Anchor two</button>
+  <p>
+    Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore maiores minus
+    laudantium recusandae suscipit, enim repellat magni optio asperiores mollitia
+    officia assumenda, obcaecati ullam exercitationem facere quisquam molestias vitae eum!
+  </p>
+  <button popovertarget="popover3">Anchor three</button>
+  <p>
+    Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore maiores minus
+    laudantium recusandae suscipit, enim repellat magni optio asperiores mollitia
+    officia assumenda, obcaecati ullam exercitationem facere quisquam molestias vitae eum!
+  </p>
+  <p>
+    Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore maiores minus
+    laudantium recusandae suscipit, enim repellat magni optio asperiores mollitia
+    officia assumenda, obcaecati ullam exercitationem facere quisquam molestias vitae eum!
+  </p>
+  <div id="popover1" popover>
+    <div class="popover-content">
+      Popover One
+    </div>
+  </div>
+  <div id="popover2" popover>
+    <div class="popover-content">
+      Popover Two with fallback and broken transform-origin
+    </div>
+  </div>
+  <div id="popover3" popover>
+    <div class="popover-content">
+      Popover Two with @position-try and @container
+    </div>
+  </div>
+</main>
+</body>
+</html>

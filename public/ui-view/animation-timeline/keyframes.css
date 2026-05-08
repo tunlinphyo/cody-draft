@@ -1,0 +1,338 @@
+@keyframes forContainer {
+  0%,7.5% {
+    translate: 0 -25%;
+  }
+  10% {
+    translate: 0 0;
+  }
+  12.5% {
+    translate: 0 25%;
+  }
+  15%,17.5% {
+    translate: -25% 25%;
+  }
+  20%,22.5% {
+    translate: 45% 25%;
+  }
+  25%,30% {
+    translate: 45% 0;
+  }
+  32.5%,50% {
+    translate: 0 0;
+  }
+  52.5%,87.5% {
+    translate: 50% 0;
+  }
+  90% {
+    translate: -40% 0;
+  }
+  92.5% {
+    translate: 0 0;
+  }
+  100% {
+    translate: 0 0;
+  }
+}
+@keyframes lineOne {
+  0% {
+    scale: 0.1 1;
+  }
+  2.5% {
+    scale: 1 1;
+  }
+  5%,7.5% {
+    scale: 0.2 1;
+  }
+  10% {
+    scale: 1 1;
+  }
+  12.5% {
+    scale: 0.01 1;
+  }
+  17.5% {
+    scale: 1 1;
+  }
+  20% {
+    scale: 0.5 1;
+  }
+  22.5%,25% {
+    scale: 0 1;
+  }
+  27.5% {
+    translate: 0 0;
+    scale: 1 1;
+  }
+  30% {
+    translate: -40vw 0;
+    scale: 1 1;
+  }
+  32.5%,50% {
+    translate: 0 0;
+    scale: 0 1;
+  }
+  52.5% {
+    scale: 1 1;
+  }
+  55%,62.5% {
+    scale: 0 1;
+  }
+  65%,82.5% {
+    scale: 0.4 1;
+  }
+  85% {
+    scale: 0 1;
+  }
+  87.5% {
+    scale: 1 1;
+  }
+  90% {
+    scale: 0 1;
+  }
+  92.5% {
+    scale: 0.5 1;
+  }
+  100% {
+    scale: 0.5 1;
+  }
+}
+@keyframes lineTwo {
+  0%,2.5% {
+    scale: 0 1;
+    rotate: 90deg;
+  }
+  5%,7.5% {
+    scale: 0.2 1;
+  }
+  10% {
+    scale: 1 1;
+  }
+  12.5%,22.5% {
+    scale: 0 1;
+  }
+  25%,27.5% {
+    scale: 0.5 1;
+  }
+  30%,32.5% {
+    scale: 0 1;
+  }
+  37.5% {
+    scale: 0.6 1;
+  }
+  42.5%,47.5% {
+    scale: 0.05 1;
+  }
+  50%,57.5% {
+    scale: 0 1;
+  }
+  85% {
+    scale: 0 1;
+  }
+
+  100% {
+    scale: 0 1;
+    rotate: 90deg;
+  }
+}
+@keyframes lineThree {
+  0%,5% {
+    scale: 0 1;
+    rotate: 45deg;
+  }
+  7.5% {
+    scale: 0.2 1;
+  }
+  10% {
+    scale: 1 1;
+  }
+  12.5%,25% {
+    scale: 0 1;
+  }
+  27.5% {
+    scale: 0.75 1;
+  }
+  30%,57.5% {
+    scale: 0 1;
+  }
+  100% {
+    scale: 0 1;
+    rotate: 45deg;
+  }
+}
+@keyframes lineFour {
+  0%,5% {
+    scale: 0 1;
+    rotate: -45deg;
+  }
+  7.5% {
+    scale: 0.2 1;
+  }
+  10% {
+    scale: 1 1;
+  }
+  12.5%,25% {
+    scale: 0 1;
+  }
+  27.5% {
+    scale: 0.75 1;
+  }
+  30%,57.5% {
+    scale: 0 1;
+  }
+  100% {
+    scale: 0 1;
+    rotate: -45deg;
+  }
+}
+
+@keyframes bgScale {
+  0%,100% {
+    scale: 0;
+  }
+  5%,95% {
+    scale: 1;
+  }
+}
+@keyframes introTitle {
+  0%,50% {
+    scale: 1;
+    opacity: 1;
+  }
+  100% {
+    scale: 0.5;
+    opacity: 0;
+  }
+}
+@keyframes scrollHider {
+  0% {
+    translate: -50% 0;
+  }
+  100% {
+    translate: -50% 20vh;
+  }
+}
+@keyframes aboutTitle {
+  0% {
+    translate: 0 -25vh;
+    opacity: 1;
+  }
+  20%,80% {
+    translate: 0 0;
+  }
+  100% {
+    translate: 0 120vh;
+    opacity: 1;
+  }
+}
+@keyframes aboutMessage {
+  0%,100% {
+    translate: -100vw 0;
+    opacity: 0;
+  }
+  30%,70% {
+    translate: 0 0;
+    opacity: 1;
+  }
+}
+
+@keyframes techPopup {
+  0% {
+    opacity: 0;
+    scale: 0;
+  }
+  50%,80% {
+    opacity: 1;
+    scale: 1;
+  }
+  100% {
+    opacity: 0;
+    scale: 3;
+  }
+}
+
+@keyframes workTitle {
+  0% {
+    opacity: 1;
+    scale: 5;
+    translate: -50% 75vh;
+  }
+  50% {
+    opacity: 1;
+    scale: 1;
+    translate: -50% 0;
+  }
+  100% {
+    opacity: 1;
+    scale: 1;
+    translate: -50% -75vh;
+  }
+}
+
+@keyframes workArc {
+  0% {
+    opacity: 1;
+    offset-distance: 25%;
+  }
+  100% {
+    opacity: 1;
+    offset-distance: 75%;
+  }
+}
+
+@keyframes logoDraw {
+  0% {
+    stroke-dashoffset: 100;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes hideLogo {
+  0% {
+    scale: 1;
+  }
+  100% {
+    scale: 0.4;
+  }
+}
+
+@keyframes nameShow {
+  0%,100%,
+  40%,60% {
+    opacity: 0;
+  }
+  45%,55% {
+    opacity: 1;
+  }
+}
+
+@keyframes contactTitle {
+  0% {
+    translate: 0 40vh;
+    transform: skewY(0.05turn);
+  }
+  100% {
+    translate: 0 0;
+  }
+}
+
+@keyframes contactLink {
+  0% {
+    translate: -2rem -50vh;
+  }
+  90% {
+    translate: 0.1rem 0.2rem;
+  }
+  100% {
+    translate: 0 0;
+  }
+}
+
+@keyframes scrollShow {
+  0% {
+    translate: -50% 20vh;
+  }
+  100% {
+    translate: -50% 0;
+  }
+}

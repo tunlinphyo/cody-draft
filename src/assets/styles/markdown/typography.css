@@ -1,0 +1,27 @@
+h1,
+h2,
+h3 {
+  line-height: 1.15;
+}
+
+h1 {
+  margin: 0 0 24px;
+  font-size: 2.75rem;
+}
+
+h2 {
+  margin-top: 44px;
+}
+
+a {
+  color: var(--accent);
+}
+
+code {
+  border-radius: 4px;
+  background: oklch(from CanvasText l c h / 0.2);
+  color: var(--accent);
+  padding: 0.12em 0.28em;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 0.92em;
+}

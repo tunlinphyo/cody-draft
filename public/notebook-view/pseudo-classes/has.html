@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>:has()</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+  href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap"
+  rel="stylesheet"
+  fetchpriority="high">
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&icon_names=progress_activity&display=swap">
+<style>
+:root {
+  color-scheme: light dark;
+  interpolate-size: allow-keywords;
+
+  font-family: "Google Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 100%;
+
+  --accent: light-dark(orangered, chartreuse);
+  --surface: light-dark(
+    Canvas,
+    color-mix(in oklab, Canvas, CanvasText 30%)
+  );
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+:where(html,body) {
+  margin: 0;
+  padding: 0;
+  background-color: Canvas;
+  color: CanvasText;
+
+  /* overscroll-behavior-block: none; */
+}
+
+:where(header) {
+  width: 100%;
+  height: 4rem;
+  background-color: oklch(from Canvas l c h / 0.5);
+  backdrop-filter: blur(5px);
+  border-bottom: 2px solid Canvas;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-inline: 1rem;
+
+  position: sticky;
+  z-index: 9;
+  top: 0;
+
+  :is(h1) {
+    all: unset;
+    font-size: 1.2rem;
+  }
+}
+
+:where(fieldset) {
+  all: unset;
+
+  display: grid;
+  grid-auto-flow: column;
+  gap: 0.75rem;
+
+  & label {
+    display: grid;
+    place-content: center;
+    width: 1.25rem;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    cursor: pointer;
+
+    &:has([value="pink"]) {
+      background-color: light-dark(deeppink, hotpink);
+    }
+    &:has([value="blue"]) {
+      background-color: light-dark(deepskyblue, skyblue);
+    }
+    &:has([value="green"]) {
+      background-color: light-dark(forestgreen, darkseagreen);
+    }
+
+    &:has(:checked) {
+      outline: 2px solid currentColor;
+      outline-offset: 2px;
+    }
+
+    & > * {
+      cursor: pointer;
+      opacity: 0;
+    }
+  }
+}
+
+:where(main) {
+  padding: 1rem;
+}
+
+:where(section) {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.2rem;
+}
+
+section:has(.featured) {
+  grid-template-columns: 2fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  margin-block-end: 2rem;
+}
+
+:where(article) {
+  padding: 0.2rem;
+  background-color: var(--surface);
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+
+  border-radius: 15px;
+  @supports(corner-shape: squircle) {
+    border-radius: 30px;
+    corner-shape: squircle;
+  }
+  &.featured {
+    grid-row: span 2;
+    background-color: var(--accent);
+    color: Canvas;
+
+    .about {
+      padding: 0.5rem;
+
+      :is(h2,p) {
+        padding: 0;
+        margin: 0;
+      }
+
+      :is(p) {
+        font-size: 0.8rem;
+      }
+    }
+  }
+  :is(img) {
+    display: grid;
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+
+    border-radius: 12px;
+    @supports(corner-shape: squircle) {
+      border-radius: 24px;
+      corner-shape: squircle;
+    }
+  }
+  :is(h2) {
+    all: unset;
+    display: block;
+    padding: 0.5rem;
+  }
+}
+
+:where([data-layer]) {
+  *, *::before, *::after {
+    outline: 1px dotted hotpink;
+  }
+}
+
+:where(html) {
+  --ease-sine-in: cubic-bezier(.47,0,.745,.715);
+  --ease-sine-in-out: cubic-bezier(.445,.05,.55,.95);
+  --ease-sine-out: cubic-bezier(.39,.575,.565,1);
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>:has()</h1>
+  <fieldset>
+    <label>
+      <input type="radio" name="theme" value="pink" checked>
+    </label>
+    <label>
+      <input type="radio" name="theme" value="blue">
+    </label>
+    <label>
+      <input type="radio" name="theme" value="green">
+    </label>
+  </fieldset>
+</header>
+<main>
+  <section>
+    <article class="featured">
+      <img class="product-image" src="https://loremflickr.com/480/480/nature?lock=1" alt="Forest Trail photo" onerror="this.src='https://picsum.photos/seed/nature-1/480/480'">
+      <div class="about">
+        <h2>Forest Trail</h2>
+        <p>Confirm the states are readable, keyboard friendly, and resilient across narrow layouts.</p>
+      </div>
+    </article>
+    <article>
+      <img class="product-image" src="https://loremflickr.com/480/480/nature?lock=2" alt="Mountain Lake photo" onerror="this.src='https://picsum.photos/seed/nature-2/480/480'">
+      <h2>Mountain Lake</h2>
+    </article>
+    <article>
+      <img class="product-image" src="https://loremflickr.com/480/480/nature?lock=3" alt="Waterfall Mist photo" onerror="this.src='https://picsum.photos/seed/nature-3/480/480'">
+      <h2>Waterfall Mist</h2>
+    </article>
+  </section>
+  <section>
+    <article>
+      <img class="product-image" src="https://loremflickr.com/480/480/nature?lock=4" alt="Desert Dunes photo" onerror="this.src='https://picsum.photos/seed/nature-4/480/480'">
+      <h2>Desert Dunes</h2>
+    </article>
+    <article>
+      <img class="product-image" src="https://loremflickr.com/480/480/nature?lock=5" alt="Wild Meadow photo" onerror="this.src='https://picsum.photos/seed/nature-5/480/480'">
+      <h2>Wild Meadow</h2>
+    </article>
+    <article>
+      <img class="product-image" src="https://loremflickr.com/480/480/nature?lock=6" alt="River Bend photo" onerror="this.src='https://picsum.photos/seed/nature-6/480/480'">
+      <h2>River Bend</h2>
+    </article>
+  </section>
+</main>
+<script>
+function themePicker() {
+  const fieldset = document.querySelector("fieldset")
+  const root = document.documentElement
+
+  const setAccent = (value) => {
+    let theme = value
+    if (value === 'pink') theme = 'light-dark(deeppink, hotpink)'
+    if (value === 'blue') theme = 'light-dark(deepskyblue, skyblue)'
+    if (value === 'green') theme = 'light-dark(forestgreen, darkseagreen)'
+    root.style.setProperty("--accent", theme)
+  }
+
+  fieldset.addEventListener("change", ({ target }) => {
+    if (target.name === "theme") {
+      setAccent(target.value)
+    }
+  })
+
+  setAccent(fieldset.querySelector(":checked").value)
+}
+
+themePicker()
+</script>
+</body>
+</html>

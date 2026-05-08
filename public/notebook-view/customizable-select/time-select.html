@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Time Select</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+  href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap"
+  rel="stylesheet"
+  fetchpriority="high">
+<style>
+:root {
+  color-scheme: light dark;
+
+  font-family: "Google Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 100%;
+
+  --padding-x: 0.5rem;
+  --surface: light-dark(
+    Canvas,
+    color-mix(in oklab, Canvas, CanvasText 30%)
+  );
+  --theme: light-dark(hotpink, skyblue);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+:where(html,body) {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: Canvas;
+  color: CanvasText;
+}
+
+:where(main) {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  gap: 0.5rem;
+}
+
+@supports (appearance: base-select) {
+  select,
+  ::picker(select) {
+    appearance: base-select;
+  }
+
+  :where(select) {
+    border: none;
+    outline: none;
+    padding: 0;
+    width: 2rem;
+    height: 2rem;
+    anchor-name: --select;
+    anchor-scope: --select;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+
+    &:focus-visible {
+      outline: 2px solid ActiveText;
+      outline-offset: -2px;
+    }
+
+    &::picker-icon {
+      display: none;
+    }
+
+    & option {
+      padding: 2px;
+      text-align: center;
+      cursor: pointer;
+
+      container-type: scroll-state;
+      scroll-snap-align: center;
+      /* scroll-snap-stop: always; */
+
+      &::checkmark {
+        display: none;
+      }
+
+      &:checked {
+        background-color: var(--theme);
+        color: Canvas;
+      }
+    }
+  }
+
+  ::picker(select) {
+    outline: none;
+    border: none;
+    background-color: Canvas;
+    padding: 0;
+
+    position-anchor: --select;
+    outline: 2px solid var(--theme);
+
+    width: 2rem;
+    height: 2rem;
+    top: calc(anchor(center) - 1rem);
+    left: calc(anchor(center) - 1rem);
+
+    scroll-snap-type: y mandatory;
+    scrollbar-width: none;
+    scroll-behavior: smooth;
+    overscroll-behavior: none;
+
+    transition: all 0.15s var(--ease-sine-out);
+
+    border-radius: 15px;
+    @supports(corner-shape: squircle) {
+      border-radius: 30px;
+      corner-shape: squircle;
+    }
+
+    @supports (animation-name: test-starting-style) {
+      transition:
+        all 0.3s var(--ease-sine-out),
+        pointer-events 0s linear 0.3s,
+        display 0.3s allow-discrete,
+        overlay 0.3s allow-discrete;
+    }
+  }
+
+  select:open {
+    &::picker(select) {
+      width: 6rem;
+      height: 10rem;
+      top: calc(anchor(center) - 5rem);
+      left: calc(anchor(center) - 3rem);
+      overflow-y: auto;
+      pointer-events: auto;
+
+      @starting-style {
+        width: 2rem;
+        height: 2rem;
+        top: calc(anchor(center) - 1rem);
+        left: calc(anchor(center) - 1rem);
+        pointer-events: none;
+      }
+    }
+  }
+
+  :where(.option-item) {
+    width: 100%;
+    height: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 600;
+    font-size: 1.2rem;
+  }
+}
+
+:where(.time-picker) {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 1.2rem;
+  padding-inline: 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  outline: 2px solid var(--theme);
+
+  border-radius: 15px;
+  @supports(corner-shape: squircle) {
+    border-radius: 30px;
+    corner-shape: squircle;
+  }
+}
+
+/* @supports (container-type: scroll-state) {
+  @container scroll-state(snapped: y) {
+    option {
+      .option-item {
+        opacity: 1;
+        scale: 1;
+      }
+    }
+  }
+} */
+
+:where([data-layer]) {
+  *, *::before, *::after {
+    outline: 1px dotted hotpink;
+  }
+}
+
+:where(html) {
+  --ease-sine-in: cubic-bezier(.47,0,.745,.715);
+  --ease-sine-in-out: cubic-bezier(.445,.05,.55,.95);
+  --ease-sine-out: cubic-bezier(.39,.575,.565,1);
+}
+</style>
+</head>
+<body>
+<main>
+  <div class="time-picker">
+    <select>
+      <button>
+        <selectedcontent></selectedcontent>
+      </button>
+      <option value="01"><div class="option-item">01</div></option>
+      <option value="02"><div class="option-item">02</div></option>
+      <option value="03"><div class="option-item">03</div></option>
+      <option value="04"><div class="option-item">04</div></option>
+      <option value="05"><div class="option-item">05</div></option>
+      <option value="06"><div class="option-item">06</div></option>
+      <option value="07"><div class="option-item">07</div></option>
+      <option value="08"><div class="option-item">08</div></option>
+      <option value="09"><div class="option-item">09</div></option>
+      <option value="10"><div class="option-item">10</div></option>
+      <option value="11"><div class="option-item">11</div></option>
+      <option value="12"><div class="option-item">12</div></option>
+      <option value="13"><div class="option-item">13</div></option>
+      <option value="14"><div class="option-item">14</div></option>
+      <option value="15"><div class="option-item">15</div></option>
+      <option value="16"><div class="option-item">16</div></option>
+      <option value="17"><div class="option-item">17</div></option>
+      <option value="18"><div class="option-item">18</div></option>
+      <option value="19"><div class="option-item">19</div></option>
+      <option value="20"><div class="option-item">20</div></option>
+      <option value="21"><div class="option-item">21</div></option>
+      <option value="22"><div class="option-item">22</div></option>
+      <option value="23"><div class="option-item">23</div></option>
+      <option value="24"><div class="option-item">24</div></option>
+    </select>
+    :
+    <select>
+      <button>
+        <selectedcontent></selectedcontent>
+      </button>
+      <option value="00"><div class="option-item">00</div></option>
+      <option value="05"><div class="option-item">05</div></option>
+      <option value="10"><div class="option-item">10</div></option>
+      <option value="15"><div class="option-item">15</div></option>
+      <option value="20"><div class="option-item">20</div></option>
+      <option value="25"><div class="option-item">25</div></option>
+      <option value="30"><div class="option-item">30</div></option>
+      <option value="35"><div class="option-item">35</div></option>
+      <option value="40"><div class="option-item">40</div></option>
+      <option value="45"><div class="option-item">45</div></option>
+      <option value="50"><div class="option-item">50</div></option>
+      <option value="55"><div class="option-item">55</div></option>
+    </select>
+  </div>
+</main>
+</body>
+</html>
