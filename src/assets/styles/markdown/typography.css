@@ -19,7 +19,7 @@ a {
 
 code {
   border-radius: 4px;
-  background: oklch(from CanvasText l c h / 0.2);
+  background: oklch(from var(--accent) l c h / 0.1);
   color: var(--accent);
   padding: 0.12em 0.28em;
   font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;

@@ -6,10 +6,45 @@ pre {
 
   border-radius: 4px;
 
-  @supports(corner-shape: squircle) {
+  @supports (corner-shape: squircle) {
     border-radius: 40px;
     corner-shape: squircle;
   }
+}
+
+.code-block {
+  position: relative;
+}
+
+.code-header {
+  position: absolute;
+  top: 8px;
+  left: 20px;
+  right: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: oklch(from CanvasText l c h / 0.6);
+  pointer-events: none;
+}
+
+.code-header .language {
+  font-weight: 500;
+}
+
+.code-header .copy-btn {
+  background: none;
+  border: 1px solid oklch(from CanvasText l c h / 0.3);
+  color: inherit;
+  padding: 2px 6px;
+  border-radius: 3px;
+  cursor: pointer;
+  pointer-events: auto;
+  font-size: 11px;
+}
+
+.code-header .copy-btn:hover {
+  background: oklch(from CanvasText l c h / 0.1);
 }
 
 pre code {
@@ -20,6 +55,8 @@ pre code {
 
 pre.shiki {
   padding: 0;
+  padding-top: 20px;
+  font-size: 14px;
 }
 
 pre.shiki code {

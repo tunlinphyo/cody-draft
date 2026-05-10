@@ -42,7 +42,7 @@ This demo combines CSS anchor positioning with the `commandfor` / `command="--to
 
 <themed-iframe src="/notebook-view/anchor/position-anchor.html" title="position-try-fallbacks" max-width="20rem" height="24rem"></themed-iframe>
 
-```css:line-numbers{2,6,7,11,34,40}
+```css
 :where(button) {
   anchor-name: --popover;
 }
@@ -62,7 +62,7 @@ This demo combines CSS anchor positioning with the `commandfor` / `command="--to
   }
   &:popover-open .popover-content {
     scale: 1;
-    transition: all .6s var(--ease-spring-2);
+    transition: all 0.6s var(--ease-spring-2);
 
     @starting-style {
       scale: 0;

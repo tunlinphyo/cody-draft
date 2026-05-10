@@ -20,21 +20,25 @@ function parseCodeFenceInfo(info: string) {
 
 function fallbackCodeBlock(code: string, language: string) {
   const languageClass = language ? ` class="language-${escapeHtml(language)}"` : "";
+  const languageDisplay = language === "text" ? "" : language;
+  const headerHtml = languageDisplay
+    ? `<div class="code-header"><span class="language">${escapeHtml(languageDisplay)}</span><button class="copy-btn" data-code="${escapeHtml(code)}">Copy</button></div>`
+    : `<div class="code-header"><button class="copy-btn" data-code="${escapeHtml(code)}">Copy</button></div>`;
 
-  return `<pre><code${languageClass}>${escapeHtml(code)}</code></pre>`;
+  return `<div class="code-block">${headerHtml}<pre><code${languageClass}>${escapeHtml(code)}</code></pre></div>`;
 }
 
 export async function renderCodeBlock(code: string, info: string) {
   const { language, lineNumbers, meta } = parseCodeFenceInfo(info);
 
   try {
-    return await codeToHtml(code, {
+    const html = await codeToHtml(code, {
       lang: language,
       meta: { __raw: meta },
       defaultColor: "light-dark()",
       themes: {
-        dark: "ayu-dark",
-        light: "ayu-light",
+        dark: "monokai",
+        light: "horizon-bright",
       },
       transformers: [
         transformerMetaHighlight(),
@@ -56,6 +60,13 @@ export async function renderCodeBlock(code: string, info: string) {
         },
       ],
     });
+
+    const languageDisplay = language === "text" ? "" : language;
+    const headerHtml = languageDisplay
+      ? `<div class="code-header"><span class="language">${escapeHtml(languageDisplay)}</span><button class="copy-btn" data-code="${escapeHtml(code)}">Copy</button></div>`
+      : `<div class="code-header"><button class="copy-btn" data-code="${escapeHtml(code)}">Copy</button></div>`;
+
+    return `<div class="code-block">${headerHtml}${html}</div>`;
   } catch {
     return fallbackCodeBlock(code, language);
   }
