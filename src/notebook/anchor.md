@@ -213,7 +213,7 @@ Tested in Chrome 146.0.7680.178.
 }
 ```
 
-## transition between anchor-name
+## anchor-name transition
 
 <themed-iframe src="/notebook-view/anchor/anchor-hover.html" title="transition between anchor-name" max-width="24rem" height="20rem"></themed-iframe>
 

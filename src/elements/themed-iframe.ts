@@ -165,8 +165,8 @@ export class ThemedIframe extends HTMLElement {
 
   #syncAttributes() {
     if (this.#frame) {
-      this.#frame.style.width = "100%";
-      this.#frame.style.maxWidth = this.getAttribute("max-width") || "32rem";
+      this.#frame.style.width = this.getAttribute("max-width") || "32rem";
+      this.#frame.style.maxWidth = "100%";
       this.#frame.style.height = this.getAttribute("height") || "34rem";
     }
 

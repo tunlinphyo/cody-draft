@@ -17,7 +17,12 @@
 
   <body>
     <!-- prettier-ignore -->
-    <main>{{content}}</main>
+    <main>
+    <aside>
+      <ul>{{index}}</ul>
+    </aside>
+    <article>{{content}}</article>
+  </main>
     <script type="module" src="/src/markdown.ts"></script>
   </body>
 </html>

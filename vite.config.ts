@@ -2,6 +2,10 @@ import { defineConfig } from "vite-plus";
 import { markdownPagesPlugin } from "./markdown/pages.ts";
 
 export default defineConfig({
+  server: {
+    host: true,
+    port: 1234,
+  },
   plugins: [markdownPagesPlugin()],
   staged: {
     "*": "vp check --fix",

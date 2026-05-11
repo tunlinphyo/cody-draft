@@ -4,7 +4,7 @@
   --accent: light-dark(orangered, chartreuse);
 
   color: CanvasText;
-  background: Canvas;
+  background: color-mix(in oklab, Canvas, CanvasText 3%);
 
   font-family: "Google Sans", sans-serif;
   font-optical-sizing: auto;
@@ -18,9 +18,8 @@ body {
 }
 
 main {
-  width: min(760px, calc(100% - 32px));
-  margin: 0 auto;
-  padding: 64px 0 88px;
+  display: grid;
+  grid-template-columns: 1fr minmax(min(90%, 640px), 1fr) 1fr;
 }
 
 hr {

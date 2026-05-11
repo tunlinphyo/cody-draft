@@ -7,7 +7,13 @@ import { isHeadingStart, renderHeading } from "./heading.ts";
 import { isHtmlBlockStart, renderHtmlBlock } from "./html.ts";
 import { isListStart, renderList } from "./list.ts";
 import { renderParagraph } from "./paragraph.ts";
-import { escapeHtml, isIgnoredMarkdownFile, titleFromMarkdown } from "./util.ts";
+import {
+  escapeHtml,
+  isIgnoredMarkdownFile,
+  slugFromHeading,
+  stripInlineMarkdown,
+  titleFromMarkdown,
+} from "./util.ts";
 
 const rootDir = process.cwd();
 const contentDir = join(rootDir, "src");
@@ -27,6 +33,32 @@ function isParagraphBoundary(line: string) {
     isListStart(line) ||
     isHtmlBlockStart(line)
   );
+}
+
+function renderHeadingIndex(markdown: string) {
+  const items: string[] = [];
+  const lines = markdown.replace(/\r\n?/g, "\n").split("\n");
+  let inCodeFence = false;
+
+  for (const line of lines) {
+    if (isCodeFenceStart(line)) {
+      inCodeFence = !inCodeFence;
+      continue;
+    }
+
+    if (inCodeFence) {
+      continue;
+    }
+
+    const heading = line.match(/^##\s+(.+)$/);
+
+    if (heading) {
+      const text = stripInlineMarkdown(heading[1]);
+      items.push(`<li><a href="#${slugFromHeading(heading[1])}">${escapeHtml(text)}</a></li>`);
+    }
+  }
+
+  return items.join("");
 }
 
 async function renderMarkdown(markdown: string) {
@@ -93,9 +125,13 @@ async function createPage(markdownPath: string) {
   const template = readFileSync(templatePath, "utf8");
   const slug = basename(markdownPath, extname(markdownPath));
   const title = titleFromMarkdown(markdown, slug);
+  const index = renderHeadingIndex(markdown);
   const content = await renderMarkdown(markdown);
 
-  return template.replaceAll("{{title}}", escapeHtml(title)).replaceAll("{{content}}", content);
+  return template
+    .replaceAll("{{title}}", escapeHtml(title))
+    .replaceAll("{{index}}", index)
+    .replaceAll("{{content}}", content);
 }
 
 function htmlPathForMarkdown(markdownPath: string) {

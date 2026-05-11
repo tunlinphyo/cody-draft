@@ -4,6 +4,10 @@
 
 <feature-status featureId="scroll-driven-animations"></feature-status>
 
+## Test
+
+<live-code></live-code>
+
 ## Timeline
 
 This demo builds a scroll-driven one-page portfolio with fixed layers that animate as the page moves. It uses `animation-timeline: scroll()` with different `animation-range` values to sync each section to scroll progress, and `scroll-marker-group` to place the marker navigation generated from `::scroll-marker`. Everything is done with CSS only, with no JavaScript.
@@ -34,7 +38,7 @@ References: [Chrome Developer](https://developer.chrome.com/docs/css-ui/scroll-d
 Always declare `animation-timeline` after `animation`; otherwise, it will be overwritten.
 :::
 
-```css:line-numbers{5,6}
+```css
 :where(.full-range) {
   transform-origin: left center;
   scale: 0 1;
@@ -44,8 +48,12 @@ Always declare `animation-timeline` after `animation`; otherwise, it will be ove
 }
 
 @keyframes scale-x {
-  0% { scale: 0 1; }
-  100% { scale: 1 1; }
+  0% {
+    scale: 0 1;
+  }
+  100% {
+    scale: 1 1;
+  }
 }
 ```
 

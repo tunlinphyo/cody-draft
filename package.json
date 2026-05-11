@@ -10,6 +10,7 @@
     "prepare": "vp config"
   },
   "dependencies": {
+    "ace-builds": "^1.44.0",
     "baseline-status": "^1.1.1"
   },
   "devDependencies": {

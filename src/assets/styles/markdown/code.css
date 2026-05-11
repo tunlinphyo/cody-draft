@@ -3,6 +3,7 @@ pre {
   border: 1px solid oklch(from CanvasText l c h / 0.2);
   background: Canvas;
   padding: 20px;
+  margin-inline: -20px;
 
   border-radius: 4px;
 
