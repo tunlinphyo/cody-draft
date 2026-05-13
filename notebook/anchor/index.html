@@ -1,22 +1,23 @@
 <!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>anchor()</title>
 
-<head>
-  <meta charset="UTF-8" />
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>anchor()</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap"
+      rel="stylesheet"
+      fetchpriority="high"
+    />
+  </head>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap"
-    rel="stylesheet" fetchpriority="high" />
-</head>
-
-<body>
-  <!-- prettier-ignore -->
-  <main>
+  <body>
+    <!-- prettier-ignore -->
+    <main>
     <aside>
       <ul><li><a href="#card-test">Card Test</a></li><li><a href="#anchor-demo">Anchor Demo</a></li><li><a href="#position-try-fallbacks">position-try-fallbacks</a></li><li><a href="#anchor-scope">anchor-scope</a></li><li><a href="#anchor-name-transition">anchor-name transition</a></li><li><a href="#anchor-card">anchor-card</a></li></ul>
     </aside>
@@ -256,7 +257,6 @@ main.addEventListener('anchorcard:open', ({ detail }) =&gt; {
   title.textContent = content
 })">Copy</button></div><pre class="shiki shiki-themes monokai horizon-bright vp-code line-numbers" style="background-color:light-dark(#FDF0ED, #272822);--shiki-dark-bg:#272822;--shiki-light-bg:#FDF0ED;color:light-dark(#333333, #F8F8F2);--shiki-dark:#F8F8F2;--shiki-light:#333333" tabindex="0"><code class="language-js"><span class="line" data-line="1"><span style="color:light-dark(#8A31B9, #66D9EF);--shiki-dark:#66D9EF;--shiki-dark-font-style:italic;--shiki-light:#8A31B9;--shiki-light-font-style:inherit">const</span><span style="color:light-dark(#DA103F, #F8F8F2);--shiki-dark:#F8F8F2;--shiki-light:#DA103F"> main</span><span style="color:light-dark(#333333, #F92672);--shiki-dark:#F92672;--shiki-light:#333333"> =</span><span style="color:light-dark(#DA103F, #F8F8F2);--shiki-dark:#F8F8F2;--shiki-light:#DA103F"> document</span><span style="color:light-dark(#333333, #F8F8F2);--shiki-dark:#F8F8F2;--shiki-light:#333333">.</span><span style="color:light-dark(#1D8991, #A6E22E);--shiki-dark:#A6E22E;--shiki-light:#1D8991">querySelector</span><span style="color:light-dark(#333333, #F8F8F2);--shiki-dark:#F8F8F2;--shiki-light:#333333">(</span><span style="color:light-dark(#F6661E, #E6DB74);--shiki-dark:#E6DB74;--shiki-light:#F6661E">'main'</span><span style="color:light-dark(#333333, #F8F8F2);--shiki-dark:#F8F8F2;--shiki-light:#333333">)</span></span><span class="line" data-line="2"><span style="color:light-dark(#DA103F, #F8F8F2);--shiki-dark:#F8F8F2;--shiki-light:#DA103F">main</span><span style="color:light-dark(#333333, #F8F8F2);--shiki-dark:#F8F8F2;--shiki-light:#333333">.</span><span style="color:light-dark(#1D8991, #A6E22E);--shiki-dark:#A6E22E;--shiki-light:#1D8991">addEventListener</span><span style="color:light-dark(#333333, #F8F8F2);--shiki-dark:#F8F8F2;--shiki-light:#333333">(</span><span style="color:light-dark(#F6661E, #E6DB74);--shiki-dark:#E6DB74;--shiki-light:#F6661E">'anchorcard:open'</span><span style="color:light-dark(#333333, #F8F8F2);--shiki-dark:#F8F8F2;--shiki-light:#333333">, ({ </span><span style="color:light-dark(#DA103F, #FD971F);--shiki-dark:#FD971F;--shiki-dark-font-style:italic;--shiki-light:#DA103F;--shiki-light-font-style:italic">detail</span><span style="color:light-dark(#333333, #F8F8F2);--shiki-dark:#F8F8F2;--shiki-light:#333333"> }) </span><span style="color:light-dark(#8A31B9, #66D9EF);--shiki-dark:#66D9EF;--shiki-dark-font-style:italic;--shiki-light:#8A31B9;--shiki-light-font-style:inherit">=></span><span style="color:light-dark(#333333, #F8F8F2);--shiki-dark:#F8F8F2;--shiki-light:#333333"> {</span></span><span class="line" data-line="3"><span style="color:light-dark(#8A31B9, #66D9EF);--shiki-dark:#66D9EF;--shiki-dark-font-style:italic;--shiki-light:#8A31B9;--shiki-light-font-style:inherit">  const</span><span style="color:light-dark(#DA103F, #F8F8F2);--shiki-dark:#F8F8F2;--shiki-light:#DA103F"> item</span><span style="color:light-dark(#333333, #F92672);--shiki-dark:#F92672;--shiki-light:#333333"> =</span><span style="color:light-dark(#DA103F, #F8F8F2);--shiki-dark:#F8F8F2;--shiki-light:#DA103F"> detail</span><span style="color:light-dark(#333333, #F8F8F2);--shiki-dark:#F8F8F2;--shiki-light:#333333">.</span><span style="color:light-dark(#DA103F, #F8F8F2);--shiki-dark:#F8F8F2;--shiki-light:#DA103F">currentItem</span></span><span class="line" data-line="4"><span style="color:light-dark(#8A31B9, #66D9EF);--shiki-dark:#66D9EF;--shiki-dark-font-style:italic;--shiki-light:#8A31B9;--shiki-light-font-style:inherit">  const</span><span style="color:light-dark(#DA103F, #F8F8F2);--shiki-dark:#F8F8F2;--shiki-light:#DA103F"> target</span><span style="color:light-dark(#333333, #F92672);--shiki-dark:#F92672;--shiki-light:#333333"> =</span><span style="color:light-dark(#DA103F, #F8F8F2);--shiki-dark:#F8F8F2;--shiki-light:#DA103F"> detail</span><span style="color:light-dark(#333333, #F8F8F2);--shiki-dark:#F8F8F2;--shiki-light:#333333">.</span><span style="color:light-dark(#DA103F, #F8F8F2);--shiki-dark:#F8F8F2;--shiki-light:#DA103F">target</span></span><span class="line" data-line="5"><span style="color:light-dark(#8A31B9, #66D9EF);--shiki-dark:#66D9EF;--shiki-dark-font-style:italic;--shiki-light:#8A31B9;--shiki-light-font-style:inherit">  const</span><span style="color:light-dark(#DA103F, #F8F8F2);--shiki-dark:#F8F8F2;--shiki-light:#DA103F"> content</span><span style="color:light-dark(#333333, #F92672);--shiki-dark:#F92672;--shiki-light:#333333"> =</span><span style="color:light-dark(#DA103F, #F8F8F2);--shiki-dark:#F8F8F2;--shiki-light:#DA103F"> item</span><span style="color:light-dark(#333333, #F8F8F2);--shiki-dark:#F8F8F2;--shiki-light:#333333">.</span><span style="color:light-dark(#DA103F, #F8F8F2);--shiki-dark:#F8F8F2;--shiki-light:#DA103F">textContent</span><span style="color:light-dark(#333333, #F8F8F2);--shiki-dark:#F8F8F2;--shiki-light:#333333">.</span><span style="color:light-dark(#1D8991, #A6E22E);--shiki-dark:#A6E22E;--shiki-light:#1D8991">trim</span><span style="color:light-dark(#333333, #F8F8F2);--shiki-dark:#F8F8F2;--shiki-light:#333333">()</span></span><span class="line" data-line="6"><span style="color:light-dark(#8A31B9, #66D9EF);--shiki-dark:#66D9EF;--shiki-dark-font-style:italic;--shiki-light:#8A31B9;--shiki-light-font-style:inherit">  const</span><span style="color:light-dark(#DA103F, #F8F8F2);--shiki-dark:#F8F8F2;--shiki-light:#DA103F"> title</span><span style="color:light-dark(#333333, #F92672);--shiki-dark:#F92672;--shiki-light:#333333"> =</span><span style="color:light-dark(#DA103F, #F8F8F2);--shiki-dark:#F8F8F2;--shiki-light:#DA103F"> target</span><span style="color:light-dark(#333333, #F8F8F2);--shiki-dark:#F8F8F2;--shiki-light:#333333">.</span><span style="color:light-dark(#1D8991, #A6E22E);--shiki-dark:#A6E22E;--shiki-light:#1D8991">querySelector</span><span style="color:light-dark(#333333, #F8F8F2);--shiki-dark:#F8F8F2;--shiki-light:#333333">(</span><span style="color:light-dark(#F6661E, #E6DB74);--shiki-dark:#E6DB74;--shiki-light:#F6661E">'#title'</span><span style="color:light-dark(#333333, #F8F8F2);--shiki-dark:#F8F8F2;--shiki-light:#333333">)</span></span><span class="line" data-line="7"></span><span class="line" data-line="8"><span style="color:light-dark(#DA103F, #F8F8F2);--shiki-dark:#F8F8F2;--shiki-light:#DA103F">  title</span><span style="color:light-dark(#333333, #F8F8F2);--shiki-dark:#F8F8F2;--shiki-light:#333333">.</span><span style="color:light-dark(#DA103F, #F8F8F2);--shiki-dark:#F8F8F2;--shiki-light:#DA103F">textContent</span><span style="color:light-dark(#333333, #F92672);--shiki-dark:#F92672;--shiki-light:#333333"> =</span><span style="color:light-dark(#DA103F, #F8F8F2);--shiki-dark:#F8F8F2;--shiki-light:#DA103F"> content</span></span><span class="line" data-line="9"><span style="color:light-dark(#333333, #F8F8F2);--shiki-dark:#F8F8F2;--shiki-light:#333333">})</span></span></code></pre></div></article>
   </main>
-  <script type="module" src="/src/markdown.ts"></script>
-</body>
-
+    <script type="module" src="/src/markdown.ts"></script>
+  </body>
 </html>

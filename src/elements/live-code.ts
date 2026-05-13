@@ -1,7 +1,9 @@
 import * as ace from "ace-builds/src-noconflict/ace";
 import "ace-builds/src-noconflict/mode-css";
 import "ace-builds/src-noconflict/mode-html";
+import "ace-builds/src-noconflict/mode-javascript";
 import "ace-builds/src-noconflict/theme-tomorrow_night_eighties";
+import { html, LitElement, unsafeCSS } from "lit";
 import liveCodeCss from "./styles/live-code.css?raw";
 import utilsCss from "./styles/utils.css?raw";
 
@@ -13,162 +15,148 @@ const languageLabels: Record<LiveCodeLanguage, string> = {
   css: "CSS",
   js: "JS",
 };
-const defaultCode: Record<LiveCodeLanguage, string> = {
-  html: `<ul class="row">
-  <li class="item"></li>
-  <li class="raised item"></li>
-  <li class="item"></li>
-</ul>`,
-  css: `.row {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.item {
-  width: 56px;
-  height: 56px;
-  border: 3px solid #111;
-  border-radius: 6px;
-  background: white;
-}
-
-.raised.item {
-  z-index: 2;
-  background: hotpink;
-}`,
-  js: ``,
+const editorModes: Record<LiveCodeLanguage, string> = {
+  html: "html",
+  css: "css",
+  js: "javascript",
 };
+const emptyCode: Record<LiveCodeLanguage, string> = { html: "", css: "", js: "" };
 const aceTheme = ace.require("ace/theme/tomorrow_night_eighties") as { cssText?: string };
-const shadowStyle = new CSSStyleSheet();
-shadowStyle.replaceSync(`${utilsCss}\n${liveCodeCss}\n${aceTheme.cssText ?? ""}`);
-const template = document.createElement("template");
-template.innerHTML = `
-  <section part="root">
-    <header part="header">
-      <div part="title">Code Playground</div>
-      <div part="header-actions">
-        <button type="button" part="icon-button" data-action="edit" aria-label="Show editor" title="Show editor">
-          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M12 20h9"></path>
-            <path d="m16.5 3.5 4 4L7 21H3v-4L16.5 3.5Z"></path>
-          </svg>
-        </button>
-        <button type="button" part="icon-button" data-action="toggle-preview" aria-label="Toggle editor" title="Toggle editor">
-          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M19 20V4"></path>
-            <path d="m14 7-5 5 5 5"></path>
-            <path d="M5 5v14"></path>
-          </svg>
-        </button>
-      </div>
-    </header>
-    <div part="body">
-      <section part="editor-panel">
-        <div part="tabs" role="tablist" aria-label="Code language"></div>
-        <div part="editor"></div>
-      </section>
-      <section part="preview-panel">
-        <header part="preview-header">
-          <div part="preview-title">RESULT</div>
-          <div part="preview-actions">
-            <button type="button" part="icon-button" data-action="refresh" aria-label="Refresh preview" title="Refresh preview">
-              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M21 12a9 9 0 0 1-15.5 6.2"></path>
-                <path d="M3 12A9 9 0 0 1 18.5 5.8"></path>
-                <path d="M18 2v4h4"></path>
-                <path d="M6 22v-4H2"></path>
-              </svg>
-            </button>
-          </div>
-        </header>
-        <div part="preview-wrap">
-          <iframe part="preview" title="Live code result"></iframe>
-        </div>
-      </section>
-    </div>
-  </section>
-`;
 
-export class LiveCode extends HTMLElement {
-  static observedAttributes = ["height", "title"];
+export class LiveCode extends LitElement {
+  static properties = {
+    cssFile: { attribute: "css-file", type: String },
+    height: { type: String },
+    htmlFile: { attribute: "html-file", type: String },
+    jsFile: { attribute: "js-file", type: String },
+    title: { type: String },
+  };
 
-  readonly #root = this.attachShadow({ mode: "open" });
+  static styles = unsafeCSS(`${utilsCss}\n${liveCodeCss}\n${aceTheme.cssText ?? ""}`);
+
   #activeLanguage: LiveCodeLanguage = "html";
-  #code: Record<LiveCodeLanguage, string> = { ...defaultCode };
+  #code: Record<LiveCodeLanguage, string> = { ...emptyCode };
   #editor?: ace.Ace.Editor;
   #editorElement?: HTMLDivElement;
+  #initialCodeKey?: string;
   #preview?: HTMLIFrameElement;
   #previewTimer = 0;
-  #tabs?: HTMLDivElement;
 
-  constructor() {
-    super();
-    this.#root.adoptedStyleSheets = [shadowStyle];
-  }
+  declare cssFile: string;
+  declare height: string;
+  declare htmlFile: string;
+  declare jsFile: string;
+  declare title: string;
 
   connectedCallback() {
-    if (!this.#root.hasChildNodes()) {
-      this.#readInitialCode();
-      this.#render();
-    }
+    super.connectedCallback();
+    void this.#loadInitialCode();
+  }
 
-    this.#syncAttributes();
+  firstUpdated() {
+    this.#editorElement = this.renderRoot.querySelector('[part="editor"]') ?? undefined;
+    this.#preview = this.renderRoot.querySelector('[part="preview"]') ?? undefined;
+    this.#setupEditor();
     this.#updatePreview();
   }
 
+  updated(changedProperties: Map<PropertyKey, unknown>) {
+    if (
+      changedProperties.has("htmlFile") ||
+      changedProperties.has("cssFile") ||
+      changedProperties.has("jsFile")
+    ) {
+      void this.#loadInitialCode();
+    }
+  }
+
   disconnectedCallback() {
+    super.disconnectedCallback();
     window.clearTimeout(this.#previewTimer);
     this.#editor?.destroy();
     this.#editor = undefined;
   }
 
-  attributeChangedCallback() {
-    if (this.#root.hasChildNodes()) {
-      this.#syncAttributes();
-    }
-  }
-
-  #render() {
-    this.#root.replaceChildren(template.content.cloneNode(true));
-
-    this.#editorElement = this.#root.querySelector('[part="editor"]') ?? undefined;
-    this.#preview = this.#root.querySelector('[part="preview"]') ?? undefined;
-    this.#tabs = this.#root.querySelector('[part="tabs"]') ?? undefined;
-
-    this.#root
-      .querySelector('[data-action="refresh"]')
-      ?.addEventListener("click", () => this.#updatePreview());
-    this.#root
-      .querySelector('[data-action="edit"]')
-      ?.addEventListener("click", () => this.#showEditor());
-    this.#root
-      .querySelector('[data-action="toggle-preview"]')
-      ?.addEventListener("click", () => this.#toggleEditor());
-
-    this.#renderTabs();
-    this.#setupEditor();
-  }
-
-  #renderTabs() {
-    this.#tabs?.replaceChildren(
-      ...languages.map((language) => {
-        const tab = document.createElement("button");
-        tab.type = "button";
-        tab.part.add("tab");
-        tab.id = `${language}-tab`;
-        tab.setAttribute("role", "tab");
-        tab.setAttribute("aria-selected", String(language === this.#activeLanguage));
-        tab.textContent = languageLabels[language];
-        tab.addEventListener("click", () => this.#selectLanguage(language));
-        return tab;
-      }),
-    );
+  render() {
+    return html`
+      <section part="root" style=${this.height ? `--live-code-height: ${this.height}` : ""}>
+        <header part="header">
+          <div part="title">${this.title || "Code Playground"}</div>
+          <div part="header-actions">
+            <button
+              type="button"
+              part="icon-button"
+              @click=${() => this.#showEditor()}
+              aria-label="Show editor"
+              title="Show editor"
+            >
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M12 20h9"></path>
+                <path d="m16.5 3.5 4 4L7 21H3v-4L16.5 3.5Z"></path>
+              </svg>
+            </button>
+            <button
+              type="button"
+              part="icon-button"
+              @click=${() => this.#toggleEditor()}
+              aria-label="Toggle editor"
+              title="Toggle editor"
+            >
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M19 20V4"></path>
+                <path d="m14 7-5 5 5 5"></path>
+                <path d="M5 5v14"></path>
+              </svg>
+            </button>
+          </div>
+        </header>
+        <div part="body">
+          <section part="editor-panel">
+            <div part="tabs" role="tablist" aria-label="Code language">
+              ${this.#visibleLanguages.map(
+                (language) => html`
+                  <button
+                    type="button"
+                    part="tab"
+                    id=${`${language}-tab`}
+                    role="tab"
+                    aria-selected=${String(language === this.#activeLanguage)}
+                    @click=${() => this.#selectLanguage(language)}
+                  >
+                    ${languageLabels[language]}
+                  </button>
+                `,
+              )}
+            </div>
+            <div part="editor"></div>
+          </section>
+          <section part="preview-panel">
+            <header part="preview-header">
+              <div part="preview-title">RESULT</div>
+              <div part="preview-actions">
+                <button
+                  type="button"
+                  part="icon-button"
+                  @click=${() => this.#updatePreview()}
+                  aria-label="Refresh preview"
+                  title="Refresh preview"
+                >
+                  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M21 12a9 9 0 0 1-15.5 6.2"></path>
+                    <path d="M3 12A9 9 0 0 1 18.5 5.8"></path>
+                    <path d="M18 2v4h4"></path>
+                    <path d="M6 22v-4H2"></path>
+                  </svg>
+                </button>
+              </div>
+            </header>
+            <div part="preview-wrap">
+              <iframe part="preview" title="Live code result"></iframe>
+            </div>
+          </section>
+        </div>
+      </section>
+    `;
   }
 
   #setupEditor() {
@@ -198,14 +186,14 @@ export class LiveCode extends HTMLElement {
   }
 
   #selectLanguage(language: LiveCodeLanguage) {
-    if (language === this.#activeLanguage) {
+    if (language === this.#activeLanguage || !this.#visibleLanguages.includes(language)) {
       return;
     }
 
     this.#saveActiveCode();
     this.#activeLanguage = language;
     this.#syncEditorSession();
-    this.#renderTabs();
+    this.requestUpdate();
     this.#editor?.focus();
   }
 
@@ -214,7 +202,7 @@ export class LiveCode extends HTMLElement {
       return;
     }
 
-    this.#editor.session.setMode(`ace/mode/${this.#activeLanguage}`);
+    this.#editor.session.setMode(`ace/mode/${editorModes[this.#activeLanguage]}`);
     this.#editor.setValue(this.#code[this.#activeLanguage], -1);
   }
 
@@ -239,7 +227,11 @@ export class LiveCode extends HTMLElement {
       return;
     }
 
-    this.#preview.srcdoc = `<!doctype html>
+    this.#preview.srcdoc = this.#buildPreviewDocument();
+  }
+
+  #buildPreviewDocument() {
+    return `<!doctype html>
 <html>
   <head>
     <meta charset="utf-8">
@@ -247,6 +239,7 @@ export class LiveCode extends HTMLElement {
     <style>${this.#code.css}</style>
   </head>
   <body>${this.#code.html}</body>
+  <script>${this.#code.js.replaceAll("</script", "<\\/script")}</script>
 </html>`;
   }
 
@@ -261,28 +254,71 @@ export class LiveCode extends HTMLElement {
     this.#editor?.resize();
   }
 
-  #syncAttributes() {
-    const title = this.getAttribute("title");
-    const height = this.getAttribute("height");
-    const titleElement = this.#root.querySelector('[part="title"]');
-    const root = this.#root.querySelector<HTMLElement>('[part="root"]');
+  async #loadInitialCode() {
+    const key = `${this.htmlFile ?? ""}\n${this.cssFile ?? ""}\n${this.jsFile ?? ""}`;
 
-    if (titleElement) {
-      titleElement.textContent = title || "Code Playground";
+    if (key === this.#initialCodeKey) {
+      return;
     }
 
-    if (root && height) {
-      root.style.setProperty("--live-code-height", height);
-    }
+    this.#initialCodeKey = key;
+    this.#activeLanguage = this.#visibleLanguages.includes(this.#activeLanguage)
+      ? this.#activeLanguage
+      : "html";
+    this.#code = { ...emptyCode, ...this.#readTemplateCode(), ...(await this.#readFileCode()) };
+    this.#syncEditorSession();
+    this.#updatePreview();
   }
 
-  #readInitialCode() {
+  get #visibleLanguages() {
+    return languages.filter((language) => language === "html" || this[`${language}File`]);
+  }
+
+  #readTemplateCode() {
+    const code: Partial<Record<LiveCodeLanguage, string>> = {};
+
     for (const language of languages) {
       const source = this.querySelector<HTMLTemplateElement>(`template[data-lang="${language}"]`);
 
       if (source) {
-        this.#code[language] = source.innerHTML.trim();
+        code[language] = source.innerHTML.trim();
       }
+    }
+
+    return code;
+  }
+
+  async #readFileCode() {
+    const entries: [LiveCodeLanguage, string | undefined][] = [
+      ["html", this.htmlFile],
+      ["css", this.cssFile],
+      ["js", this.jsFile],
+    ];
+    const code: Partial<Record<LiveCodeLanguage, string>> = {};
+
+    await Promise.all(
+      entries.map(async ([language, file]) => {
+        if (file) {
+          code[language] = await this.#fetchCode(file);
+        }
+      }),
+    );
+
+    return code;
+  }
+
+  async #fetchCode(file: string) {
+    try {
+      const response = await fetch(file);
+
+      if (!response.ok) {
+        throw new Error(`${response.status} ${response.statusText}`);
+      }
+
+      return await response.text();
+    } catch (error) {
+      console.warn(`Unable to load live-code source: ${file}`, error);
+      return "";
     }
   }
 }
